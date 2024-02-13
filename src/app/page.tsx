@@ -1,5 +1,5 @@
 'use client';
-import { UnicodeCharacterInformation, UnicodePanel } from '../app/unicode';
+import { UnicodeCharacterInformation, UnicodePanel } from './unicode';
 import CorsPanel from './Cors_Panel';
 import './globals.css';
 
