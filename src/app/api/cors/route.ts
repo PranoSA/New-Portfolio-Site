@@ -15,17 +15,16 @@ type ResponseBody = {
     Allowed : boolean;
 }
 
-import type { NextApiRequest, NextApiResponse } from 'next'
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 
-export  async function GET(req: NextApiRequest) {
+ async function GET(req: NextRequest) {
     //res.status(405).json({ message: 'Method not allowed' });
     //res.write("Method not allowed");
     return NextResponse.json({ message: 'Method not allowed' }, { status: 405 });
     //return;
 }
 
-export  async function POST(req: NextApiRequest) {
+export  async function POST(req: NextRequest) {
 
     const data = await  req.json();
     const { endpoint, method, headers, origin, credentials } = data
@@ -71,7 +70,7 @@ export  async function POST(req: NextApiRequest) {
     //Check if All Headers Are Okay for Simple Request
     // Accept, Accept-Language, Content-Language, Content-Type
     
-    headerArray.forEach((header) => {
+    headerArray.forEach((header:string) => {
         if (!/^(Accept|Accept-Language|Content-Language|Content-Type)$/i.test(header)) {
             simple = false;
         }

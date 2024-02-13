@@ -1,6 +1,7 @@
 'use client';
-import { UnicodeCharacterInformation, UnicodePanel } from './unicode';
-import CorsPanel from './Cors_Panel';
+import { UnicodeCharacterInformation } from '../components/unicode';
+import UnicodePanel from '../components/unicode';
+import CorsPanel from '../components/Cors_Panel';
 import './globals.css';
 
 import Image from 'next/image';

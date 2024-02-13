@@ -1,4 +1,1 @@
-
-type Project = {
-    
-}
+type Project = {};

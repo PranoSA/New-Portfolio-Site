@@ -3,8 +3,6 @@
 What Shall I demonstrate in The Unicode Characters
 
 */
-'use client';
-import './globals.css';
 
 type UnicodePanelProps = {
   open: boolean;
@@ -29,7 +27,7 @@ type UnicodeCharacterInformation = {
 
 export type { UnicodePanelProps, UnicodeCharacterInformation };
 
-export const UnicodePanel = (props: UnicodePanelProps) => {
+const UnicodePanel = (props: UnicodePanelProps) => {
   console.log(props);
 
   if (!props.open) return null;
@@ -176,3 +174,5 @@ export const UnicodePanel = (props: UnicodePanelProps) => {
     </div>
   );
 };
+
+export default UnicodePanel;
