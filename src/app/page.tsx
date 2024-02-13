@@ -1,112 +1,294 @@
-import Image from "next/image";
+'use client';
+import { UnicodeCharacterInformation, UnicodePanel } from '../app/unicode';
+import CorsPanel from './Cors_Panel';
+import './globals.css';
+
+import Image from 'next/image';
+import { useState } from 'react';
 
 export default function Home() {
+  const [openPanels, setPanels] = useState<boolean[]>([false]);
+  const [unicodeSet, setUnicode] = useState<string>('');
+  const [unicodeInfo, setUnicodeInfo] = useState<UnicodeCharacterInformation>({
+    na: '',
+    blk: '',
+    cp: '',
+    na1: '',
+    dm: '',
+    gc: '',
+    sc: '',
+  });
+  const [openAriclePanels, setArticlePanels] = useState<boolean[]>([false]);
+  //Encoding Mode, (Decimal or Hexadecimal)
+  const [encodingMode, setEncodingMode] = useState<string>('hexadecimal');
+
+  const [unicodeLink, setUnicodeLink] = useState<string>('');
+
+  const [endpoint, setEndpoint] = useState<string>('');
+  const [method, setMethod] = useState<string>('');
+  const [headers, setHeaders] = useState<string>('');
+  const [origin, setOrigin] = useState<string>('');
+  const [credentials, setCredentials] = useState<string>('');
+  const [allowedHeaders, setAllowedHeaders] = useState<string>('');
+  const [allowedMethods, setAllowedMethods] = useState<string>('');
+  const [allowedOrigin, setAllowedOrigin] = useState<string>('');
+  const [allowedCredentials, setAllowedCredentials] = useState<string>('');
+  const [simple, setSimple] = useState<boolean>(false);
+
+  const changeEncodingMode = (mode: string) => {
+    setEncodingMode(mode);
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setUnicode(e.target.value);
+    //Hexi Value
+    const hex = e.target.value;
+
+    // Parse the Hexadecimal Value to a Unicode Character
+    const unicode = String.fromCharCode(parseInt(hex, 16));
+
+    setUnicodeLink(
+      `https://unicode.compressibleflowcalculator.com?conversions=[{"value":"${unicode}"}]`
+    );
+  };
+
+  const fetchUnicode = async () => {
+    //ENsure that the unicode is a valid string
+
+    if (unicodeSet.length < 1) return;
+
+    // Make Sure Hexadecimal Values [0-9] and [A-F] are the only values in the string
+    if (!/^[0-9A-F]+$/i.test(unicodeSet)) return;
+
+    const response = await fetch(
+      `https://worker-steep-limit-1990.pcadler.workers.dev/${unicodeSet}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+    const data = await response.json();
+
+    setUnicodeInfo(data);
+  };
+
+  const handleCorsChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    name: string
+  ) => {
+    switch (name) {
+      case 'endpoint':
+        setEndpoint(e.target.value);
+        break;
+      case 'method':
+        setMethod(e.target.value);
+        break;
+      case 'headers':
+        setHeaders(e.target.value);
+        break;
+      case 'origin':
+        setOrigin(e.target.value);
+        break;
+
+      case 'credentials':
+        setCredentials(e.target.value ? 'true' : 'false');
+        break;
+      default:
+        break;
+    }
+  };
+
+  const fetchCors = async () => {
+    // Call to /api/cors/route.ts
+
+    var body = {
+      endpoint: endpoint,
+      method: method,
+      headers: headers,
+      origin: origin,
+      credentials: credentials,
+    };
+
+    console.log(body);
+
+    const response = await fetch('/api/cors', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body),
+    });
+
+    // Now we have the response from the server
+    //set the state of the component
+
+    const data = await response.json();
+
+    setAllowedHeaders(data.Allowed_Headers);
+    setAllowedMethods(data.Allowed_Methods);
+    setAllowedOrigin(data.Allowed_Origin);
+    setAllowedCredentials(data.Allowed_Credentials);
+    setSimple(data.Simple);
+  };
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main className="flex w-full min-h-screen justify-center` p-24">
+      <div className="flex flex-wrap justify-center w-full">
+        <div className="w-full  p-4 text-center">
+          <h1 className="w-full text-3xl font-bold"> Portfolio Page </h1>
         </div>
-      </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+        <div className="w-full p-4 text-center pb-40">
+          <h1 className="w-full text-5xl font-bold "> Projects: </h1>
+        </div>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+        <div className="w-full p-20 md:w-1/2 flex border-5 border-red-500 flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+          <div
+            className="w-full p-4 text-center"
+            onClick={() =>
+              setPanels([!openPanels[0], ...openPanels.slice(1, -1)])
+            }
+          >
+            <h1 className="w-full text-3xl font-bold "> Unicode Project </h1>
+          </div>
+          <div className="w-full p-4 text-center">
+            {UnicodePanel({
+              open: openPanels[0],
+              submitUnicode: fetchUnicode,
+              setCancel: () => {
+                setPanels([false, ...openPanels.slice(1, -1)]);
+                console.log('Closing');
+              },
+              unicode_info: unicodeInfo,
+              handleChange: handleChange,
+              unicodeLink: unicodeLink,
+            })}
+          </div>
+        </div>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+        <div className="w-full md:w-1/2 p-20  pt-50 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+          <div
+            className="w-full p-4 text-center "
+            onClick={() =>
+              setPanels([
+                ...openPanels.slice(0, 1),
+                !openPanels[1],
+                ...openPanels.slice(2),
+              ])
+            }
+          >
+            <h1 className="w-full text-3xl font-bold "> CORS Project </h1>
+          </div>
+          {CorsPanel({
+            open: openPanels[1],
+            endpoint: endpoint,
+            method: method,
+            headers: headers,
+            origin: origin,
+            close: () =>
+              setPanels([
+                openPanels[0],
+                !openPanels[1],
+                ...openPanels.slice(1, -1),
+              ]),
+            credentials: credentials,
+            handleChange: handleCorsChange,
+            handleSubmit: fetchCors,
+            Allowed_Headers: allowedHeaders,
+            Allowed_Methods: allowedMethods,
+            Allowed_Origisn: allowedOrigin,
+            Allowed_Credentials: allowedCredentials,
+            Simple: false,
+            Allowed: false,
+          })}
+        </div>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
+        <div className="w-full md:w-1/2 p-20 pt-50 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+          <h1 className="w-full text-3xl font-bold">Shopping List Project</h1>
+        </div>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+        <div className="w-full md:w-1/2 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+          <h1 className="w-full text-3xl font-bold">Media Servers Project</h1>
+        </div>
+
+        <div className="w-full w p-4 text-center min-h-20">
+          <h1 className="w-full text-5xl font-bold "> Articles </h1>
+        </div>
+
+        <div className="w-full md:w-2/3 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+          <h1
+            className="w-full text-3xl font-bold"
+            onClick={() => {
+              setArticlePanels([
+                !openAriclePanels[0],
+                ...openAriclePanels.slice(1),
+              ]);
+              console.log(openAriclePanels);
+            }}
+          >
+            {' '}
+            OpenVPN Networking
+          </h1>
+          {openAriclePanels[0] ? (
+            <div>
+              <p className="w-full pb-4">
+                In this article I created separate networks on a single linux
+                machine using network namespaces directly, and VETH Peers and
+                Setting up Hardcoded IP Routes. I then used Tshark (CLI Utility
+                for Wireshark) to capture packets on a network interface, and
+                then use Wireshark to analyze the packets. I also use OpenVPN to
+                create a VPN Tunnel between two machines, and then use Wireshark
+                to capture packets on the VPN Tunnel.
+              </p>
+              <a
+                href="https://articles.compressibleflowcalculator.com/OpenVPN"
+                className="bg-blue-200 rounded p-3"
+              >
+                Read Article{' '}
+              </a>
+            </div>
+          ) : null}
+        </div>
+        <div className="w-full md:w-1/2 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+          <h1
+            className="w-full text-3xl font-bold"
+            onClick={() => {
+              setArticlePanels([
+                false,
+                !openAriclePanels[1],
+                ...openAriclePanels.slice(2),
+              ]);
+              console.log(openAriclePanels);
+            }}
+          >
+            {' '}
+            Video Transcoding With FFMEPG
+          </h1>
+          {openAriclePanels[1] ? (
+            <div>
+              <p className="w-full pb-4">
+                In this article I analyze a popular steraming protocol built on
+                HTTP called MPEG-DASH (Dynamic Adaptive Streaming over HTTP). I
+                then use FFMEPG to transcode a video file to what are called mp4
+                fragments (.mps) and then create a manifest file (.mpd) that
+                contains meta-information of the chosen streams and encoding bit
+                rates for streaming options for each media stream (audio and
+                video). You can then use a simple Javascript File on an HTML
+                file to serve the video to a client and see through the
+                Networking Console how the video matches with the contents of
+                the manifest file.
+              </p>
+              <a
+                href="https://articles.compressibleflowcalculator.com/MPEG-DASH"
+                className="bg-blue-200 rounded p-3"
+              >
+                Read Article{' '}
+              </a>
+            </div>
+          ) : null}
+        </div>
       </div>
     </main>
   );
