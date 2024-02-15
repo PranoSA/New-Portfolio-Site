@@ -9,8 +9,9 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@pranosa/makebelieve_parse_precedence": "^0.0.2",
+    "@pranosa/makebelieve_parse_precedence": "^0.0.5",
     "@types/npm": "^7.19.3",
+    "d3": "^7.8.5",
     "i": "^0.3.7",
     "next": "14.1.0",
     "node-fetch": "^3.3.2",
@@ -18,6 +19,7 @@
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@types/d3": "^7.4.3",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",

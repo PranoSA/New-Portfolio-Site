@@ -1,24 +1,25 @@
 'use client';
+
+// @ts-nocheck
 import { UnicodeCharacterInformation } from '../components/unicode';
 import { UnicodePanel } from '../components/unicode';
 import { CorsPanel } from '../components/cors_panel';
 import './globals.css';
-import { Lexer, coinTypesValues } from '@pranosa/makebelieve_parse_precedence';
-import { SourceCode, Token } from '@pranosa/makebelieve_parse_precedence';
-import { Parser, Program, Opcode } from '@pranosa/makebelieve_parse_precedence';
-import {
-  VM,
-  runProgram,
-} from '@pranosa/makebelieve_parse_precedence/dist/esm/vm';
 
 import {
-  AST,
+  Parser,
+  Lexer,
+  VM,
+  AstBranch,
+  runProgram,
   PrecedenceArgument,
-  PrecedenceList,
+  genAST,
+  runAST,
 } from '@pranosa/makebelieve_parse_precedence';
+import * as d3 from 'd3';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CompilerTile from '@/components/compilers';
 
 export default function Home() {
@@ -59,6 +60,12 @@ export default function Home() {
   const [allowned, setAllowned] = useState<boolean>(false);
   const [sourceCode, setSourceCode] = useState<string>('');
   const [result, setResult] = useState<number>(0);
+  const [ast, setAST] = useState<AstBranch>({
+    operator: 'root',
+    left: undefined,
+    right: undefined,
+  });
+  const d3ref = useRef<SVGSVGElement>(null);
 
   const [precedenceArguments, setPrecedenceArguments] =
     useState<PrecedenceArgument>({
@@ -76,6 +83,15 @@ export default function Home() {
       [field]: e.target.value,
     });
   };
+  interface Node {
+    name: string;
+    left?: Node;
+    right?: Node;
+  }
+
+  interface CompilerProps {
+    ast: Node;
+  }
 
   const runCompiler = () => {
     const tokens = Lexer(sourceCode);
@@ -90,6 +106,23 @@ export default function Home() {
     };
 
     runProgram(new_vm);
+
+    const vm_for_ast: VM = {
+      stack: [],
+      top: 0,
+      program: parser.bytecode,
+      ip: 0,
+    };
+
+    console.log(new_vm.stack[new_vm.top - 1]);
+
+    const ast = genAST(vm_for_ast);
+
+    let resultast = runAST(ast[0]);
+
+    console.log(resultast);
+
+    setAST(ast[0]);
 
     const result = new_vm.stack[new_vm.top - 1];
     setResult(result);
@@ -293,8 +326,15 @@ export default function Home() {
                   runCompiler: runCompiler,
                   setSourceCode: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
                     setSourceCode(e.target.value),
+                  AST: ast,
                 })
               : null}
+            {
+              <div className="w-full p-4 text-center">
+                openPanels[2] ?<svg ref={d3ref} width={500} height={500}></svg>:
+                null
+              </div>
+            }
           </div>
         </div>
 

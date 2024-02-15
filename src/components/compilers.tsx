@@ -11,7 +11,14 @@ import {
   PrecedenceArgument,
   PrecedenceList,
 } from '@pranosa/makebelieve_parse_precedence';
+
 import React, { useState } from 'react';
+
+type AstBranch = {
+  operator: string;
+  left: AstBranch | undefined;
+  right: AstBranch | undefined;
+};
 
 type CompilerTileProps = {
   setSourceCode: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -23,6 +30,13 @@ type CompilerTileProps = {
   ) => void;
   runCompiler: () => void;
   precedenceArguments: PrecedenceArgument;
+  AST: AstBranch;
+};
+
+//First Level Nodes
+
+const DisplayAST = (props: { AST: AstBranch }) => {
+  <div className="w-full h-1/2 flex flex-col items-center justify-center"></div>;
 };
 
 const CompilerTile = (props: CompilerTileProps) => {
@@ -87,6 +101,7 @@ const CompilerTile = (props: CompilerTileProps) => {
           <h1 className="text-2xl font-bold">{result}</h1>
         </div>
       </div>
+      <div className="w-full h-1/2 flex flex-col items-center justify-center"></div>
     </div>
   );
 };
