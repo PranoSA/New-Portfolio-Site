@@ -58,25 +58,9 @@ const CorsPanel = (props: CorsPanelProps) => {
   if (!open) return null;
 
   return (
-    <div className="pt-6 p-1 max-w-sm w-full mx-auto bg-white rounded-xl shadow-md flex flex-wrap items-center justify-center space-x-4">
-      <div className="flex items-center justify-between w-full">
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-1/2"
-          type="button"
-          onClick={handleSubmit}
-        >
-          Submit
-        </button>
-        <button
-          className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded w-1/2"
-          type="button"
-          onClick={close}
-        >
-          Cancel
-        </button>
-      </div>
-      <div className="w-full flex flex-wrap justify-center pt-20">
-        <form>
+    <div className="pt-6 p-1 pt-10  w-full mx-auto bg-white rounded-xl shadow-md flex flex-wrap items-center justify-center space-x-4">
+      <div className="w-full max-w-md flex flex-wrap justify-center pt-10">
+        <form className="w-full">
           <div className="mb-4">
             <label
               className="block text-gray-700 text-sm font-bold mb-2"
@@ -85,7 +69,7 @@ const CorsPanel = (props: CorsPanelProps) => {
               Endpoint
             </label>
             <input
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="shadow w-full appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="endpoint"
               type="text"
               value={endpoint}
@@ -103,9 +87,18 @@ const CorsPanel = (props: CorsPanelProps) => {
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="method"
               type="text"
+              list="http-methods"
               value={method}
               onChange={(e) => handleChange(e, 'method')}
             />
+            <datalist id="http-methods">
+              <option value="GET" />
+              <option value="POST" />
+              <option value="DELETE" />
+              <option value="PATCH" />
+              <option value="PUT" />
+              <option value="HEAD" />
+            </datalist>
           </div>
           <div className="mb-4">
             <label
@@ -154,33 +147,57 @@ const CorsPanel = (props: CorsPanelProps) => {
           </div>
         </form>
       </div>
-      <div>
-        <h2 className="text-xl font-bold mb-2">CORS Panel</h2>
-        <p>
-          <strong>Open:</strong> {open ? 'Yes' : 'No'}
-        </p>
-        <p>
-          <strong>Allowed Headers:</strong> {Allowed_Headers}
-        </p>
-        <p>
-          <strong>Allowed Methods:</strong> {Allowed_Methods}
-        </p>
-        <p>
-          <strong>Allowed Origins:</strong> {Allowed_Origisn}
-        </p>
-        <p>
-          <strong>Allowed Credentials:</strong>{' '}
-          {Allowed_Credentials ? 'Yes' : 'No'}
-        </p>
-        <p>
-          <strong>Simple:</strong> {Simple ? 'Yes' : 'No'}
-        </p>
-        <p>
-          <strong>Allowed:</strong> {Allowed ? 'Yes' : 'No'}
-        </p>
+      <div className="flex items-center justify-around w-full">
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-1/2"
+          type="button"
+          onClick={handleSubmit}
+        >
+          Submit
+        </button>
+      </div>
+      <div className="w-full flex flex-wrap p-5 justify-center">
+        <div className="w-full">
+          <h2 className="text-2xl font-bold mb-2">CORS Results </h2>
+        </div>
+        <div className="w-full">
+          <p>
+            <strong>Allowed Headers:</strong> {Allowed_Headers}
+          </p>
+        </div>
+        <div className="w-full">
+          <p>
+            <strong>Allowed Methods:</strong> {Allowed_Methods}
+          </p>
+        </div>
+        <div className="w-full">
+          <p>
+            <strong>Allowed Origins:</strong> {Allowed_Origisn}
+          </p>
+        </div>
+        <div className="w-full">
+          <p>
+            <strong>Allowed Credentials:</strong>{' '}
+            {Allowed_Credentials ? 'Yes' : 'No'}
+          </p>
+        </div>
+        <div className="w-full">
+          <p>
+            <strong>Simple:</strong> {Simple ? 'Yes' : 'No'}
+          </p>
+        </div>
+        <div className="w-full">
+          <h1
+            className={`text-2xl font-bold ${
+              Allowed ? 'text-blue-300' : 'text-red-300'
+            }`}
+          >
+            {Allowed ? 'Allowed' : 'Not Allowed'}
+          </h1>
+        </div>
       </div>
     </div>
   );
 };
 
-export default CorsPanel;
+export { CorsPanel };

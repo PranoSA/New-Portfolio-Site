@@ -175,4 +175,4 @@ const UnicodePanel = (props: UnicodePanelProps) => {
   );
 };
 
-export default UnicodePanel;
+export { UnicodePanel };

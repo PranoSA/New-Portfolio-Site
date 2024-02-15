@@ -1,11 +1,25 @@
 'use client';
 import { UnicodeCharacterInformation } from '../components/unicode';
-import UnicodePanel from '../components/unicode';
-import CorsPanel from '../components/Cors_Panel';
+import { UnicodePanel } from '../components/unicode';
+import { CorsPanel } from '../components/cors_panel';
 import './globals.css';
+import { Lexer, coinTypesValues } from '@pranosa/makebelieve_parse_precedence';
+import { SourceCode, Token } from '@pranosa/makebelieve_parse_precedence';
+import { Parser, Program, Opcode } from '@pranosa/makebelieve_parse_precedence';
+import {
+  VM,
+  runProgram,
+} from '@pranosa/makebelieve_parse_precedence/dist/esm/vm';
+
+import {
+  AST,
+  PrecedenceArgument,
+  PrecedenceList,
+} from '@pranosa/makebelieve_parse_precedence';
 
 import Image from 'next/image';
 import { useState } from 'react';
+import CompilerTile from '@/components/compilers';
 
 export default function Home() {
   const [openPanels, setPanels] = useState<boolean[]>([false]);
@@ -35,6 +49,44 @@ export default function Home() {
   const [allowedOrigin, setAllowedOrigin] = useState<string>('');
   const [allowedCredentials, setAllowedCredentials] = useState<string>('');
   const [simple, setSimple] = useState<boolean>(false);
+  const [allowned, setAllowned] = useState<boolean>(false);
+  const [sourceCode, setSourceCode] = useState<string>('');
+  const [result, setResult] = useState<number>(0);
+
+  const [precedenceArguments, setPrecedenceArguments] =
+    useState<PrecedenceArgument>({
+      '%_precedence': 1,
+      '*_precedence': 2,
+      '/_precedence': 2,
+      '+_precedence': 3,
+      '-_precedence': 3,
+      exp_precedence: 4,
+    });
+
+  const handlePrecedenceChanges = (e: any, field: string) => {
+    setPrecedenceArguments({
+      ...precedenceArguments,
+      [field]: e.target.value,
+    });
+  };
+
+  const runCompiler = () => {
+    const tokens = Lexer(sourceCode);
+    const parser = new Parser(tokens, precedenceArguments, 0);
+    parser.beginParsing();
+
+    const new_vm: VM = {
+      stack: [],
+      top: 0,
+      program: parser.bytecode,
+      ip: 0,
+    };
+
+    runProgram(new_vm);
+
+    const result = new_vm.stack[new_vm.top - 1];
+    setResult(result);
+  };
 
   const changeEncodingMode = (mode: string) => {
     setEncodingMode(mode);
@@ -132,6 +184,7 @@ export default function Home() {
     setAllowedOrigin(data.Allowed_Origin);
     setAllowedCredentials(data.Allowed_Credentials);
     setSimple(data.Simple);
+    setAllowned(data.Allowed);
   };
 
   return (
@@ -169,7 +222,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="w-full md:w-1/2 p-20  pt-50 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+        <div className="w-full md:w-1/2 p-10 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
           <div
             className="w-full p-4 text-center "
             onClick={() =>
@@ -201,9 +254,41 @@ export default function Home() {
             Allowed_Methods: allowedMethods,
             Allowed_Origisn: allowedOrigin,
             Allowed_Credentials: allowedCredentials,
-            Simple: false,
-            Allowed: false,
+            Simple: simple,
+            Allowed: allowned,
           })}
+        </div>
+
+        <div className="w-full md:w-1/2 p-10 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+          <div
+            className="w-full p-4 text-center flex flex-wrap "
+            onClick={() =>
+              setPanels([
+                ...openPanels.slice(0, 2),
+                !openPanels[2],
+                ...openPanels.slice(3),
+              ])
+            }
+          >
+            <h1 className="w-full text-3xl font-bold ">
+              {' '}
+              Compilers Project :{' '}
+            </h1>
+          </div>
+
+          <div className="w-full p-4 text-center">
+            {openPanels[2]
+              ? CompilerTile({
+                  sourceCode: sourceCode,
+                  result: result,
+                  precedenceArguments: precedenceArguments,
+                  setPrecedenceArguments: handlePrecedenceChanges,
+                  runCompiler: runCompiler,
+                  setSourceCode: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                    setSourceCode(e.target.value),
+                })
+              : null}
+          </div>
         </div>
 
         <div className="w-full md:w-1/2 p-20 pt-50 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
@@ -233,8 +318,8 @@ export default function Home() {
             OpenVPN Networking
           </h1>
           {openAriclePanels[0] ? (
-            <div>
-              <p className="w-full pb-4">
+            <div className="m-5">
+              <p className="w-full pb-4 text-lg">
                 In this article I created separate networks on a single linux
                 machine using network namespaces directly, and VETH Peers and
                 Setting up Hardcoded IP Routes. I then used Tshark (CLI Utility
@@ -252,7 +337,7 @@ export default function Home() {
             </div>
           ) : null}
         </div>
-        <div className="w-full md:w-1/2 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+        <div className="w-full md:w-1/2 p-20 flex m-10 flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
           <h1
             className="w-full text-3xl font-bold"
             onClick={() => {
@@ -268,8 +353,8 @@ export default function Home() {
             Video Transcoding With FFMEPG
           </h1>
           {openAriclePanels[1] ? (
-            <div>
-              <p className="w-full pb-4">
+            <div className="m-5">
+              <p className="w-full pb-4 text-lg">
                 In this article I analyze a popular steraming protocol built on
                 HTTP called MPEG-DASH (Dynamic Adaptive Streaming over HTTP). I
                 then use FFMEPG to transcode a video file to what are called mp4
