@@ -22,7 +22,14 @@ import { useState } from 'react';
 import CompilerTile from '@/components/compilers';
 
 export default function Home() {
-  const [openPanels, setPanels] = useState<boolean[]>([false]);
+  const [openPanels, setPanels] = useState<boolean[]>([
+    false,
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
   const [unicodeSet, setUnicode] = useState<string>('');
   const [unicodeInfo, setUnicodeInfo] = useState<UnicodeCharacterInformation>({
     na: '',
