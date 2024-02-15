@@ -116,7 +116,16 @@ export default function Home() {
 
     console.log(new_vm.stack[new_vm.top - 1]);
 
-    setResult(new_vm.stack[new_vm.top - 1]);
+    //const ast = genAST(vm_for_ast);
+
+    //let resultast = runAST(ast[0]);
+
+    //console.log(resultast);
+
+    //setAST(ast[0]);
+
+    const result = new_vm.stack[new_vm.top - 1];
+    setResult(result);
   };
 
   const changeEncodingMode = (mode: string) => {
