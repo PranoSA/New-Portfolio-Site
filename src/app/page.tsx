@@ -329,12 +329,6 @@ export default function Home() {
                   AST: ast,
                 })
               : null}
-            {
-              <div className="w-full p-4 text-center">
-                openPanels[2] ?<svg ref={d3ref} width={500} height={500}></svg>:
-                null
-              </div>
-            }
           </div>
         </div>
 
