@@ -122,7 +122,10 @@ export default function Home() {
   //setHierarchyAttributes(yourTree); // Replace 'yourTree' with your actual tree
 
   useEffect(() => {
-    if (!showStack) return;
+    if (!showStack) {
+      d3.select(d3Ref.current).selectAll('*').remove();
+      return;
+    }
     if (tree && d3Ref.current) {
       // Clear the previous tree
 
@@ -132,8 +135,8 @@ export default function Home() {
       const svg = d3
         .select(d3Ref.current)
         .append('svg')
-        .attr('width', 600)
-        .attr('height', 600);
+        .attr('width', 1000)
+        .attr('height', 1000);
 
       const modifiedTree = { ...tree };
 
@@ -145,7 +148,7 @@ export default function Home() {
       const root = d3.hierarchy(modifiedTree);
 
       // Create a tree layout and assign the size
-      const treeLayout = d3.tree().size([500, 500]);
+      const treeLayout = d3.tree().size([900, 900]);
 
       // Assign the computed layout to root
       treeLayout(root as any);
@@ -495,7 +498,7 @@ export default function Home() {
 
           <div className="w-full p-4 text-center">
             {openPanels[2] ? (
-              <div className="flex flex-wrap">
+              <div className="flex w-full flex-wrap">
                 {CompilerTile({
                   sourceCode: sourceCode,
                   result: result,
