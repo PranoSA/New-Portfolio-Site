@@ -44,6 +44,7 @@ export default function Home() {
   const [openAriclePanels, setArticlePanels] = useState<boolean[]>([false]);
   //Encoding Mode, (Decimal or Hexadecimal)
   const [encodingMode, setEncodingMode] = useState<string>('hexadecimal');
+  const [currentStep, setCurrentStep] = useState<number>(0);
 
   const [unicodeLink, setUnicodeLink] = useState<string>('');
 
@@ -65,6 +66,9 @@ export default function Home() {
     left: undefined,
     right: undefined,
   });
+  const [showStack, setShowStack] = useState<boolean>(false);
+  const [vm, setVM] = useState<VM | null>(null);
+
   const d3ref = useRef<SVGSVGElement>(null);
 
   const [precedenceArguments, setPrecedenceArguments] =
@@ -104,6 +108,8 @@ export default function Home() {
       program: parser.bytecode,
       ip: 0,
     };
+
+    setVM(new_vm);
 
     runProgram(new_vm);
 
@@ -327,6 +333,15 @@ export default function Home() {
                   setSourceCode: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
                     setSourceCode(e.target.value),
                   AST: ast,
+                  showStack: showStack,
+                  setShowStack: () => {
+                    if (vm?.program_states == undefined) return;
+                    setShowStack(!showStack);
+                  },
+                  vm: vm,
+                  currentStep: currentStep,
+                  setCurrentStep: (step: number) =>
+                    setCurrentStep(step + currentStep),
                 })
               : null}
           </div>

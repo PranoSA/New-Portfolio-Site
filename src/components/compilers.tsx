@@ -1,4 +1,8 @@
-import { Lexer, coinTypesValues } from '@pranosa/makebelieve_parse_precedence';
+import {
+  Lexer,
+  VMSteps,
+  coinTypesValues,
+} from '@pranosa/makebelieve_parse_precedence';
 import { SourceCode, Token } from '@pranosa/makebelieve_parse_precedence';
 import { Parser, Program, Opcode } from '@pranosa/makebelieve_parse_precedence';
 import {
@@ -31,6 +35,11 @@ type CompilerTileProps = {
   runCompiler: () => void;
   precedenceArguments: PrecedenceArgument;
   AST: AstBranch;
+  showStack: boolean;
+  setShowStack: () => void;
+  vm: VM | null;
+  currentStep: number;
+  setCurrentStep: (jump: number) => void;
 };
 
 //First Level Nodes
@@ -48,7 +57,89 @@ const CompilerTile = (props: CompilerTileProps) => {
     setPrecedenceArguments,
     runCompiler,
     precedenceArguments,
+    AST,
+    showStack,
+    setShowStack,
+    vm,
+    currentStep,
+    setCurrentStep,
   } = props;
+
+  const typescriptIsAnnoyingMe = (): VMSteps => {
+    // Replace any[] with the actual type of program_states if available
+    return vm?.program_states ?? [];
+  };
+
+  const parseOPerationType = (operation: Opcode): string => {
+    // turn into string like OP_ADD
+    switch (operation) {
+      case Opcode.OP_ADD:
+        return 'OP_ADD';
+      case Opcode.OP_SUB:
+        return 'OP_SUB';
+      case Opcode.OP_MUL:
+        return 'OP_MUL';
+      case Opcode.OP_DIV:
+        return 'OP_DIV';
+      case Opcode.OP_FACTORIAL:
+        return 'OP_FACTORIAL';
+      case Opcode.OP_EOF:
+        return 'OP_EOF';
+      case Opcode.OP_CONST:
+        //Find What the index of the constant is and return the value
+        return 'OP_CONST';
+      default:
+        return 'OP_UNKNOWN';
+    }
+  };
+
+  const stackWithBlanks = (): string[] => {
+    const stack = typescriptIsAnnoyingMe()[currentStep]?.stack.map((item) => {
+      return String(item);
+    });
+    const stackFilled = stack.concat(new Array(10 - stack.length).fill('X'));
+    return stackFilled.reverse();
+  };
+
+  const constantsWithBlanks = (): string[] => {
+    const stack = typescriptIsAnnoyingMe()[currentStep]?.constants.map(
+      (item) => {
+        return String(item);
+      }
+    );
+    const stackFilled = stack.concat(new Array(10 - stack.length).fill('X'));
+    return stackFilled.reverse();
+  };
+
+  const stackDisplay = () => {
+    return (
+      <div className="w-full flex  items-center justify-center">
+        <div className="w-full">
+          <h1 className="text-2xl">
+            {' '}
+            NEXT OP CODE : {typescriptIsAnnoyingMe()[currentStep].name}{' '}
+          </h1>
+        </div>
+        <div className="w-1/2 flex flex-col items-center justify-center">
+          <h1> STACK : </h1>
+          {stackWithBlanks().map((item, index) => (
+            <div key={index}>
+              <h2 className="text-xl">
+                {10 - index} : {item}{' '}
+              </h2>
+            </div>
+          ))}
+        </div>
+        {/*<div className="w-1/2 flex flex-col items-center justify-center">
+          {constantsWithBlanks().map((item, index) => (
+            <div key={index}>
+              {10 - index} : {item}
+            </div>
+          ))}
+          </div>*/}
+      </div>
+    );
+  };
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center pt-20">
@@ -101,7 +192,43 @@ const CompilerTile = (props: CompilerTileProps) => {
           <h1 className="text-2xl font-bold">{result}</h1>
         </div>
       </div>
-      <div className="w-full h-1/2 flex flex-col items-center justify-center"></div>
+      <div className="w-full h-1/2 flex flex-col items-center justify-center">
+        <button
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 m-5 p-3"
+          onClick={() => setShowStack()}
+        >
+          Show Stack
+        </button>
+      </div>
+      {showStack ? (
+        <div className="w-full  flex flex-col items-center justify-center">
+          <div className="w-full h-1/2 flex  items-center justify-center">
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 m-5 p-3"
+              onClick={() => setCurrentStep(-1)}
+              disabled={currentStep === 0}
+            >
+              Previous
+            </button>
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 m-5 p-3"
+              onClick={() => setCurrentStep(1)}
+              disabled={currentStep >= typescriptIsAnnoyingMe().length - 1}
+            >
+              Next
+            </button>
+          </div>
+          <div className="w-full">
+            {`STEP ` +
+              (currentStep + 1) +
+              ` of ` +
+              typescriptIsAnnoyingMe().length}
+          </div>
+          <div className="w-full  flex  items-center justify-center">
+            {stackDisplay()}
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };
