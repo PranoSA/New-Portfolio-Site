@@ -135,8 +135,8 @@ export default function Home() {
       const svg = d3
         .select(d3Ref.current)
         .append('svg')
-        .attr('width', 1000)
-        .attr('height', 1000);
+        .attr('width', 1200)
+        .attr('height', 700);
 
       const modifiedTree = { ...tree };
 
@@ -148,7 +148,7 @@ export default function Home() {
       const root = d3.hierarchy(modifiedTree);
 
       // Create a tree layout and assign the size
-      const treeLayout = d3.tree().size([900, 900]);
+      const treeLayout = d3.tree().size([600, 1100]);
 
       // Assign the computed layout to root
       treeLayout(root as any);
@@ -518,9 +518,7 @@ export default function Home() {
                   setCurrentStep: (step: number) =>
                     setCurrentStep(step + currentStep),
                 })}
-                <div className="w-full p-4 text-center" ref={d3Ref}>
-                  <h1> Tree ? </h1>
-                </div>
+                <div className="w-full p-4 text-center" ref={d3Ref}></div>
               </div>
             ) : null}
           </div>

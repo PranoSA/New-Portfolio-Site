@@ -197,11 +197,20 @@ const CompilerTile = (props: CompilerTileProps) => {
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 m-5 p-3"
           onClick={() => setShowStack()}
         >
-          Show Stack
+          {showStack ? 'Show Stack' : 'Hide Stack'}
         </button>
       </div>
       {showStack ? (
         <div className="w-full  flex flex-col items-center justify-center">
+          <div className="w-full">
+            {`STEP ` +
+              (currentStep + 1) +
+              ` of ` +
+              typescriptIsAnnoyingMe().length}
+          </div>
+          <div className="w-full  flex  items-center justify-center">
+            {stackDisplay()}
+          </div>
           <div className="w-full h-1/2 flex  items-center justify-center">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 m-5 p-3"
@@ -217,15 +226,6 @@ const CompilerTile = (props: CompilerTileProps) => {
             >
               Next
             </button>
-          </div>
-          <div className="w-full">
-            {`STEP ` +
-              (currentStep + 1) +
-              ` of ` +
-              typescriptIsAnnoyingMe().length}
-          </div>
-          <div className="w-full  flex  items-center justify-center">
-            {stackDisplay()}
           </div>
         </div>
       ) : null}
