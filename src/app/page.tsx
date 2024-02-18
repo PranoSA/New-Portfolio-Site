@@ -148,7 +148,7 @@ export default function Home() {
           </h1>
           {openAriclePanels[0] ? (
             <div className="m-5">
-              <p className="w-full pb-4 text-lg">
+              <p className="w-full pb-4 ">
                 In this article I created separate networks on a single linux
                 machine using network namespaces directly, and VETH Peers and
                 Setting up Hardcoded IP Routes. I then used Tshark (CLI Utility
@@ -159,7 +159,7 @@ export default function Home() {
               </p>
               <a
                 href="https://articles.compressibleflowcalculator.com/OpenVPN"
-                className="bg-blue-200 rounded p-3"
+                className="p-5 text-center bg-blue-200 rounded"
               >
                 Read Article{' '}
               </a>
@@ -183,7 +183,7 @@ export default function Home() {
           </h1>
           {openAriclePanels[1] ? (
             <div className="m-5">
-              <p className="w-full pb-4 text-lg">
+              <p className="w-full pb-4 ">
                 In this article I analyze a popular steraming protocol built on
                 HTTP called MPEG-DASH (Dynamic Adaptive Streaming over HTTP). I
                 then use FFMEPG to transcode a video file to what are called mp4
@@ -197,7 +197,7 @@ export default function Home() {
               </p>
               <a
                 href="https://articles.compressibleflowcalculator.com/MPEG-DASH"
-                className="bg-blue-200 rounded p-3"
+                className="p-5 text-center bg-blue-200 rounded"
               >
                 Read Article{' '}
               </a>
