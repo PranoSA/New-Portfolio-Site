@@ -20,21 +20,9 @@ export default function Home() {
     false,
     false,
   ]);
-  const [unicodeSet, setUnicode] = useState<string>('');
-  const [unicodeInfo, setUnicodeInfo] = useState<UnicodeCharacterInformation>({
-    na: '',
-    blk: '',
-    cp: '',
-    na1: '',
-    dm: '',
-    gc: '',
-    sc: '',
-  });
+
   const [openAriclePanels, setArticlePanels] = useState<boolean[]>([false]);
   //Encoding Mode, (Decimal or Hexadecimal)
-  const [encodingMode, setEncodingMode] = useState<string>('hexadecimal');
-
-  const [unicodeLink, setUnicodeLink] = useState<string>('');
 
   const [endpoint, setEndpoint] = useState<string>('');
   const [method, setMethod] = useState<string>('');
@@ -49,44 +37,6 @@ export default function Home() {
   const [allowned, setAllowned] = useState<boolean>(false);
 
 
-  const changeEncodingMode = (mode: string) => {
-    setEncodingMode(mode);
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setUnicode(e.target.value);
-    //Hexi Value
-    const hex = e.target.value;
-
-    // Parse the Hexadecimal Value to a Unicode Character
-    const unicode = String.fromCharCode(parseInt(hex, 16));
-
-    setUnicodeLink(
-      `https://unicode.compressibleflowcalculator.com?conversions=[{"value":"${unicode}"}]`
-    );
-  };
-
-  const fetchUnicode = async () => {
-    //ENsure that the unicode is a valid string
-
-    if (unicodeSet.length < 1) return;
-
-    // Make Sure Hexadecimal Values [0-9] and [A-F] are the only values in the string
-    if (!/^[0-9A-F]+$/i.test(unicodeSet)) return;
-
-    const response = await fetch(
-      `https://worker-steep-limit-1990.pcadler.workers.dev/${unicodeSet}`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      }
-    );
-    const data = await response.json();
-
-    setUnicodeInfo(data);
-  };
 
   const handleCorsChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -159,28 +109,32 @@ export default function Home() {
           <h1 className="w-full text-5xl font-bold "> Projects: </h1>
         </div>
 
-        <div className="w-full p-20 md:w-1/2 flex border-5 border-red-500 flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
-          <div
-            className="w-full p-4 text-center"
+      <div 
             onClick={() =>
-              setPanels([!openPanels[0], ...openPanels.slice(1, -1)])
+              setPanels([
+                !openPanels[0],
+                ...openPanels.slice(1),
+              ])
             }
-          >
-            <h1 className="w-full text-3xl font-bold "> Unicode Project </h1>
-          </div>
-          <div className="w-full p-4 text-center">
-            {UnicodePanel({
-              open: openPanels[0],
-              submitUnicode: fetchUnicode,
-              setCancel: () => {
-                setPanels([false, ...openPanels.slice(1, -1)]);
-                console.log('Closing');
-              },
-              unicode_info: unicodeInfo,
-              handleChange: handleChange,
-              unicodeLink: unicodeLink,
-            })}
-          </div>
+        className="w-full md:w-1/2 p-20 pt-50 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+          <h1 className="w-full text-3xl font-bold"> Unicode Project  </h1>
+            <div className='w-full p-4 text-center flex-center'>
+                {openPanels[0] ? (
+                  <div className='w-full flex flex-wrap p-4 text-center justify-center'>
+                  <div className='w-2/3 p-5 text-center'>
+                      Learn About the Binary Representation of Textual Objects in Unicode. This project 
+                      demonstrate the use of Unicode Character Standards, Unicode Character Information, 
+                      and Encoding of Characters using UTF-8, UTF-16, and UTF-32. 
+                      Also Creates a Link Based on the Character Form to my Full-Fledged Unicode Inspection Application.
+                  </div>
+                  <div className='w-full w-flex flex-wrap p-4 text-center'>
+                    <Link href="/unicode">
+                      <button className='p-5 text-center bg-blue-200 rounded'> View Unicode Mini-App </button> 
+                  </Link>
+                  </div>
+                  </div>
+                ):null}
+            </div>
         </div>
 
         <div className="w-full md:w-1/2 p-10 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
@@ -221,7 +175,8 @@ export default function Home() {
         </div>
 
 
-        <div             onClick={() =>
+        <div             
+        onClick={() =>
               setPanels([
                 ...openPanels.slice(0, 2),
                 !openPanels[2],
