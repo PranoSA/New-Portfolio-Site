@@ -34,32 +34,7 @@ const UnicodePanel = (props: UnicodePanelProps) => {
 
   return (
     <div className=" flex flex-around flex-wrap w-full border-5 border-red-400 p-15">
-      <div className="w-full p-4 justify-center text-center">
-        <h1 className="w-full text-3xl font-bold">About The Project :</h1>
-      </div>
-      <div className="w-full p-4 justify-center text-center text-3xl">
-        <p className="text-xl">
-          For Computers To Perform Operations on Data Types Like Strings, such
-          as Concatenation, Searching, and Sorting, Splitting A String by a
-          Delimiter, or Replacing a Substring, The Computer Must Have A Way to
-          Represent Characters. The Unicode Standard Provides A Unique Number
-          for Every Character, No Matter What the Platform, No Matter What the
-          Program, No Matter What the Language. For Example, How do you print
-          the Letter {'"A"'} to the screen? Well, you can use the ASCII code for{' '}
-          {'"A"'} which is 65. But what about the letter {'"Ω"'}? Well, you can
-          use the Unicode code for {'"Ω"'} which is 937. The Unicode Standard
-          Provides A Unique Number for Every Character, No Matter What the
-          Platform, No Matter What the Program, No Matter What the Language.
-          Another Example Is Say We Want To Split a String by Codepoint, we need
-          a way to find when a character starts and ends. My hope is that this
-          application will aid in the understanding of how Characters and
-          Strings are represented in Binary.
-        </p>
-      </div>
 
-      <div className="w-full p-4 justify-center text-center">
-        <h1 className="w-full text-3xl font-bold"> Project Description : </h1>
-      </div>
 
       <div className="w-full p-4 justify-center text-center">
         <p className="w-full text-3xl font-bold">
