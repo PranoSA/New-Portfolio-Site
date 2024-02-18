@@ -58,7 +58,7 @@ const UnicodePanel = (props: UnicodePanelProps) => {
             2. Backend Application (Built with AWS Lambda, DynamoDB, and AWS
             SAM)
           </li>
-          <li> 3. Terraform Plugin Provider Written in GoLang</li>
+          <li> 3. Terraform Plugin Provider Written in GoLang </li>
         </ol>
       </div>
 
@@ -125,7 +125,7 @@ const UnicodePanel = (props: UnicodePanelProps) => {
         <div className="w-1/2 p-4 justify-center text-center p-25">
           <h1 className="w-full text-xl font-bold p-10"> Unicode Link : </h1>
           <a
-            href={props.unicodeLink || ''}
+            href={props.unicodeLink || ' '}
             target="_blank"
             rel="noreferrer"
             className="text-blue-500"
