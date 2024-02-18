@@ -230,9 +230,9 @@ export default function Home() {
             }
         className="w-full md:w-1/2 p-20 pt-50 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
           <h1 className="w-full text-3xl font-bold">Compilers Project </h1>
-            <div className='w-full p-4 text-center'>
+            <div className='w-full p-4 text-center flex-center'>
                 {openPanels[2] ? (
-                  <div className='w-full flex flex-wrap p-4 text-center'>
+                  <div className='w-full flex flex-wrap p-4 text-center justify-center'>
                   <div className='w-2/3 p-5 text-center'>
                       Expression Parser and Compiler That Builds a Stack representation,
                       and Abstract Syntax Tree (AST) and a Parse Tree using Generated Grammar Rules.
@@ -241,9 +241,7 @@ export default function Home() {
                   </div>
                   <div className='w-full w-flex flex-wrap p-4 text-center'>
                     <Link href="/compilers">
-                      <a>
                       <button className='p-5 text-center bg-blue-200 rounded'> View Compiler App </button> 
-                      </a>
                   </Link>
                   </div>
                   </div>
