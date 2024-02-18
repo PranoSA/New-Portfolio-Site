@@ -188,7 +188,7 @@ const CompilerTile = (props: CompilerTileProps) => {
       </div>
       <div className="w-full h-1/2 flex flex-col items-center justify-center">
         <div className="w-full h-1/2 flex flex-col items-center justify-center">
-          <h1 className="text-2xl font-bold pt-20">Result</h1>
+          <h1 className="text-2xl font-bold pt-20">Compiler Result</h1>
           <h1 className="text-2xl font-bold">{result}</h1>
         </div>
       </div>
