@@ -690,6 +690,7 @@ export default function Home() {
         <div className="w-full md:w-2/3 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
           <h1
             className="w-full text-3xl font-bold"
+                <span style="color:yellow">{name}</span>
             onClick={() => {
               setArticlePanels([
                 !openAriclePanels[0],
