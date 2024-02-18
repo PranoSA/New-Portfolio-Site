@@ -24,80 +24,6 @@ export default function Home() {
   const [openAriclePanels, setArticlePanels] = useState<boolean[]>([false]);
   //Encoding Mode, (Decimal or Hexadecimal)
 
-  const [endpoint, setEndpoint] = useState<string>('');
-  const [method, setMethod] = useState<string>('');
-  const [headers, setHeaders] = useState<string>('');
-  const [origin, setOrigin] = useState<string>('');
-  const [credentials, setCredentials] = useState<string>('');
-  const [allowedHeaders, setAllowedHeaders] = useState<string>('');
-  const [allowedMethods, setAllowedMethods] = useState<string>('');
-  const [allowedOrigin, setAllowedOrigin] = useState<string>('');
-  const [allowedCredentials, setAllowedCredentials] = useState<string>('');
-  const [simple, setSimple] = useState<boolean>(false);
-  const [allowned, setAllowned] = useState<boolean>(false);
-
-
-
-  const handleCorsChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    name: string
-  ) => {
-    switch (name) {
-      case 'endpoint':
-        setEndpoint(e.target.value);
-        break;
-      case 'method':
-        setMethod(e.target.value);
-        break;
-      case 'headers':
-        setHeaders(e.target.value);
-        break;
-      case 'origin':
-        setOrigin(e.target.value);
-        break;
-
-      case 'credentials':
-        setCredentials(e.target.value ? 'true' : 'false');
-        break;
-      default:
-        break;
-    }
-  };
-
-  const fetchCors = async () => {
-    // Call to /api/cors/route.ts
-
-    var body = {
-      endpoint: endpoint,
-      method: method,
-      headers: headers,
-      origin: origin,
-      credentials: credentials,
-    };
-
-    console.log(body);
-
-    const response = await fetch('/api/cors', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
-
-    // Now we have the response from the server
-    //set the state of the component
-
-    const data = await response.json();
-
-    setAllowedHeaders(data.Allowed_Headers);
-    setAllowedMethods(data.Allowed_Methods);
-    setAllowedOrigin(data.Allowed_Origin);
-    setAllowedCredentials(data.Allowed_Credentials);
-    setSimple(data.Simple);
-    setAllowned(data.Allowed);
-  };
-
   return (
     <main className="flex w-full min-h-screen justify-center` p-24">
       <div className="flex flex-wrap justify-center w-full">
@@ -105,7 +31,7 @@ export default function Home() {
           <h1 className="w-full text-6xl font-bold"> Portfolio Page </h1>
         </div>
 
-        <div className="w-full p-4 text-center pb-40">
+        <div className="w-full p-4 text-center pb-30 pt-10">
           <h1 className="w-full text-5xl font-bold "> Projects: </h1>
         </div>
 
@@ -137,41 +63,32 @@ export default function Home() {
             </div>
         </div>
 
-        <div className="w-full md:w-1/2 p-10 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
-          <div
-            className="w-full p-4 text-center "
-            onClick={() =>
+        <div             
+        onClick={() =>
               setPanels([
                 ...openPanels.slice(0, 1),
                 !openPanels[1],
                 ...openPanels.slice(2),
               ])
             }
-          >
-            <h1 className="w-full text-3xl font-bold "> CORS Project </h1>
-          </div>
-          {CorsPanel({
-            open: openPanels[1],
-            endpoint: endpoint,
-            method: method,
-            headers: headers,
-            origin: origin,
-            close: () =>
-              setPanels([
-                openPanels[0],
-                !openPanels[1],
-                ...openPanels.slice(1, -1),
-              ]),
-            credentials: credentials,
-            handleChange: handleCorsChange,
-            handleSubmit: fetchCors,
-            Allowed_Headers: allowedHeaders,
-            Allowed_Methods: allowedMethods,
-            Allowed_Origisn: allowedOrigin,
-            Allowed_Credentials: allowedCredentials,
-            Simple: simple,
-            Allowed: allowned,
-          })}
+        className="w-full md:w-1/2 p-20 pt-50 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+          <h1 className="w-full text-3xl font-bold"> CORS Test </h1>
+            <div className='w-full p-4 text-center flex-center'>
+                {openPanels[1] ? (
+                  <div className='w-full flex flex-wrap p-4 text-center justify-center'>
+                  <div className='w-2/3 p-5 text-center'>
+                      Run Pre-Configured Integration Tests against a Certain HTTP(S) Path Using a Certain 
+                      Origin and Method, and Headers. This will allow you to tell if the server is configured 
+                      properly or not for your frontend application running in a different origin to make requests to.
+                  </div>
+                  <div className='w-full w-flex flex-wrap p-4 text-center'>
+                    <Link href="/cors">
+                      <button className='p-5 text-center bg-blue-200 rounded'> View Mini-CORS Tester </button> 
+                  </Link>
+                  </div>
+                  </div>
+                ):null}
+            </div>
         </div>
 
 
