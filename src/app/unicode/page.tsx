@@ -71,12 +71,9 @@ export default function Home() {
     <main className="flex w-full min-h-screen justify-center` p-24">
       <div className="flex flex-wrap justify-center w-full">
         <div className="w-full  p-4 text-center">
-          <h1 className="w-full text-6xl font-bold"> Portfolio Page </h1>
+          <h1 className="w-full text-3xl font-bold"> Unicode Page </h1>
         </div>
 
-        <div className="w-full p-4 text-center pb-40">
-          <h1 className="w-full text-5xl font-bold "> Projects: </h1>
-        </div>
 
         <div className="w-full p-20 md:w-1/2 flex border-5 border-red-500 flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
           <div className="w-full p-4 text-center">
