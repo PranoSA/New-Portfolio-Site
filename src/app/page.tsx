@@ -548,7 +548,7 @@ export default function Home() {
     <main className="flex w-full min-h-screen justify-center` p-24">
       <div className="flex flex-wrap justify-center w-full">
         <div className="w-full  p-4 text-center">
-          <h1 className="w-full text-3xl font-bold"> Portfolio Page </h1>
+          <h1 className="w-full text-6xl font-bold"> Portfolio Page </h1>
         </div>
 
         <div className="w-full p-4 text-center pb-40">
