@@ -16,7 +16,12 @@ import {
   genAST,
   runAST,
   TreeForJS3,
+  ParseNode,
+  BNFGrammarExpressions,
   TreeForJs3,
+  ParseTreeBranch,
+  PrecedenceLevels,
+  coinTypesValues,
 } from '@pranosa/makebelieve_parse_precedence';
 import * as d3 from 'd3';
 
@@ -75,15 +80,25 @@ export default function Home() {
     value: 'root',
     children: [],
   });
+  const [parseTree, setParseTree] = useState<ParseTreeBranch>({
+    operator: 'root',
+    children: [],
+    current_expression: [],
+    string_representation: '',
+    matching_string: '',
+    grammar_rule_depth: 0,
+  });
+  const [grammarRules, setGrammerRules] = useState<string[]>([]);
 
   const d3Ref = useRef<HTMLDivElement>(null);
+  const d3RefAST = useRef<HTMLDivElement>(null);
 
   let stepintraverse = 0;
+  var pathToNode = [];
 
-  function setHierarchyAttributes(node: any, name = 'default', value = 0) {
+  function setHierarchyAttributes(node: D3Node, name = 'default', value = 0) {
     // Set the name and value properties
-    const castasnode = node as TreeForJs3;
-    node.name = castasnode.value || name;
+    node.name = node.value || name;
     node.value = node.value || value + 'VALUE';
 
     // Recursively set the properties for each child
@@ -106,13 +121,11 @@ export default function Home() {
 
     node.calculated_value =
       vm?.program_states[stepintraverse].stack[stack_size - 1];
-    console.log('Node Info');
-    console.log(node.calculated_value);
-    console.log(vm?.program_states[stepintraverse].stack[stack_size || 1 - 1]);
-    console.log('Stack Info');
-    console.log(stepintraverse);
-    console.log(stack_size);
-    console.log(vm?.program_states[stepintraverse].stack);
+
+    // path to node ->
+    //Find Path To Root And Reverse It
+    let path = [];
+    let current = node; // There is No Field Called Parent Here ...
 
     //How to associate current Step with the node
 
@@ -120,6 +133,136 @@ export default function Home() {
   }
 
   //setHierarchyAttributes(yourTree); // Replace 'yourTree' with your actual tree
+
+  type D3Node = TreeForJs3 & {
+    name: string;
+    value: string;
+    children: D3Node[];
+    step: number;
+    calculated_value: number;
+    style: string;
+    y: number;
+    x: number;
+  };
+
+  type D3ASTNode = ParseTreeBranch & {};
+
+  function convertToD3ASTNode(tree: ParseTreeBranch): D3ASTNode {
+    const d3Node: D3ASTNode = {
+      ...tree,
+    };
+    return d3Node;
+  }
+
+  function convertToD3Node(tree: TreeForJs3): D3Node {
+    // Add additional properties to the tree
+    const d3Node: D3Node = {
+      ...tree,
+      name: tree.value,
+      value: tree.value,
+      children: [],
+      step: 0,
+      calculated_value: 0,
+      style: 'fill: white',
+      y: 0,
+      x: 0,
+      // ... additional properties
+    };
+
+    // If the tree has children, convert them to D3Node as well
+    if (tree.children) {
+      d3Node.children = tree.children.map(convertToD3Node);
+    }
+
+    return d3Node;
+  }
+
+  useEffect(() => {
+    if (!showStack) {
+      d3.select(d3RefAST.current).selectAll('*').remove();
+      return;
+    }
+    if (parseTree && d3RefAST.current) {
+      d3.select(d3RefAST.current).selectAll('*').remove();
+
+      const svg = d3
+        .select(d3RefAST.current)
+        .append('svg')
+        .attr('width', 1200)
+        .attr('height', 700);
+
+      //const modifiedTree = { ...tree };
+      const modifiedTree: D3ASTNode = convertToD3ASTNode(parseTree);
+
+      //stepintraverse = 0;
+
+      //setHierarchyAttributes(modifiedTree);
+
+      // Convert the tree data into a d3 hierarchy
+      const root = d3.hierarchy(modifiedTree);
+
+      // Create a tree layout and assign the size
+      const treeLayout = d3.tree().size([600, 1100]);
+
+      // Assign the computed layout to root
+      treeLayout(root as any);
+
+      const linkGenerator = {
+        //@ts-ignore
+        source: (d) => [d.source.y + 10, d.source.x + 10],
+        //@ts-ignore
+        target: (d) => [d.target.y + 10, d.target.x + 10],
+      };
+
+      // Render the links
+      root.links().forEach((link) => {
+        svg
+          .append('line')
+          .attr('x1', linkGenerator.source(link)[0])
+          .attr('y1', linkGenerator.source(link)[1])
+          .attr('x2', linkGenerator.target(link)[0])
+          .attr('y2', linkGenerator.target(link)[1])
+          .style('stroke', 'black');
+      });
+
+      // Render the nodes
+
+      root.descendants().forEach((d, i) => {
+        svg
+          .append('circle')
+          //@ts-ignore
+          .attr('cx', d.y + 30) // Use d.y for the horizontal position
+          //@ts-ignore
+          .attr('cy', d.x + 20) // Use d.x for the vertical position
+          .attr('r', 25) // Set the radius of the circle
+          //.style('fill', 'white'); //Find if current step is refferring to this node
+          .style('fill', 'yellow'); //Find if current step is refferring to this node
+
+        const current_step_text = d.data.string_representation;
+
+        svg
+          .append('text')
+          //@ts-ignore
+          .attr('x', d.y + 0) // Position the label to the right of the node
+          //@ts-ignore
+          .attr('y', d.x + 0) // Position the label slightly below the node
+
+          .text(current_step_text) //
+          .style('font-size', '35px')
+          .style('font-weight', 'bold');
+        svg
+          .append('text')
+          //@ts-ignore
+          .attr('x', d.y + 0) // Position the label to the right of the node
+          //@ts-ignore
+          .attr('y', d.x + 30) // Position the label slightly below the node
+
+          .text(`[R#${d.data.grammar_rule_depth + 1}]`) //
+          .style('font-size', '35px')
+          .style('font-weight', 'bold');
+      });
+    }
+  }, [showStack, parseTree, vm]);
 
   useEffect(() => {
     if (!showStack) {
@@ -138,7 +281,9 @@ export default function Home() {
         .attr('width', 1200)
         .attr('height', 700);
 
-      const modifiedTree = { ...tree };
+      //const modifiedTree = { ...tree };
+
+      const modifiedTree: D3Node = convertToD3Node(tree);
 
       stepintraverse = 0;
 
@@ -181,25 +326,16 @@ export default function Home() {
           .attr('cy', d.x + 20) // Use d.x for the vertical position
           .attr('r', 25) // Set the radius of the circle
           //.style('fill', 'white'); //Find if current step is refferring to this node
-          //@ts-ignore
           .style('fill', currentStep == d.data.step ? 'red' : 'yellow'); //Find if current step is refferring to this node
 
-        //@ts-ignore
         const current_step_text =
-          //@ts-ignore
           currentStep < d.data.step + 1 //d.data.step
-            ? //@ts-ignore
-              currentStep == d.data.step
+            ? currentStep == d.data.step
               ? d.children?.length == 2
-                ? //@ts-ignore
-                  `${d.children[0].data.calculated_value}${d.data.name}${d.children[1].data.calculated_value}`
-                : //@ts-ignore
-                  d.data.name
-              : //@ts-ignore
-                d.data.name && d.data.name
-            : //@ts-ignore
-              d.data.calculated_value;
-        console.log('Current Step Text ' + current_step_text);
+                ? `${d.children[0].data.calculated_value}${d.data.name}${d.children[1].data.calculated_value}`
+                : d.data.name
+              : d.data.name && d.data.name
+            : d.data.calculated_value;
 
         svg
           .append('text')
@@ -207,10 +343,9 @@ export default function Home() {
           .attr('x', d.y + 0) // Position the label to the right of the node
           //@ts-ignore
           .attr('y', d.x + 0) // Position the label slightly below the node
-          //@ts-ignore
+
           .text(
             current_step_text
-            //@ts-ignore
             /*currentStep > d.data.step
               ? //@ts-ignore
                 currentStep === d.data.step
@@ -220,8 +355,6 @@ export default function Home() {
               : //@ts-ignore
                 d.data.name*/
           ) //
-          //@ts-ignore
-          //.text(d.data.name) //
           .style('font-size', '35px')
           .style('font-weight', 'bold');
       });
@@ -250,11 +383,6 @@ export default function Home() {
       [field]: e.target.value,
     });
   };
-  interface Node {
-    name: string;
-    left?: Node;
-    right?: Node;
-  }
 
   interface CompilerProps {
     ast: Node;
@@ -262,6 +390,29 @@ export default function Home() {
 
   const runCompiler = () => {
     const tokens = Lexer(sourceCode);
+    const expressions = BNFGrammarExpressions(precedenceArguments);
+    setGrammerRules(expressions);
+
+    const GraphASTRoot: ParseTreeBranch = {
+      operator: 'root',
+      children: [],
+      current_expression: tokens,
+      string_representation: tokens
+        .map((token) => {
+          coinTypesValues[token.type];
+        })
+        .join(''),
+      matching_string: expressions[0],
+      grammar_rule_depth: 0,
+    };
+
+    const precedence_values: coinTypesValues[][] =
+      PrecedenceLevels(precedenceArguments);
+
+    ParseNode(GraphASTRoot, precedenceArguments);
+
+    setParseTree(GraphASTRoot);
+
     const parser = new Parser(tokens, precedenceArguments, 0);
     setCurrentStep(0);
     parser.beginParsing();
@@ -287,25 +438,11 @@ export default function Home() {
       state_branch: [],
       program_states: [],
     };
+    setResult(result);
 
     const ast = genAST(vm_for_ast);
 
     setTree(TreeForJS3(ast[0]));
-    console.log('tree');
-    console.log(TreeForJS3(ast[0]));
-    console.log(ast);
-
-    console.log(new_vm.stack[new_vm.top - 1]);
-
-    //const ast = genAST(vm_for_ast);
-
-    //let resultast = runAST(ast[0]);
-
-    //console.log(resultast);
-
-    //setAST(ast[0]);
-
-    setResult(result);
   };
 
   const changeEncodingMode = (mode: string) => {
@@ -519,6 +656,20 @@ export default function Home() {
                     setCurrentStep(step + currentStep),
                 })}
                 <div className="w-full p-4 text-center" ref={d3Ref}></div>
+                <div className="w-full p-4 text-center">
+                  {showStack ? (
+                    <div className="w-full p-4 text-center">
+                      {grammarRules.map((rule, index) => {
+                        return (
+                          <p key={index}>
+                            Rule #{index + 1} : {rule}
+                          </p>
+                        );
+                      })}
+                    </div>
+                  ) : null}
+                </div>
+                <div className="w-full p-4 text-center" ref={d3RefAST}></div>
               </div>
             ) : null}
           </div>

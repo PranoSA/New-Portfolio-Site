@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@pranosa/makebelieve_parse_precedence": "^0.0.14",
+    "@pranosa/makebelieve_parse_precedence": "^0.0.21",
     "@types/npm": "^7.19.3",
     "d3": "^7.8.5",
     "next": "14.1.0",
