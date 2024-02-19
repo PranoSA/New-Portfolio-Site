@@ -25,7 +25,7 @@ export default function Home() {
   //Encoding Mode, (Decimal or Hexadecimal)
 
   return (
-    <main className="flex w-full min-h-screen justify-center` p-24">
+    <main className="flex w-full min-h-screen justify-center p-24">
       <div className="flex flex-wrap justify-center w-full">
         <div className="w-full  p-4 text-center">
           <h1 className="w-full text-6xl font-bold"> Portfolio Page </h1>
@@ -127,6 +127,10 @@ export default function Home() {
 
         <div className="w-full md:w-1/2 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
           <h1 className="w-full text-3xl font-bold">Media Servers Project</h1>
+        </div>
+
+        <div className="w-full md:w-1/2 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+          <h1 className="w-full text-3xl font-bold">Other Project</h1>
         </div>
 
         <div className="w-full md:w-1/2 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
