@@ -25,7 +25,7 @@ export default function Home() {
   //Encoding Mode, (Decimal or Hexadecimal)
 
   return (
-    <main className="flex w-full min-h-screen justify-center` p-24">
+    <main className="flex w-full min-h-screen justify-center p-24">
       <div className="flex flex-wrap justify-center w-full">
         <div className="w-full  p-4 text-center">
           <h1 className="w-full text-6xl font-bold"> Portfolio Page </h1>
@@ -129,6 +129,10 @@ export default function Home() {
           <h1 className="w-full text-3xl font-bold">Media Servers Project</h1>
         </div>
 
+        <div className="w-full md:w-1/2 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+          <h1 className="w-full text-3xl font-bold">Other Project</h1>
+        </div>
+
         <div className="w-full w p-4 text-center min-h-20">
           <h1 className="w-full text-5xl font-bold "> Articles: </h1>
         </div>
@@ -150,9 +154,7 @@ export default function Home() {
             <div className="m-5">
               <p className="w-full pb-4 ">
                 In this article I created separate networks on a single linux
-                machine using network namespaces directly, and VETH Peers and
-                Setting up Hardcoded IP Routes. I then used Tshark (CLI Utility
-                for Wireshark) to capture packets on a network interface, and
+                for Wireshark) to capture packets on one network interface, and
                 then use Wireshark to analyze the packets. I also use OpenVPN to
                 create a VPN Tunnel between two machines, and then use Wireshark
                 to capture packets on the VPN Tunnel.
