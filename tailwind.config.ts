@@ -17,6 +17,8 @@ const config: Config = {
         '3': '3px',
         '4': '4px',
         '5': '5px',
+        '6' : '6px',
+        '7' : '7px',
         // Add as many as you need...
       }
     }, 

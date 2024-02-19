@@ -416,16 +416,16 @@ export default function Home() {
   return (
       <div className="flex flex-wrap justify-center w-full">
 
-        <div className="w-full md:w-1/2 p-10 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+        <div className="w-full p-10 flex flex-wrap p-4 text-center min-h-20 ">
             <h1 className="w-full text-3xl font-bold ">
               {' '}
               Compilers Project :{' '}
             </h1>
           </div>
 
-          <div className="w-full p-4 text-center">
+          <div className="w-full p-30 text-center border-5 border-black flex flex-wrap justify-center">
             {(
-              <div className="flex w-full flex-wrap">
+              <div className="flex w-full flex-wrap justify-center">
                 {CompilerTile({
                   sourceCode: sourceCode,
                   result: result,
