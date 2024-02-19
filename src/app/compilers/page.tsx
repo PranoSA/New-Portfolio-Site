@@ -23,12 +23,16 @@ import {
 import * as d3 from 'd3';
 
 import { useEffect, useRef, useState } from 'react';
-import CompilerTile from '@/components/compilers';
+import CompilerTile, { DisplayStates } from '@/components/compilers';
+
+
 
 export default function Home() {
 
   //Encoding Mode, (Decimal or Hexadecimal)
   const [currentStep, setCurrentStep] = useState<number>(0);
+  const [openPrecedence, setOpenPrecedence] = useState<boolean>(false);
+  const [displayState, setDisplayState] = useState<DisplayStates>(DisplayStates.AST)
 
 
   const [sourceCode, setSourceCode] = useState<string>('');
@@ -39,7 +43,7 @@ export default function Home() {
     right: undefined,
   });
   const [showStack, setShowStack] = useState<boolean>(false);
-  const [vm, setVM] = useState<VM | null>(null);
+  const [vm, setVM] = useState<VM|null>(null);
   const [tree, setTree] = useState<TreeForJs3>({
     value: 'root',
     children: [],
@@ -59,6 +63,45 @@ export default function Home() {
 
   let stepintraverse = 0;
   var pathToNode = [];
+
+  const stackWithBlanks = (): string[] => {
+    const stack = vm?.program_states[currentStep]?.stack.map((item) => {
+      return String(item);
+    });
+    if(!stack) return [];
+    const stackFilled = stack.concat(new Array(10 - stack.length).fill('X'));
+    return stackFilled.reverse();
+  };
+
+  const stackDisplay = () => {
+    return (
+      <div className="w-full flex  items-center justify-center">
+        <div className="w-full">
+          <h1 className="text-2xl">
+            {' '}
+            NEXT OP CODE : {vm?.program_states[currentStep].name}{' '}
+          </h1>
+        </div>
+        <div className="w-1/2 flex flex-col items-center justify-center">
+          <h1> STACK : </h1>
+          {stackWithBlanks().map((item, index) => (
+            <div key={index}>
+              <h2 className="text-xl">
+                {10 - index} : {item}{' '}
+              </h2>
+            </div>
+          ))}
+        </div>
+        {/*<div className="w-1/2 flex flex-col items-center justify-center">
+          {constantsWithBlanks().map((item, index) => (
+            <div key={index}>
+              {10 - index} : {item}
+            </div>
+          ))}
+          </div>*/}
+      </div>
+    );
+  };
 
   function setHierarchyAttributes(node: D3Node, name = 'default', value = 0) {
     // Set the name and value properties
@@ -142,7 +185,7 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if (!showStack) {
+    if (!(DisplayStates.ParseTree === displayState)) {
       d3.select(d3RefAST.current).selectAll('*').remove();
       return;
     }
@@ -226,10 +269,13 @@ export default function Home() {
           .style('font-weight', 'bold');
       });
     }
-  }, [showStack, parseTree, vm]);
+  }, [ parseTree, vm, displayState]);
 
   useEffect(() => {
-    if (!showStack) {
+
+    console.log("Display State")
+    console.log(displayState)
+    if (!(DisplayStates.AST === displayState)) {
       d3.select(d3Ref.current).selectAll('*').remove();
       return;
     }
@@ -329,7 +375,9 @@ export default function Home() {
       // Render the tree here using d3's selection and data binding methods
       // This will depend on the structure of your tree data and how you want to render it
     }
-  }, [tree, currentStep, showStack]);
+
+
+  }, [tree, currentStep, displayState]);
 
   const [precedenceArguments, setPrecedenceArguments] =
     useState<PrecedenceArgument>({
@@ -423,7 +471,7 @@ export default function Home() {
             </h1>
           </div>
 
-          <div className="w-full p-30 text-center border-5 border-black flex flex-wrap justify-center">
+          <div className="w-full p-30 text-center border-2 flex flex-wrap justify-center">
             {(
               <div className="flex w-full flex-wrap justify-center">
                 {CompilerTile({
@@ -440,14 +488,34 @@ export default function Home() {
                     if (vm?.program_states == undefined) return;
                     setShowStack(!showStack);
                   },
+                  openPrecedence: openPrecedence,
+                  setOpenPrecedence: () => {
+                    setOpenPrecedence(!openPrecedence);
+                  },
                   vm: vm,
+                  display_state : displayState,
+                  setDisplayState : (state : DisplayStates) => setDisplayState(state),
                   currentStep: currentStep,
                   setCurrentStep: (step: number) =>
                     setCurrentStep(step + currentStep),
                 })}
-                <div className="w-full p-4 text-center" ref={d3Ref}></div>
+                <div className="w-full flex flex-center p-4 text-center">
+                <div className="w-full flex flex-center justify-around p-4 text-center h-10">
+                <button onClick={() => setDisplayState(DisplayStates.AST)}>
+                  AST
+                </button>
+                <button onClick={() => setDisplayState(DisplayStates.ParseTree)}>
+                  Parse Tree 
+                </button>
+                <button onClick={() => setDisplayState(DisplayStates.Stack)}>
+                  Stack
+                </button>
+              </div>
+                </div>
+                <div className="w-full p-4 text-center" ref={d3Ref}>
+                </div>
                 <div className="w-full p-4 text-center">
-                  {showStack ? (
+                  {displayState === DisplayStates.ParseTree ? (
                     <div className="w-full p-4 text-center">
                       {grammarRules.map((rule, index) => {
                         return (
@@ -460,6 +528,38 @@ export default function Home() {
                   ) : null}
                 </div>
                 <div className="w-full p-4 text-center" ref={d3RefAST}></div>
+                <div className="w-full p-4 text-center"> 
+                {DisplayStates.Stack ? (
+        <div className="w-full  flex flex-col items-center justify-center">
+          <div className="w-full">
+            {`STEP ` +
+              (currentStep + 1) +
+              ` of ` +
+              vm?.program_states.length}
+          </div>
+          <div className="w-full  flex  items-center justify-center">
+            {stackDisplay()}
+          </div>
+          <div className="w-full h-1/2 flex  items-center justify-center">
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 m-5 p-3"
+              onClick={() => setCurrentStep(-1)}
+              disabled={currentStep === 0}
+            >
+              Previous
+            </button>
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 m-5 p-3"
+              onClick={() => setCurrentStep(1)}
+              //@ts-ignore
+              disabled={currentStep >= vm?.program_states.length - 1}
+            >
+              Next
+            </button>
+          </div>
+        </div>
+      ) : null}
+                </div>
               </div>
             )}
           </div>

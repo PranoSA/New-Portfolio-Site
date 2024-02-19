@@ -40,6 +40,20 @@ type CompilerTileProps = {
   vm: VM | null;
   currentStep: number;
   setCurrentStep: (jump: number) => void;
+  openPrecedence : boolean;
+  setOpenPrecedence : () => void;
+  display_state : DisplayStates;
+  setDisplayState : (state : DisplayStates) => void;
+};
+
+enum DisplayStates {
+  AST = 'AST',
+  Stack = 'Stack',
+  ParseTree = 'ParseTree',
+}
+
+export {
+  DisplayStates,
 };
 
 //First Level Nodes
@@ -63,6 +77,8 @@ const CompilerTile = (props: CompilerTileProps) => {
     vm,
     currentStep,
     setCurrentStep,
+    openPrecedence,
+    setOpenPrecedence
   } = props;
 
   const typescriptIsAnnoyingMe = (): VMSteps => {
@@ -141,24 +157,86 @@ const CompilerTile = (props: CompilerTileProps) => {
     );
   };
 
+
+  const DropDownDisplay = () => {
+    return (
+
+<div className="w-full flex flex-wrap items-center justify-left ">
+  <button
+    className="block w-full text-gray-700 text-md font-bold mb-2"
+    //onClick={() => setIsOpen(!isOpen)}
+    onClick={() => setOpenPrecedence()}
+  >
+    Configure Precedence {openPrecedence ? '▲' : '▼'}
+  </button>
+  <div className='w-full pt-20'></div>
+  {openPrecedence && (
+    // Form To Configure Precedence of Operations
+    // @ts-ignore
+    Object.keys(precedenceArguments).map((field, index) => (
+      <div key={index} className="mb-4 w-full ">
+        <label
+          className="block text-gray-700 text-md font-bold mb-2"
+          htmlFor={field}
+        >
+          {field}
+        </label>
+        <select
+          className="shadow appearance-none border rounded text-md w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          id={field}
+          // @ts-ignore
+          value={precedenceArguments[field]}
+          onChange={(e) => setPrecedenceArguments(e, field)}
+        >
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
+      </div>
+    ))
+  )}
+</div>
+    )
+  }
+
   return (
-    <div className="w-3/4 flex flex-col items-center justify-center  p-40 bg-gray-500  ">
+    <div className="w-3/4 flex flex-wrap bg-gray-300 justify-center pt-10">
         {/**.The Top Is Just The Source Code Enter Box */}
-        <div className="w-full h-1/2 flex flex-col items-center justify-center ">
-          <textarea 
-              className=""
-              placeholder="Source Code"
-              value={sourceCode}
-              onChange={(e) => setSourceCode(e)}
+        <div className='w-1/10 pt-20'></div>
+        <div className="w-4/5  flex items-center justify-center bg-gray-300  ">
+          <textarea
+            className="shadow appearance-none bg-gray-200 border rounded w-full  text-xl py-2 px-3 text-black-500 "
+            placeholder="Source Code"
+            value={sourceCode}
+            onChange={(e) => setSourceCode(e)}
           ></textarea>
         </div>
-        {/** Now  UnderNeat That -> The Dropdown For Precedence Operations, The Result bo */}
+        <div className='w-1/10'></div>
+        <div className='w-full flex flex-wrap h-20 '>
+          <div className='w-1/5 pt-5 items-center overflow-auto flex-none'>
+            {DropDownDisplay()}
+          </div>
+          <div className='w-3/5 flex flex-wrap pt-6 items-top'> 
+            <div className='w-1/5 pt-4 text-xl'> Result : </div>
+             <div  className="border-4 h-10 border-black  rounded w-4/5"> {result} </div>
+          </div>
+          <div className='w-1/5 items-top'>
+            <button
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 m-5 p-10"
+              onClick={runCompiler}
+            >
+              Run Compiler
+            </button>
+          </div>
+        </div>
     </div>
   );
 
   return (
     <div className="w-3/4 flex flex-col items-center justify-center pt-40 pr-30  bg-gray-500  ">
-      <div className="w-full h-1/2 flex flex-col items-center justify-center p-30  bg-gray-300  ">
+      <div className="w-full  flex flex-col items-center justify-center p-30  bg-gray-300  ">
         <textarea
           className="shadow appearance-none border rounded w-full  text-xl py-2 px-3 text-black-500 focus:outline-none focus:shadow-outline"
           placeholder="Source Code"
