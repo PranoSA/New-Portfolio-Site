@@ -75,7 +75,7 @@ export default function Home() {
         </div>
 
 
-        <div className="w-full p-20 md:w-1/2 flex border-5 border-red-500 flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+        <div className="w-full p-20 md:w-1/2 flex flex-wrap p-4 text-center min-h-20 ">
           <div className="w-full p-4 text-center">
             {UnicodePanel({
               open: true,

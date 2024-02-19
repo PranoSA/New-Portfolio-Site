@@ -1,0 +1,5 @@
+@layer components {
+    td {
+      border-width: 4px;
+    }
+  }

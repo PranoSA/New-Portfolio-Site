@@ -1,3 +1,10 @@
 @import "tailwindcss/base";
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
+
+@layer components {
+    td {
+      border-width: 4px;
+      border : 4;
+    }
+  }
