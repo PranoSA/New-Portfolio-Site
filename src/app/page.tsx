@@ -129,6 +129,11 @@ export default function Home() {
           <h1 className="w-full text-3xl font-bold">Media Servers Project</h1>
         </div>
 
+        <div className="w-full md:w-1/2 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+          <h1 className="w-full text-3xl font-bold">Other Project</h1>
+        </div>
+
+        <div className="w-full w p-4 text-center min-h-20">
         <div className="w-full w p-4 text-center min-h-20">
           <h1 className="w-full text-5xl font-bold "> Articles: </h1>
         </div>
