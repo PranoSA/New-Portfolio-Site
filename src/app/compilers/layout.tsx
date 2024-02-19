@@ -9,6 +9,8 @@ export const metadata = {
     children: React.ReactNode;
   }) {
     return (
+     <div class="h-14 bg-gradient-to-r from-sky-500 to-indigo-500"></div>
+
       <html lang="en">
         <body>{children}</body>
       </html>
