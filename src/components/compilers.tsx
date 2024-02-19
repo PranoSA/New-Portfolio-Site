@@ -50,6 +50,7 @@ enum DisplayStates {
   AST = 'AST',
   Stack = 'Stack',
   ParseTree = 'ParseTree',
+  None = 'None',
 }
 
 export {

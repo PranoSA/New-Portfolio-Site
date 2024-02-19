@@ -32,7 +32,7 @@ export default function Home() {
   //Encoding Mode, (Decimal or Hexadecimal)
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [openPrecedence, setOpenPrecedence] = useState<boolean>(false);
-  const [displayState, setDisplayState] = useState<DisplayStates>(DisplayStates.AST)
+  const [displayState, setDisplayState] = useState<DisplayStates>(DisplayStates.None)
 
 
   const [sourceCode, setSourceCode] = useState<string>('');
@@ -529,7 +529,7 @@ export default function Home() {
                 </div>
                 <div className="w-full p-4 text-center" ref={d3RefAST}></div>
                 <div className="w-full p-4 text-center"> 
-                {DisplayStates.Stack ? (
+                {DisplayStates.Stack === displayState ? (
         <div className="w-full  flex flex-col items-center justify-center">
           <div className="w-full">
             {`STEP ` +
@@ -540,7 +540,7 @@ export default function Home() {
           <div className="w-full  flex  items-center justify-center">
             {stackDisplay()}
           </div>
-          <div className="w-full h-1/2 flex  items-center justify-center">
+          <div className="w-full h-1/2 flex  items-centeer justify-center">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 m-5 p-3"
               onClick={() => setCurrentStep(-1)}
