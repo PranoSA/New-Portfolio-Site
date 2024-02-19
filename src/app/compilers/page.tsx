@@ -72,24 +72,20 @@ export default function Home() {
   };
 
   const stackDisplay = () => {
-    console.log('Current step');
-    console.log(currentStep);
-    console.log(vm?.program_states);
-    console.log(vm?.program_states[currentStep]);
-
     return (
-      <div className="w-full flex  items-center justify-center">
-        <div className="w-full">
-          <h1 className="text-2xl">
+      <div className="w-full flex flex-wrap flex-row item-center justify-center pt-20">
+        <div className="w-1/2">
+          <h1 className="text-4xl font-bold">
             {' '}
-            NEXT OP CODE : {vm?.program_states[currentStep].name} {}
+            NEXT OP CODE : {vm?.program_states[currentStep].name} {}{' '}
+            {vm?.program_states[currentStep].name === 'END' ? [result] : ''}
           </h1>
         </div>
-        <div className="w-1/2 flex flex-col items-center justify-center">
-          <h1> STACK : </h1>
+        <div className="w-1/2 ">
+          <h1 className="font-bold text-3xl pb-10 "> STACK : </h1>
           {stackWithBlanks().map((item, index) => (
-            <div key={index}>
-              <h2 className="text-xl">
+            <div key={index} className="border-3 border-black mx-auto w-1/3 ">
+              <h2 className="text-2xl font-bold m-1">
                 {10 - index} : {item}{' '}
               </h2>
             </div>
@@ -571,16 +567,16 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="w-full pt-4 text-center">
+            <div className="w-full text-center h-[70vh]">
               {DisplayStates.Stack === displayState ? (
-                <div className="w-full  flex flex-col items-center justify-center">
+                <div className="w-full  p-10 flex flex-col items-center justify-center">
                   <div className="w-full">
                     {`STEP ` +
                       (currentStep + 1) +
                       ` of ` +
                       vm?.program_states.length}
                   </div>
-                  <div className="w-full  flex  items-center justify-center">
+                  <div className="w-full  flex  items-around justify-around h-[50vh]">
                     {stackDisplay()}
                   </div>
                   <div className="w-full flex  items-center justify-center">

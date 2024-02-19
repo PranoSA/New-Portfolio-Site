@@ -16,7 +16,7 @@ export default function RootLayout({
         <div className="fixed top-0 left-0 p-4">
           <Link
             href="/"
-            className="text-blue-700 text-bold hover:underline text-2xl"
+            className="text-blue-900 font-bold text-bold hover:underline text-3xl"
           >
             ← Home
           </Link>
