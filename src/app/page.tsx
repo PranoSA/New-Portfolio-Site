@@ -155,9 +155,7 @@ export default function Home() {
             <div className="m-5">
               <p className="w-full pb-4 ">
                 In this article I created separate networks on a single linux
-                machine using network namespaces directly, and VETH Peers and
-                Setting up Hardcoded IP Routes. I then used Tshark (CLI Utility
-                for Wireshark) to capture packets on a network interface, and
+                for Wireshark) to capture packets on one network interface, and
                 then use Wireshark to analyze the packets. I also use OpenVPN to
                 create a VPN Tunnel between two machines, and then use Wireshark
                 to capture packets on the VPN Tunnel.
