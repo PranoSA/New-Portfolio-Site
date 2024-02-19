@@ -491,15 +491,22 @@ export default function Home() {
             })}
             <div className="w-full flex flex-center p-4 text-center">
               <div className="w-full flex flex-center justify-around p-4 text-center h-10">
-                <button onClick={() => setDisplayState(DisplayStates.AST)}>
+                <button
+                  className=" text-black text-xl  font-bold p-4  rounded h-10 "
+                  onClick={() => setDisplayState(DisplayStates.AST)}
+                >
                   AST
                 </button>
                 <button
+                  className=" text-black text-xl  font-bold p-4  rounded h-10 "
                   onClick={() => setDisplayState(DisplayStates.ParseTree)}
                 >
                   Parse Tree
                 </button>
-                <button onClick={() => setDisplayState(DisplayStates.Stack)}>
+                <button
+                  className=" text-black text-xl  font-bold p-4  rounded h-10 "
+                  onClick={() => setDisplayState(DisplayStates.Stack)}
+                >
                   Stack
                 </button>
               </div>
@@ -513,7 +520,7 @@ export default function Home() {
                   <div className="w-full p-4 text-center">
                     {grammarRules.map((rule, index) => {
                       return (
-                        <p key={index} className="p-4">
+                        <p key={index} className="p-4 text-xl text-bold">
                           Rule #{index + 1} : {rule}
                         </p>
                       );
