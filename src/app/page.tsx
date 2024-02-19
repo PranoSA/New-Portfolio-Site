@@ -134,7 +134,6 @@ export default function Home() {
         </div>
 
         <div className="w-full w p-4 text-center min-h-20">
-        <div className="w-full w p-4 text-center min-h-20">
           <h1 className="w-full text-5xl font-bold "> Articles: </h1>
         </div>
 
