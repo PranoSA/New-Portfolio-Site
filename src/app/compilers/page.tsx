@@ -461,7 +461,7 @@ export default function Home() {
         <h1 className="w-full text-3xl font-bold "> Compilers Project : </h1>
       </div>
 
-      <div className="w-full p-30 text-center border-2 flex flex-wrap justify-center">
+      <div className="w-full p-30 text-center flex flex-wrap justify-center">
         {
           <div className="flex w-full flex-wrap justify-center">
             {CompilerTile({
@@ -489,38 +489,56 @@ export default function Home() {
               setCurrentStep: (step: number) =>
                 setCurrentStep(step + currentStep),
             })}
-            <div className="w-full flex flex-center p-4 text-center">
-              <div className="w-full flex flex-center justify-around p-4 text-center h-10">
+            <div className="w-full flex flex-center pt-4 text-center">
+              <div className="w-full flex flex-center justify-around text-center h-10">
                 <button
-                  className=" text-black text-xl  font-bold p-4  rounded h-10 "
-                  onClick={() => setDisplayState(DisplayStates.AST)}
+                  className=" text-black text-xl pt-4  font-bold  rounded h-10 "
+                  onClick={() => {
+                    displayState === DisplayStates.AST
+                      ? setDisplayState(DisplayStates.None)
+                      : setDisplayState(DisplayStates.AST);
+                  }}
                 >
                   AST
                 </button>
                 <button
-                  className=" text-black text-xl  font-bold p-4  rounded h-10 "
-                  onClick={() => setDisplayState(DisplayStates.ParseTree)}
+                  className=" text-black text-xl  font-bold pt-4  rounded h-10 "
+                  onClick={() =>
+                    displayState === DisplayStates.ParseTree
+                      ? setDisplayState(DisplayStates.None)
+                      : setDisplayState(DisplayStates.ParseTree)
+                  }
                 >
                   Parse Tree
                 </button>
                 <button
-                  className=" text-black text-xl  font-bold p-4  rounded h-10 "
-                  onClick={() => setDisplayState(DisplayStates.Stack)}
+                  className=" text-black text-xl  font-bold pt-4  rounded h-10 "
+                  onClick={() =>
+                    displayState === DisplayStates.Stack
+                      ? setDisplayState(DisplayStates.None)
+                      : setDisplayState(DisplayStates.Stack)
+                  }
                 >
                   Stack
                 </button>
               </div>
             </div>
-            <div className="w-full p-4 justify-center" ref={d3Ref}></div>
+            <div className="w-full justify-center pl-10" ref={d3Ref}></div>
 
-            <div className="w-full flex p-4 text-center jusitfy-around">
-              <div className="text-center justify-center" ref={d3RefAST}></div>
-              <div className=" p-4 text-center">
+            <div className="w-full flex text-center justify-around">
+              <div
+                className="text-center justify-center pl-10"
+                ref={d3RefAST}
+              ></div>
+              <div className=" pt-4 text-center">
                 {displayState === DisplayStates.ParseTree ? (
                   <div className="w-full p-4 text-center">
                     {grammarRules.map((rule, index) => {
                       return (
-                        <p key={index} className="p-4 text-xl text-bold">
+                        <p
+                          key={index}
+                          className="p-4 text-2xl font-black font-bold"
+                        >
                           Rule #{index + 1} : {rule}
                         </p>
                       );
@@ -529,7 +547,7 @@ export default function Home() {
                 ) : null}
               </div>
             </div>
-            <div className="w-full p-4 text-center justify-around">
+            <div className="w-full pt-4 text-center justify-around">
               <div className=" text-center flex flex-wrap">
                 {DisplayStates.AST === displayState ? (
                   <div className="w-full  flex  justify-around">
@@ -553,7 +571,7 @@ export default function Home() {
               </div>
             </div>
 
-            <div className="w-full p-4 text-center">
+            <div className="w-full pt-4 text-center">
               {DisplayStates.Stack === displayState ? (
                 <div className="w-full  flex flex-col items-center justify-center">
                   <div className="w-full">
