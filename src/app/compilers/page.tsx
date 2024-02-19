@@ -74,12 +74,20 @@ export default function Home() {
   };
 
   const stackDisplay = () => {
+    console.log("Current step")
+    console.log(currentStep)
+    console.log(vm?.program_states)
+    console.log(vm?.program_states[currentStep]);
+
     return (
       <div className="w-full flex  items-center justify-center">
         <div className="w-full">
           <h1 className="text-2xl">
             {' '}
             NEXT OP CODE : {vm?.program_states[currentStep].name}{' '}
+            {
+              
+            }
           </h1>
         </div>
         <div className="w-1/2 flex flex-col items-center justify-center">
@@ -195,7 +203,7 @@ export default function Home() {
       const svg = d3
         .select(d3RefAST.current)
         .append('svg')
-        .attr('width', 1200)
+        .attr('width', 1400)
         .attr('height', 700);
 
       //const modifiedTree = { ...tree };
@@ -209,7 +217,7 @@ export default function Home() {
       const root = d3.hierarchy(modifiedTree);
 
       // Create a tree layout and assign the size
-      const treeLayout = d3.tree().size([600, 1100]);
+      const treeLayout = d3.tree().size([600, 1300]);
 
       // Assign the computed layout to root
       treeLayout(root as any);
@@ -273,8 +281,7 @@ export default function Home() {
 
   useEffect(() => {
 
-    console.log("Display State")
-    console.log(displayState)
+
     if (!(DisplayStates.AST === displayState)) {
       d3.select(d3Ref.current).selectAll('*').remove();
       return;
@@ -288,8 +295,8 @@ export default function Home() {
       const svg = d3
         .select(d3Ref.current)
         .append('svg')
-        .attr('width', 1200)
-        .attr('height', 700);
+        .attr('width', 1300)
+        .attr('height', 500);
 
       //const modifiedTree = { ...tree };
 
@@ -303,7 +310,7 @@ export default function Home() {
       const root = d3.hierarchy(modifiedTree);
 
       // Create a tree layout and assign the size
-      const treeLayout = d3.tree().size([600, 1100]);
+      const treeLayout = d3.tree().size([400, 1200]);
 
       // Assign the computed layout to root
       treeLayout(root as any);
@@ -527,7 +534,28 @@ export default function Home() {
                     </div>
                   ) : null}
                 </div>
-                <div className="w-full p-4 text-center" ref={d3RefAST}></div>
+                <div className="w-full text-center" ref={d3RefAST}></div>
+                <div className="w-full text-center"> 
+                      {DisplayStates.AST === displayState ? (
+                                  <div className="w-full  flex  justify-around">
+                                  <button
+                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold  px-4 p-2 rounded  "
+                                    onClick={() => setCurrentStep(currentStep - 1)}
+                                    disabled={currentStep === 0}
+                                  >
+                                    Previous
+                                  </button>
+                                  <button
+                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded "
+                                    onClick={() => setCurrentStep(currentStep+1)}
+                                    //@ts-ignore
+                                    disabled={currentStep >= vm?.program_states.length - 1}
+                                  >
+                                    Next
+                                  </button>
+                                </div>
+                      ):null}
+                </div>
                 <div className="w-full p-4 text-center"> 
                 {DisplayStates.Stack === displayState ? (
         <div className="w-full  flex flex-col items-center justify-center">
@@ -540,17 +568,17 @@ export default function Home() {
           <div className="w-full  flex  items-center justify-center">
             {stackDisplay()}
           </div>
-          <div className="w-full h-1/2 flex  items-centeer justify-center">
+          <div className="w-full flex  items-centeer justify-center">
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 m-5 p-3"
-              onClick={() => setCurrentStep(-1)}
+              onClick={() => setCurrentStep(currentStep - 1)}
               disabled={currentStep === 0}
             >
               Previous
             </button>
             <button
               className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 m-5 p-3"
-              onClick={() => setCurrentStep(1)}
+              onClick={() => setCurrentStep(currentStep + 1)}
               //@ts-ignore
               disabled={currentStep >= vm?.program_states.length - 1}
             >

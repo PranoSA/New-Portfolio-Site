@@ -170,7 +170,7 @@ const CompilerTile = (props: CompilerTileProps) => {
   >
     Configure Precedence {openPrecedence ? '▲' : '▼'}
   </button>
-  <div className='w-full pt-20'></div>
+  <div className='w-full pt-30'></div>
   {openPrecedence && (
     // Form To Configure Precedence of Operations
     // @ts-ignore
