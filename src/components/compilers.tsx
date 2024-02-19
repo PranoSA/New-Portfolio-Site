@@ -142,10 +142,24 @@ const CompilerTile = (props: CompilerTileProps) => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center pt-20">
-      <div className="w-full h-1/2 flex flex-col items-center justify-center">
+    <div className="w-3/4 flex flex-col items-center justify-center  p-40 bg-gray-500  ">
+        {/**.The Top Is Just The Source Code Enter Box */}
+        <div className="w-full h-1/2 flex flex-col items-center justify-center ">
+          <textarea 
+              className=""
+              placeholder="Source Code"
+              value={sourceCode}
+              onChange={(e) => setSourceCode(e)}
+          ></textarea>
+        </div>
+    </div>
+  );
+
+  return (
+    <div className="w-3/4 flex flex-col items-center justify-center pt-40 pr-30  bg-gray-500  ">
+      <div className="w-full h-1/2 flex flex-col items-center justify-center p-30  bg-gray-300  ">
         <textarea
-          className="shadow appearance-none border rounded w-full  text-xl py-2 px-3 text-black-500 leading-tight focus:outline-none focus:shadow-outline"
+          className="shadow appearance-none border rounded w-full  text-xl py-2 px-3 text-black-500 focus:outline-none focus:shadow-outline"
           placeholder="Source Code"
           value={sourceCode}
           onChange={(e) => setSourceCode(e)}
