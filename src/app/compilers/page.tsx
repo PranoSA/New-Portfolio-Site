@@ -25,15 +25,13 @@ import * as d3 from 'd3';
 import { useEffect, useRef, useState } from 'react';
 import CompilerTile, { DisplayStates } from '@/components/compilers';
 
-
-
 export default function Home() {
-
   //Encoding Mode, (Decimal or Hexadecimal)
   const [currentStep, setCurrentStep] = useState<number>(0);
   const [openPrecedence, setOpenPrecedence] = useState<boolean>(false);
-  const [displayState, setDisplayState] = useState<DisplayStates>(DisplayStates.None)
-
+  const [displayState, setDisplayState] = useState<DisplayStates>(
+    DisplayStates.None
+  );
 
   const [sourceCode, setSourceCode] = useState<string>('');
   const [result, setResult] = useState<number>(0);
@@ -43,7 +41,7 @@ export default function Home() {
     right: undefined,
   });
   const [showStack, setShowStack] = useState<boolean>(false);
-  const [vm, setVM] = useState<VM|null>(null);
+  const [vm, setVM] = useState<VM | null>(null);
   const [tree, setTree] = useState<TreeForJs3>({
     value: 'root',
     children: [],
@@ -68,15 +66,15 @@ export default function Home() {
     const stack = vm?.program_states[currentStep]?.stack.map((item) => {
       return String(item);
     });
-    if(!stack) return [];
+    if (!stack) return [];
     const stackFilled = stack.concat(new Array(10 - stack.length).fill('X'));
     return stackFilled.reverse();
   };
 
   const stackDisplay = () => {
-    console.log("Current step")
-    console.log(currentStep)
-    console.log(vm?.program_states)
+    console.log('Current step');
+    console.log(currentStep);
+    console.log(vm?.program_states);
     console.log(vm?.program_states[currentStep]);
 
     return (
@@ -84,10 +82,7 @@ export default function Home() {
         <div className="w-full">
           <h1 className="text-2xl">
             {' '}
-            NEXT OP CODE : {vm?.program_states[currentStep].name}{' '}
-            {
-              
-            }
+            NEXT OP CODE : {vm?.program_states[currentStep].name} {}
           </h1>
         </div>
         <div className="w-1/2 flex flex-col items-center justify-center">
@@ -203,8 +198,8 @@ export default function Home() {
       const svg = d3
         .select(d3RefAST.current)
         .append('svg')
-        .attr('width', 1400)
-        .attr('height', 700);
+        .attr('width', 2200)
+        .attr('height', 800);
 
       //const modifiedTree = { ...tree };
       const modifiedTree: D3ASTNode = convertToD3ASTNode(parseTree);
@@ -217,7 +212,7 @@ export default function Home() {
       const root = d3.hierarchy(modifiedTree);
 
       // Create a tree layout and assign the size
-      const treeLayout = d3.tree().size([600, 1300]);
+      const treeLayout = d3.tree().size([800, 2000]);
 
       // Assign the computed layout to root
       treeLayout(root as any);
@@ -263,25 +258,23 @@ export default function Home() {
           .attr('y', d.x + 0) // Position the label slightly below the node
 
           .text(current_step_text) //
-          .style('font-size', '35px')
+          .style('font-size', '25px')
           .style('font-weight', 'bold');
         svg
           .append('text')
           //@ts-ignore
-          .attr('x', d.y + 0) // Position the label to the right of the node
+          .attr('x', d.y - 60) // Position the label to the right of the node
           //@ts-ignore
-          .attr('y', d.x + 30) // Position the label slightly below the node
+          .attr('y', d.x + 0) // Position the label slightly below the node
 
-          .text(`[R#${d.data.grammar_rule_depth + 1}]`) //
-          .style('font-size', '35px')
+          .text(`[R#${d.data.grammar_rule_depth + 1}]→`) //
+          .style('font-size', '15px')
           .style('font-weight', 'bold');
       });
     }
-  }, [ parseTree, vm, displayState]);
+  }, [parseTree, vm, displayState]);
 
   useEffect(() => {
-
-
     if (!(DisplayStates.AST === displayState)) {
       d3.select(d3Ref.current).selectAll('*').remove();
       return;
@@ -295,8 +288,8 @@ export default function Home() {
       const svg = d3
         .select(d3Ref.current)
         .append('svg')
-        .attr('width', 1300)
-        .attr('height', 500);
+        .attr('width', 1200)
+        .attr('height', 600);
 
       //const modifiedTree = { ...tree };
 
@@ -310,7 +303,7 @@ export default function Home() {
       const root = d3.hierarchy(modifiedTree);
 
       // Create a tree layout and assign the size
-      const treeLayout = d3.tree().size([400, 1200]);
+      const treeLayout = d3.tree().size([500, 1100]);
 
       // Assign the computed layout to root
       treeLayout(root as any);
@@ -382,17 +375,15 @@ export default function Home() {
       // Render the tree here using d3's selection and data binding methods
       // This will depend on the structure of your tree data and how you want to render it
     }
-
-
   }, [tree, currentStep, displayState]);
 
   const [precedenceArguments, setPrecedenceArguments] =
     useState<PrecedenceArgument>({
-      '%_precedence': 1,
-      '*_precedence': 2,
-      '/_precedence': 2,
-      '+_precedence': 3,
-      '-_precedence': 3,
+      '%_precedence': 3,
+      '*_precedence': 3,
+      '/_precedence': 3,
+      '+_precedence': 2,
+      '-_precedence': 2,
       exp_precedence: 4,
     });
 
@@ -464,133 +455,132 @@ export default function Home() {
     setTree(TreeForJS3(ast[0]));
   };
 
-
-
-
-
   return (
-      <div className="flex flex-wrap justify-center w-full">
+    <div className="flex flex-wrap justify-center w-full">
+      <div className="w-full p-10 flex flex-wrap p-4 text-center min-h-20 ">
+        <h1 className="w-full text-3xl font-bold "> Compilers Project : </h1>
+      </div>
 
-        <div className="w-full p-10 flex flex-wrap p-4 text-center min-h-20 ">
-            <h1 className="w-full text-3xl font-bold ">
-              {' '}
-              Compilers Project :{' '}
-            </h1>
-          </div>
-
-          <div className="w-full p-30 text-center border-2 flex flex-wrap justify-center">
-            {(
-              <div className="flex w-full flex-wrap justify-center">
-                {CompilerTile({
-                  sourceCode: sourceCode,
-                  result: result,
-                  precedenceArguments: precedenceArguments,
-                  setPrecedenceArguments: handlePrecedenceChanges,
-                  runCompiler: runCompiler,
-                  setSourceCode: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                    setSourceCode(e.target.value),
-                  AST: ast,
-                  showStack: showStack,
-                  setShowStack: () => {
-                    if (vm?.program_states == undefined) return;
-                    setShowStack(!showStack);
-                  },
-                  openPrecedence: openPrecedence,
-                  setOpenPrecedence: () => {
-                    setOpenPrecedence(!openPrecedence);
-                  },
-                  vm: vm,
-                  display_state : displayState,
-                  setDisplayState : (state : DisplayStates) => setDisplayState(state),
-                  currentStep: currentStep,
-                  setCurrentStep: (step: number) =>
-                    setCurrentStep(step + currentStep),
-                })}
-                <div className="w-full flex flex-center p-4 text-center">
-                <div className="w-full flex flex-center justify-around p-4 text-center h-10">
+      <div className="w-full p-30 text-center border-2 flex flex-wrap justify-center">
+        {
+          <div className="flex w-full flex-wrap justify-center">
+            {CompilerTile({
+              sourceCode: sourceCode,
+              result: result,
+              precedenceArguments: precedenceArguments,
+              setPrecedenceArguments: handlePrecedenceChanges,
+              runCompiler: runCompiler,
+              setSourceCode: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                setSourceCode(e.target.value),
+              AST: ast,
+              showStack: showStack,
+              setShowStack: () => {
+                if (vm?.program_states == undefined) return;
+                setShowStack(!showStack);
+              },
+              openPrecedence: openPrecedence,
+              setOpenPrecedence: () => {
+                setOpenPrecedence(!openPrecedence);
+              },
+              vm: vm,
+              display_state: displayState,
+              setDisplayState: (state: DisplayStates) => setDisplayState(state),
+              currentStep: currentStep,
+              setCurrentStep: (step: number) =>
+                setCurrentStep(step + currentStep),
+            })}
+            <div className="w-full flex flex-center p-4 text-center">
+              <div className="w-full flex flex-center justify-around p-4 text-center h-10">
                 <button onClick={() => setDisplayState(DisplayStates.AST)}>
                   AST
                 </button>
-                <button onClick={() => setDisplayState(DisplayStates.ParseTree)}>
-                  Parse Tree 
+                <button
+                  onClick={() => setDisplayState(DisplayStates.ParseTree)}
+                >
+                  Parse Tree
                 </button>
                 <button onClick={() => setDisplayState(DisplayStates.Stack)}>
                   Stack
                 </button>
               </div>
-                </div>
-                <div className="w-full p-4 text-center" ref={d3Ref}>
-                </div>
-                <div className="w-full p-4 text-center">
-                  {displayState === DisplayStates.ParseTree ? (
-                    <div className="w-full p-4 text-center">
-                      {grammarRules.map((rule, index) => {
-                        return (
-                          <p key={index}>
-                            Rule #{index + 1} : {rule}
-                          </p>
-                        );
-                      })}
-                    </div>
-                  ) : null}
-                </div>
-                <div className="w-full text-center" ref={d3RefAST}></div>
-                <div className="w-full text-center"> 
-                      {DisplayStates.AST === displayState ? (
-                                  <div className="w-full  flex  justify-around">
-                                  <button
-                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold  px-4 p-2 rounded  "
-                                    onClick={() => setCurrentStep(currentStep - 1)}
-                                    disabled={currentStep === 0}
-                                  >
-                                    Previous
-                                  </button>
-                                  <button
-                                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded "
-                                    onClick={() => setCurrentStep(currentStep+1)}
-                                    //@ts-ignore
-                                    disabled={currentStep >= vm?.program_states.length - 1}
-                                  >
-                                    Next
-                                  </button>
-                                </div>
-                      ):null}
-                </div>
-                <div className="w-full p-4 text-center"> 
-                {DisplayStates.Stack === displayState ? (
-        <div className="w-full  flex flex-col items-center justify-center">
-          <div className="w-full">
-            {`STEP ` +
-              (currentStep + 1) +
-              ` of ` +
-              vm?.program_states.length}
-          </div>
-          <div className="w-full  flex  items-center justify-center">
-            {stackDisplay()}
-          </div>
-          <div className="w-full flex  items-centeer justify-center">
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 m-5 p-3"
-              onClick={() => setCurrentStep(currentStep - 1)}
-              disabled={currentStep === 0}
-            >
-              Previous
-            </button>
-            <button
-              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 m-5 p-3"
-              onClick={() => setCurrentStep(currentStep + 1)}
-              //@ts-ignore
-              disabled={currentStep >= vm?.program_states.length - 1}
-            >
-              Next
-            </button>
-          </div>
-        </div>
-      ) : null}
-                </div>
+            </div>
+            <div className="w-full p-4 justify-center" ref={d3Ref}></div>
+
+            <div className="w-full flex p-4 text-center jusitfy-around">
+              <div className="text-center justify-center" ref={d3RefAST}></div>
+              <div className=" p-4 text-center">
+                {displayState === DisplayStates.ParseTree ? (
+                  <div className="w-full p-4 text-center">
+                    {grammarRules.map((rule, index) => {
+                      return (
+                        <p key={index} className="p-4">
+                          Rule #{index + 1} : {rule}
+                        </p>
+                      );
+                    })}
+                  </div>
+                ) : null}
               </div>
-            )}
+            </div>
+            <div className="w-full p-4 text-center justify-around">
+              <div className=" text-center flex flex-wrap">
+                {DisplayStates.AST === displayState ? (
+                  <div className="w-full  flex  justify-around">
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold  px-4 p-2 rounded  "
+                      onClick={() => setCurrentStep(currentStep - 1)}
+                      disabled={currentStep === 0}
+                    >
+                      Previous
+                    </button>
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold px-4 rounded "
+                      onClick={() => setCurrentStep(currentStep + 1)}
+                      //@ts-ignore
+                      disabled={currentStep >= vm?.program_states.length - 1}
+                    >
+                      Next
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+            </div>
+
+            <div className="w-full p-4 text-center">
+              {DisplayStates.Stack === displayState ? (
+                <div className="w-full  flex flex-col items-center justify-center">
+                  <div className="w-full">
+                    {`STEP ` +
+                      (currentStep + 1) +
+                      ` of ` +
+                      vm?.program_states.length}
+                  </div>
+                  <div className="w-full  flex  items-center justify-center">
+                    {stackDisplay()}
+                  </div>
+                  <div className="w-full flex  items-center justify-center">
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 m-5 p-3"
+                      onClick={() => setCurrentStep(currentStep - 1)}
+                      disabled={currentStep === 0}
+                    >
+                      Previous
+                    </button>
+                    <button
+                      className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 m-5 p-3"
+                      onClick={() => setCurrentStep(currentStep + 1)}
+                      //@ts-ignore
+                      disabled={currentStep >= vm?.program_states.length - 1}
+                    >
+                      Next
+                    </button>
+                  </div>
+                </div>
+              ) : null}
+            </div>
           </div>
-        </div>
+        }
+      </div>
+    </div>
   );
 }

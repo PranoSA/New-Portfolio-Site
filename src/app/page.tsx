@@ -6,7 +6,6 @@ import { UnicodePanel } from '../components/unicode';
 import { CorsPanel } from '../components/cors_panel';
 import './globals.css';
 
-
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
@@ -35,90 +34,101 @@ export default function Home() {
           <h1 className="w-full text-5xl font-bold "> Projects: </h1>
         </div>
 
-      <div 
-            onClick={() =>
-              setPanels([
-                !openPanels[0],
-                ...openPanels.slice(1),
-              ])
-            }
-        className="w-full md:w-1/2 p-20 pt-50 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
-          <h1 className="w-full text-3xl font-bold"> Unicode Project  </h1>
-            <div className='w-full p-4 text-center flex-center'>
-                {openPanels[0] ? (
-                  <div className='w-full flex flex-wrap p-4 text-center justify-center'>
-                  <div className='w-2/3 p-5 text-center'>
-                      Learn About the Binary Representation of Textual Objects in Unicode. This project 
-                      demonstrate the use of Unicode Character Standards, Unicode Character Information, 
-                      and Encoding of Characters using UTF-8, UTF-16, and UTF-32. 
-                      Also Creates a Link Based on the Character Form to my Full-Fledged Unicode Inspection Application.
-                  </div>
-                  <div className='w-full w-flex flex-wrap p-4 text-center'>
-                    <Link href="/unicode">
-                      <button className='p-5 text-center bg-blue-200 rounded'> View Unicode Mini-App </button> 
+        <div
+          onClick={() => setPanels([!openPanels[0], ...openPanels.slice(1)])}
+          className="w-full md:w-1/2 p-20 pt-50 rounded flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-300 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out"
+        >
+          <h1 className="w-full text-3xl font-bold"> Unicode Project </h1>
+          <div className="w-full p-4 text-center flex-center">
+            {openPanels[0] ? (
+              <div className="w-full flex flex-wrap p-4 text-center justify-center">
+                <div className="w-2/3 p-5 text-center">
+                  Learn About the Binary Representation of Textual Objects in
+                  Unicode. This project demonstrate the use of Unicode Character
+                  Standards, Unicode Character Information, and Encoding of
+                  Characters using UTF-8, UTF-16, and UTF-32. Also Creates a
+                  Link Based on the Character Form to my Full-Fledged Unicode
+                  Inspection Application.
+                </div>
+                <div className="w-full w-flex flex-wrap p-4 text-center">
+                  <Link href="/unicode">
+                    <button className="p-5 text-center bg-blue-200 rounded">
+                      {' '}
+                      View Unicode Mini-App{' '}
+                    </button>
                   </Link>
-                  </div>
-                  </div>
-                ):null}
-            </div>
+                </div>
+              </div>
+            ) : null}
+          </div>
         </div>
 
-        <div             
-        onClick={() =>
-              setPanels([
-                ...openPanels.slice(0, 1),
-                !openPanels[1],
-                ...openPanels.slice(2),
-              ])
-            }
-        className="w-full md:w-1/2 p-20 pt-50 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+        <div
+          onClick={() =>
+            setPanels([
+              ...openPanels.slice(0, 1),
+              !openPanels[1],
+              ...openPanels.slice(2),
+            ])
+          }
+          className="w-full md:w-1/2 p-20 pt-50 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-400 hover:shadow-lg transform hover:scale-90 transition-all duration-200 ease-in-out"
+        >
           <h1 className="w-full text-3xl font-bold"> CORS Test </h1>
-            <div className='w-full p-4 text-center flex-center'>
-                {openPanels[1] ? (
-                  <div className='w-full flex flex-wrap p-4 text-center justify-center'>
-                  <div className='w-2/3 p-5 text-center'>
-                      Run Pre-Configured Integration Tests against a Certain HTTP(S) Path Using a Certain 
-                      Origin and Method, and Headers. This will allow you to tell if the server is configured 
-                      properly or not for your frontend application running in a different origin to make requests to.
-                  </div>
-                  <div className='w-full w-flex flex-wrap p-4 text-center'>
-                    <Link href="/cors">
-                      <button className='p-5 text-center bg-blue-200 rounded'> View Mini-CORS Tester </button> 
+          <div className="w-full p-4 text-center flex-center">
+            {openPanels[1] ? (
+              <div className="w-full flex flex-wrap p-4 text-center justify-center">
+                <div className="w-2/3 p-5 text-center">
+                  Run Pre-Configured Integration Tests against a Certain HTTP(S)
+                  Path Using a Certain Origin and Method, and Headers. This will
+                  allow you to tell if the server is configured properly or not
+                  for your frontend application running in a different origin to
+                  make requests to.
+                </div>
+                <div className="w-full w-flex flex-wrap p-4 text-center">
+                  <Link href="/cors">
+                    <button className="p-5 text-center bg-blue-200 rounded">
+                      {' '}
+                      View Mini-CORS Tester{' '}
+                    </button>
                   </Link>
-                  </div>
-                  </div>
-                ):null}
-            </div>
+                </div>
+              </div>
+            ) : null}
+          </div>
         </div>
 
-
-        <div             
-        onClick={() =>
-              setPanels([
-                ...openPanels.slice(0, 2),
-                !openPanels[2],
-                ...openPanels.slice(3),
-              ])
-            }
-        className="w-full md:w-1/2 p-20 pt-50 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+        <div
+          onClick={() =>
+            setPanels([
+              ...openPanels.slice(0, 2),
+              !openPanels[2],
+              ...openPanels.slice(3),
+            ])
+          }
+          className="w-full md:w-1/2 p-20 pt-50 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out"
+        >
           <h1 className="w-full text-3xl font-bold">Compilers Project </h1>
-            <div className='w-full p-4 text-center flex-center'>
-                {openPanels[2] ? (
-                  <div className='w-full flex flex-wrap p-4 text-center justify-center'>
-                  <div className='w-2/3 p-5 text-center'>
-                      Expression Parser and Compiler That Builds a Stack representation,
-                      and Abstract Syntax Tree (AST) and a Parse Tree using Generated Grammar Rules.
-                      This user is allowed to generate their own grammar rules by specifying the precendence of operators and the associativity of operators.
-
-                  </div>
-                  <div className='w-full w-flex flex-wrap p-4 text-center'>
-                    <Link href="/compilers">
-                      <button className='p-5 text-center bg-blue-200 rounded'> View Compiler App </button> 
+          <div className="w-full p-4 text-center flex-center">
+            {openPanels[2] ? (
+              <div className="w-full flex flex-wrap p-4 text-center justify-center">
+                <div className="w-2/3 p-5 text-center">
+                  Expression Parser and Compiler That Builds a Stack
+                  representation, and Abstract Syntax Tree (AST) and a Parse
+                  Tree using Generated Grammar Rules. This user is allowed to
+                  generate their own grammar rules by specifying the precendence
+                  of operators and the associativity of operators.
+                </div>
+                <div className="w-full w-flex flex-wrap p-4 text-center">
+                  <Link href="/compilers">
+                    <button className="p-5 text-center bg-blue-200 rounded">
+                      {' '}
+                      View Compiler App{' '}
+                    </button>
                   </Link>
-                  </div>
-                  </div>
-                ):null}
-            </div>
+                </div>
+              </div>
+            ) : null}
+          </div>
         </div>
 
         <div className="w-full md:w-1/2 p-20 pt-50 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
@@ -138,7 +148,7 @@ export default function Home() {
         </div>
 
         <div className="w-full md:w-2/3 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
-        <h1
+          <h1
             className="w-full text-3xl font-bold"
             onClick={() => {
               setArticlePanels([
@@ -159,9 +169,10 @@ export default function Home() {
                 create a VPN Tunnel between two machines, and then use Wireshark
                 to capture packets on the VPN Tunnel.
               </p>
+              <div className="w-full w-flex flex-wrap p-4 text-center h-15"></div>
               <a
                 href="https://articles.compressibleflowcalculator.com/OpenVPN"
-                className="p-5 text-center bg-blue-200 rounded"
+                className="p-5 text-center bg-blue-200 rounded m-5"
               >
                 Read Article{' '}
               </a>
@@ -197,6 +208,7 @@ export default function Home() {
                 Networking Console how the video matches with the contents of
                 the manifest file.
               </p>
+              <div className="w-full w-flex flex-wrap p-4 text-center h-15"></div>
               <a
                 href="https://articles.compressibleflowcalculator.com/MPEG-DASH"
                 className="p-5 text-center bg-blue-200 rounded"

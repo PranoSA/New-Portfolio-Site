@@ -16,14 +16,28 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-    <body>
-      <div className="fixed top-0 left-0 p-4">
-        <Link href="/" className="text-blue-500 hover:underline text-2xl">
-            ← Home
-        </Link>
-      </div>
-      {children}
-    </body>
-  </html>
+      <body>
+        {/*<div
+          className="bg-cover bg-center   bg-opacity-20  smin-h-screen  flex flex-col w-screen relative overflow-hidden"
+          style={{
+            backgroundImage: 'url(/images/egg_tarts.svg)',
+            height: '100vh',
+            width: '100vw',
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        >
+          <div className="fixed top-0 left-0 p-4">
+            <Link href="/" className="text-blue-500 hover:underline text-2xl">
+              ← Home
+            </Link>
+          </div>
+        }
+          {children}
+        </div>
+      */}
+        {children}
+      </body>
+    </html>
   );
 }
