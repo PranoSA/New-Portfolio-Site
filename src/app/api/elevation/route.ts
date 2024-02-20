@@ -26,7 +26,72 @@ type GeoJsonResponse = {
 
 const elevationAPIURL = process.env.ELEVATION_API || "https://api.open-elevation.com/api/v1/lookup";
 
-export default async function POST(req:NextRequest){
+export  async function POST(req:NextRequest){
+    console.log("Received Requets")
+
+    const contentType = req.headers.get('content-type');
+
+    if(!contentType){
+
+        return NextResponse.json({ message: 'Bad request, Missin Content Typed' }, { status: 400 });
+    }
+
+    if(contentType.includes("application/json")){
+
+        console.log("JSON")
+
+        const body = await req.json();
+
+        const name = body.name;
+        const path = body.coordinates;
+
+        if(!name || !path){
+            return NextResponse.json({ message: 'Bad request, Missing Field' }, { status: 400 });
+        }
+
+        const geoJson : GeoJson = {
+            coordinates:path
+        };
+
+        //Check if the GeoJson is valid
+        if(!geoJson.coordinates){
+            return NextResponse.json({ message: 'Bad request, Missing Coordinates' }, { status: 400 });
+        }
+
+        //Check if the coordinates are valid
+        for(const entry of geoJson.coordinates){
+            if(!entry.lat || !entry.long){
+                return NextResponse.json({ message: 'Bad request, Invalid GeoJson' }, { status: 400 });
+            }
+        }
+
+        //Now we can save the data to the database
+
+        console.log(geoJson)
+
+        // Now Enrich the Data with Elevation
+        const enrichedGeoJson : GeoJsonWithElevation = {
+            coordinates: []
+        }
+
+        for(const entry of geoJson.coordinates){
+            console.log(entry)
+            const response = await fetch(`${elevationAPIURL}?locations=${entry.lat},${entry.long}`);
+            const data = await response.json();
+            const elevation = data.results[0].elevation;
+
+            enrichedGeoJson.coordinates.push({
+                lat: entry.lat,
+                long: entry.long,
+                elevation: elevation
+            })
+
+
+        }
+        if(enrichedGeoJson.coordinates.length < 4){
+            return NextResponse.json({ enrichedGeoJson }, { status: 200 });
+        }
+
 
     if(!process.env.MONGODB_URI){
         return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
@@ -50,9 +115,10 @@ export default async function POST(req:NextRequest){
     const contentType = req.headers.get('content-type');
 
     if(!contentType){
-        return NextResponse.json({ message: 'Bad request, Missing Field' }, { status: 400 });
+        return NextResponse.json({ message: 'Bad request, Missing Content type' }, { status: 400 });
     }
 
+    //Log Request
     
 
 
@@ -74,13 +140,17 @@ export default async function POST(req:NextRequest){
         const body = await req.json();
 
         const name = body.name;
-        const path = body.path;
+        const path = body.coordinates;
 
         if(!name || !path){
-            return NextResponse.json({ message: 'Bad request, Missing Field' }, { status: 400 });
+           // return NextResponse.json({ message: 'Bad request, Missing Field' }, { status: 400 });
         }
 
-        const geoJson : GeoJson = path;
+        const geoJson : GeoJson = {
+            coordinates:path
+        };
+
+        console.log(geoJson)
 
         //Check if the GeoJson is valid
         if(!geoJson.coordinates){
@@ -114,6 +184,9 @@ export default async function POST(req:NextRequest){
                 elevation: elevation
             })
         }
+
+        console.log(enrichedGeoJson)
+        return NextResponse.json({ message: 'Success', data: enrichedGeoJson }, { status: 200 });
 
         const result = (await collection.insertOne({ name, path}))
 
@@ -166,7 +239,7 @@ export default async function POST(req:NextRequest){
     } catch (error) {
         return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
     }
-
+    }
 
 }
 
@@ -221,3 +294,4 @@ export async function GET(req:NextRequest){
         return NextResponse.json({ message: 'Internal Server Error' }, { status: 500 });
     }
 }
+

@@ -1,10 +1,13 @@
+'use client';
+import '../styles/globals.css';
+
 import React, { useState, useRef } from 'react';
 
 export default function Page() {
   const [tab, setTab] = useState('upload');
   const [name, setName] = useState('');
   const [file, setFile] = useState<File | null>(null);
-  const [coordinates, setCoordinates] = useState([{ lat: '', lng: '' }]);
+  const [coordinates, setCoordinates] = useState([{ lat: '', long: '' }]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -13,7 +16,7 @@ export default function Page() {
     }
   };
 
-  type Field = 'lat' | 'lng';
+  type Field = 'lat' | 'long';
 
   const handleCoordinateChange = (
     index: number,
@@ -30,7 +33,7 @@ export default function Page() {
       value = '-90';
     }
 
-    if (field != 'lat' && field != 'lng') {
+    if (field != 'lat' && field != 'long') {
       return;
     }
     const field_ = field as Field;
@@ -40,7 +43,7 @@ export default function Page() {
   };
 
   const handleAddCoordinate = () => {
-    setCoordinates([...coordinates, { lat: '', lng: '' }]);
+    setCoordinates([...coordinates, { lat: '', long: '' }]);
   };
 
   const handleRemoveCoordinate = (index: number) => {
@@ -52,10 +55,42 @@ export default function Page() {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // TODO: Add form submission logic
+    if (tab === 'upload') {
+      console.log('upload', name, file);
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = '';
+      }
+
+      // Send Multi part form requests
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('path', file as Blob);
+      fetch('/api/elevation/', {
+        method: 'POST',
+        body: formData,
+      });
+    }
+
+    if (tab === 'json') {
+      console.log('json', name, coordinates);
+
+      // Send JSON requests
+      fetch('/api/elevation/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          coordinates,
+        }),
+      });
+    }
   };
 
   return (
-    <div className="w-full flex flex-wrap p-4">
+    <div className="w-full flex flex-wrap p-4 pt-30">
       <h1>Elevation</h1>
       <div className="w-full mt-4">
         <div className="flex mb-4">
@@ -127,9 +162,9 @@ export default function Page() {
                   Longitude:
                   <input
                     type="number"
-                    value={coordinate.lng}
+                    value={coordinate.long}
                     onChange={(e) =>
-                      handleCoordinateChange(index, 'lng', e.target.value)
+                      handleCoordinateChange(index, 'long', e.target.value)
                     }
                     required
                   />
