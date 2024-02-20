@@ -246,12 +246,14 @@ export default function Home() {
 
         const current_step_text = d.data.string_representation;
 
+        const offset = d.data.grammar_rule_depth % 2 == 0 ? 0 : 60;
+
         svg
           .append('text')
           //@ts-ignore
           .attr('x', d.y + 0) // Position the label to the right of the node
           //@ts-ignore
-          .attr('y', d.x + 0) // Position the label slightly below the node
+          .attr('y', d.x + offset) // Position the label slightly below the node
 
           .text(current_step_text) //
           .style('font-size', '25px')
@@ -260,8 +262,10 @@ export default function Home() {
           .append('text')
           //@ts-ignore
           .attr('x', d.y - 60) // Position the label to the right of the node
+
+          //Maybe if depth is odd then make it below the node
           //@ts-ignore
-          .attr('y', d.x + 0) // Position the label slightly below the node
+          .attr('y', d.x + 60 - offset) // Position the label slightly below the node
 
           .text(`[R#${d.data.grammar_rule_depth + 1}]→`) //
           .style('font-size', '15px')
