@@ -284,8 +284,8 @@ export default function Home() {
       const svg = d3
         .select(d3Ref.current)
         .append('svg')
-        .attr('width', 1200)
-        .attr('height', 600);
+        .attr('width', 2200)
+        .attr('height', 800);
 
       //const modifiedTree = { ...tree };
 
@@ -299,7 +299,7 @@ export default function Home() {
       const root = d3.hierarchy(modifiedTree);
 
       // Create a tree layout and assign the size
-      const treeLayout = d3.tree().size([500, 1100]);
+      const treeLayout = d3.tree().size([800, 2000]);
 
       // Assign the computed layout to root
       treeLayout(root as any);
