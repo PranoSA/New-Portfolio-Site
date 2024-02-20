@@ -208,7 +208,7 @@ export default function Home() {
       const root = d3.hierarchy(modifiedTree);
 
       // Create a tree layout and assign the size
-      const treeLayout = d3.tree().size([800, 2000]);
+      const treeLayout = d3.tree().size([750, 2000]);
 
       // Assign the computed layout to root
       treeLayout(root as any);
