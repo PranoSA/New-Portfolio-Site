@@ -167,7 +167,7 @@ export default function Home() {
           {DevOpsSkills.map((skill) => (
             <div onClick={() => setSelectedDevOpsSkill(skill)}>
               <p
-                className="p-2 m-2 hover:text-bold hover:text-xl hover:bg-gray-200"
+                className="p-2  hover:text-bold hover:text-xl hover:bg-gray-200"
                 title="Hover Over Text"
               >
                 {skill}
@@ -181,7 +181,7 @@ export default function Home() {
         {DevOpsSkillsAbout.filter((c) => c.title === selectedDevOpsSkill).map(
           (skill) => {
             return (
-              <div className="w-full flex flex-wrap justify-center h-24">
+              <div className="w-full flex flex-wrap justify-center h-min-24">
                 <div className="w-full flex flex-wrap justify-center">
                   <h1 className="w-1/3 md:w-1/5 text-lg font-bold items-center">
                     {" "}
