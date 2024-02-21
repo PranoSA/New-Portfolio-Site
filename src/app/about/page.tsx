@@ -7,8 +7,10 @@ import Link from 'next/link';
 const BackendSkils: string[] = [
   'Nodejs',
   'Express',
+  'Go',
   'Python',
   '.NET',
+  'Spring Boot',
   'C#',
   'ASP.NET',
   'REST',
@@ -20,6 +22,34 @@ const BackendSkils: string[] = [
   'Redis',
   'Kafka',
   'RabbitMQ',
+];
+
+const backendSkillsAbout: { title: string; description: string }[] = [
+  {
+    title: 'Nodejs',
+    description: `I have used Nodejs to build RESTful APIs and frontend builds. I&apos;ve ualso used node.js to build applications
+    for SFU Media Rooms (Selective Forwarding Unit for WebRTC) and Websocket Applications for live update.`,
+  },
+  {
+    title: 'Python',
+    description: `I have used python for small small data-science scripts using numpy, pandas, pytorch and xgboost, and have also used python
+    with AWS Lambda and AWS SAM to build serverless applications.`,
+  },
+  {
+    title: 'Go',
+    description: `I have used to Go to build some web servers as well as some small projects such as a Vault Secrets Engine
+    and a terraform plugin.`,
+  },
+  {
+    title: '.NET',
+    description: ` I am never to ASP.NET, but am enjoying learning how to use the ecosystem and the C# Language / ASP.NET, and becoming 
+    more familiar with it.`,
+  },
+  {
+    title: 'Spring Boot',
+    description: `I have used Spring Boot to build a RESTful API and had a headache with creating a live chat application, but I integrated
+    my backend with various technologies including STOMP, Kafka, Cacheing with Redis, And Multiple Databases.`,
+  },
 ];
 
 const DevOpsSkills: string[] = [
@@ -162,6 +192,11 @@ export default function Home() {
   ]);
 
   const [selectedDevOpsSkill, setSelectedDevOpsSkill] = useState<string>('');
+  const [selectedBackendSkill, setSelectedBackendSkill] = useState<string>('');
+  const [selectedSysAdminSkill, setSelectedSysAdminSkill] =
+    useState<string>('');
+  const [selectedFrontendSkill, setSelectedFrontendSkill] =
+    useState<string>('');
 
   return (
     <div className="w-full flex flex-wrap justify-center bg-gradient-to-r from-gray-400 to-pink-300 min-h-screen min-w-screen">
