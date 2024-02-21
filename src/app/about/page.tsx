@@ -38,6 +38,66 @@ const DevOpsSkills: string[] = [
   "Packer",
 ];
 
+const DevOpsSkillsAbout: { title: string; description: string }[] = [
+  {
+    title: "Kubernetes",
+    description: `Practiced Using kubeadm on a local computer to spin up a Kubernetes Cluster
+    On Virtual Machines, and deployed test applications to it. I studied things like Container Attached Storage,
+    How Different CNI plugins work, troubleshooting applications, and other aspects of Kubernetes.`,
+  },
+  {
+    title: "Docker",
+    description: `I have used Docker for routine development and some small deployments, as well as included it
+    in some CI/CD pipelines to build and deploy applications.`,
+  },
+  {
+    title: "CI/CD",
+    description: `I have run a CI/CD pipeline on Jenkins and Github Actions to deploy applications to Virtual Machines.`,
+  },
+  {
+    title: "AWS",
+    description: `I have used AWS Serverless using AWS SAM with S3, Lambda, DynamoDB, Event Triggers, and API Gateway, 
+     and Server solutions for some small projects in the past.`,
+  },
+  {
+    title: "Terraform",
+    description: `I have used Terraform to deploy infrastructure to AWS in test CI/CD pipelines, as well
+    as developed my own experimental terraform plugin for my Unicode Application.`,
+  },
+  {
+    title: "Ansible",
+    description: `I have used Ansible to deploy and configure applications on Docker Containers in a local environment.`,
+  },
+  {
+    title: "Jenkins",
+    description: `I have used Jenkins to run CI/CD pipelines to deploy applications to Virtual Machines, using plugins
+    to manage credentials (AWS, Docker, etc.), and to run tests and build steps with Packer and Terraform.`,
+  },
+  {
+    title: "Git",
+    description: `I have used Git for version control and have experience with Gitlab and Github.`,
+  },
+  {
+    title: "Monitoring",
+    description: `I have set up a pipeline to monitor my computer using Prometheus and Grafana, and have used prometheus
+    to export custom metrics from my applications. I have also used Grafana to visualize these metrics configured with keycloak
+    login .`,
+  },
+  {
+    title: "Packer",
+    description: `I have used Packer to create custom images for Virtual Machines 
+    to deploy an application to a virtual machine`,
+  },
+  {
+    title: "Helm",
+    description: `I have used Helm to deploy applications to Kubernetes.`,
+  },
+  {
+    title: "OpenEBS",
+    description: `I have used OpenEBS and CAS on my local kubernetes cluster setup for testing purposes.`,
+  },
+];
+
 const SysAdminSkills: string[] = [
   "Linux",
   "FreeIPA",
@@ -73,6 +133,8 @@ export default function Home() {
     false,
   ]);
 
+  const [selectedDevOpsSkill, setSelectedDevOpsSkill] = useState<string>("");
+
   return (
     <div className="w-full flex flex-wrap justify-center">
       <div className="w-full  p-4 text-center">
@@ -98,13 +160,44 @@ export default function Home() {
 
       <div className="w-full  pt-4 text-center">
         <h1 className="w-full text-2xl font-bold"> DevOps </h1>
-        <div className="w-full flex flex-wrap justify-center">
+        <div
+          className="w-full flex flex-wrap justify-center"
+          title="Hover Over Div"
+        >
           {DevOpsSkills.map((skill) => (
-            <p className="p-2" title="Hover Over Text">
-              {skill}
-            </p>
+            <div onClick={() => setSelectedDevOpsSkill(skill)}>
+              <p className="p-2" title="Hover Over Text">
+                {skill}
+              </p>
+            </div>
           ))}
         </div>
+      </div>
+
+      <div className="w-full  p-4 text-center">
+        {DevOpsSkillsAbout.filter((c) => c.title === selectedDevOpsSkill).map(
+          (skill) => {
+            return (
+              <div className="w-full flex flex-wrap justify-center h-24">
+                <div className="w-full flex flex-wrap justify-center">
+                  <h1 className="w-1/3 md:w-1/5 text-lg font-bold items-center">
+                    {" "}
+                    {skill.title}{" "}
+                  </h1>
+                  <button
+                    className="font-bold text-xl"
+                    onClick={() => setSelectedDevOpsSkill("")}
+                  >
+                    -
+                  </button>
+                </div>
+                <div className="w-1-2 md:w-1/3 ">
+                  <p>{skill.description}</p>
+                </div>
+              </div>
+            );
+          }
+        )}
       </div>
 
       <div
