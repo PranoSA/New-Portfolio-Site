@@ -166,7 +166,10 @@ export default function Home() {
         >
           {DevOpsSkills.map((skill) => (
             <div onClick={() => setSelectedDevOpsSkill(skill)}>
-              <p className="p-2" title="Hover Over Text">
+              <p
+                className="p-2 m-2 hover:text-bold hover:text-xl hover:bg-gray-200"
+                title="Hover Over Text"
+              >
                 {skill}
               </p>
             </div>
