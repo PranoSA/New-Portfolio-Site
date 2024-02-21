@@ -132,10 +132,6 @@ export default function Home() {
           <h2 className="w-full text-lg font-bold"></h2>
         </div>
       </div>
-
-      {
-        //Skills
-      }
     </div>
   );
 }
