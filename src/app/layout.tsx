@@ -11,7 +11,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="bg-gradient-to-r from-purple-500 to-pink-500">
+        <div className="bg-gradient-to-r from-purple-200 to-pink-200">
           <div className="fixed top-0 right-0 p-4 flex-col ">
             <p> Phillip Adler </p>
             <p> pcadler@gmail.com</p>

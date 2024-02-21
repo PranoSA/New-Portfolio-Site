@@ -11,10 +11,14 @@ import Link from 'next/link';
 export default function Page() {
   //Encoding Mode, (Decimal or Hexadecimal)
 
-  const [endpoint, setEndpoint] = useState<string>('');
-  const [method, setMethod] = useState<string>('');
-  const [headers, setHeaders] = useState<string>('');
-  const [origin, setOrigin] = useState<string>('');
+  const [endpoint, setEndpoint] = useState<string>(
+    'https://unicode.compressibleflowcalculator.com/Prod/api/v1/application'
+  );
+  const [method, setMethod] = useState<string>('POST');
+  const [headers, setHeaders] = useState<string>(
+    'Authorization,Content-Type,Accept'
+  );
+  const [origin, setOrigin] = useState<string>('http://localhost:5173');
   const [credentials, setCredentials] = useState<string>('');
   const [allowedHeaders, setAllowedHeaders] = useState<string>('');
   const [allowedMethods, setAllowedMethods] = useState<string>('');
@@ -22,6 +26,7 @@ export default function Page() {
   const [allowedCredentials, setAllowedCredentials] = useState<string>('');
   const [simple, setSimple] = useState<boolean>(false);
   const [allowned, setAllowned] = useState<boolean>(false);
+  const [submitted, setSubmitted] = useState<boolean>(false);
 
   const handleCorsChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -51,36 +56,40 @@ export default function Page() {
 
   const fetchCors = async () => {
     // Call to /api/cors/route.ts
+    try {
+      var body = {
+        endpoint: endpoint,
+        method: method,
+        headers: headers,
+        origin: origin,
+        credentials: credentials,
+      };
 
-    var body = {
-      endpoint: endpoint,
-      method: method,
-      headers: headers,
-      origin: origin,
-      credentials: credentials,
-    };
+      console.log(body);
 
-    console.log(body);
+      const response = await fetch('/api/cors', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      });
 
-    const response = await fetch('/api/cors', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(body),
-    });
+      // Now we have the response from the server
+      //set the state of the component
 
-    // Now we have the response from the server
-    //set the state of the component
+      const data = await response.json();
 
-    const data = await response.json();
-
-    setAllowedHeaders(data.Allowed_Headers);
-    setAllowedMethods(data.Allowed_Methods);
-    setAllowedOrigin(data.Allowed_Origin);
-    setAllowedCredentials(data.Allowed_Credentials);
-    setSimple(data.Simple);
-    setAllowned(data.Allowed);
+      setAllowedHeaders(data.Allowed_Headers);
+      setAllowedMethods(data.Allowed_Methods);
+      setAllowedOrigin(data.Allowed_Origin);
+      setAllowedCredentials(data.Allowed_Credentials);
+      setSimple(data.Simple);
+      setAllowned(data.Allowed);
+      setSubmitted(true);
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   return (
@@ -96,7 +105,7 @@ export default function Page() {
       <div className="flex flex-wrap justify-center w-full">
         <div className="w-full md:w-1/2 p-10 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
           {CorsPanel({
-            open: true,
+            open: submitted,
             endpoint: endpoint,
             method: method,
             headers: headers,
