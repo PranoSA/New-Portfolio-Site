@@ -1,3 +1,5 @@
+"use client";
+import { useState } from "react";
 import "../styles/globals.css";
 // @ts-nocheck
 
@@ -64,6 +66,13 @@ const FrontendSkills: string[] = [
 ];
 
 export default function Home() {
+  const [openDescr, setOpenDescr] = useState<boolean[]>([
+    false,
+    false,
+    false,
+    false,
+  ]);
+
   return (
     <div className="w-full flex flex-wrap justify-center">
       <div className="w-full  p-4 text-center">
@@ -84,23 +93,48 @@ export default function Home() {
 
       <div className="w-full  p-4 text-center">
         <h1 className="w-full text-3xl font-bold text-center"> Skills </h1>
-        <div className="w-full flex flex-wrap justify-center"></div>
+        {}
       </div>
 
-      <div className="w-full  p-4 text-center">
+      <div className="w-full  pt-4 text-center">
         <h1 className="w-full text-2xl font-bold"> DevOps </h1>
         <div className="w-full flex flex-wrap justify-center">
           {DevOpsSkills.map((skill) => (
-            <p className="p-2">{skill}</p>
+            <p className="p-2" title="Hover Over Text">
+              {skill}
+            </p>
           ))}
         </div>
+      </div>
+
+      <div
+        className="w-full flex flex-wrap text-center justify-center"
+        onClick={() => setOpenDescr([!openDescr[0], ...openDescr.slice(1)])}
+      >
+        <h1 className="w-full"> More {openDescr[0] ? "▲" : "▼"} </h1>
+        {openDescr[0] && (
+          <div className="w-1/2 md:w-1/3 text-center ">
+            <p>
+              My Experience With Developer operations includes Passing the CKA
+              (Certified Kubernetes Administrator) and CKAD (Certified
+              Kubernetes Application Developer) exams, spinning up a Kubernetes
+              Cluster using Kubeadm on virtual machines, and deploying test
+              applications to it, using Docker for routine development and some
+              small deployments, running a CI/CD pipeline on Jenkins to deploy
+              applications to AWS, and using AWS Serverless and Server solutions
+              for some small projects in the past.
+            </p>
+          </div>
+        )}
       </div>
 
       <div className="w-full  p-4 text-center">
         <h1 className="w-full text-2xl font-bold"> Backend Development </h1>
         <div className="w-full flex flex-wrap justify-center">
           {BackendSkils.map((skill) => (
-            <p className="p-2">{skill}</p>
+            <p className="p-2" key={skill}>
+              {skill}
+            </p>
           ))}
         </div>
       </div>
