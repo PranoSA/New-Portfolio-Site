@@ -21,7 +21,7 @@ export default function Home() {
   ]);
 
   const [openAriclePanels, setArticlePanels] = useState<boolean[]>([false]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(false);
   //Encoding Mode, (Decimal or Hexadecimal)
 
   return (
@@ -69,7 +69,13 @@ export default function Home() {
                   <Link href="/unicode">
                     <button
                       className="p-5 text-center bg-blue-200 rounded"
-                      onClick={() => setLoading(true)}
+                      onClick={() => {
+                        setLoading(true);
+                        setPanels([
+                          !openPanels[0] || loading,
+                          ...openPanels.slice(1),
+                        ]);
+                      }}
                     >
                       {' '}
                       View Unicode Mini-App{' '}
@@ -104,7 +110,10 @@ export default function Home() {
                 </div>
                 <div className="w-full w-flex flex-wrap p-4 text-center">
                   <Link href="/cors">
-                    <button className="p-5 text-center bg-blue-200 rounded">
+                    <button
+                      className="p-5 text-center bg-blue-200 rounded"
+                      onClick={() => setLoading(true)}
+                    >
                       {' '}
                       View Mini-CORS Tester{' '}
                     </button>

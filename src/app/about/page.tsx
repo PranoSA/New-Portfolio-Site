@@ -140,11 +140,6 @@ const DevOpsSkillsAbout: { title: string; description: string }[] = [
       'I have administered a Gitlab Server and dealt with small ammounts of general maintenance.',
   },
   {
-    title: 'Grafana',
-    description:
-      'I have used Grafana to visualize metrics from Prometheus, and have configured it to use keycloak OIDC login.',
-  },
-  {
     title: 'Keycloak',
     description:
       'I have used and managed Keycloak to secure applications with OIDC.',

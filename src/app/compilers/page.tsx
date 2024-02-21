@@ -33,6 +33,7 @@ export default function Home() {
   const [displayState, setDisplayState] = useState<DisplayStates>(
     DisplayStates.None
   );
+  const [about, setAbout] = useState<boolean>(false);
 
   const [sourceCode, setSourceCode] = useState<string>('');
   const [result, setResult] = useState<number>(0);
@@ -458,7 +459,7 @@ export default function Home() {
 
   return (
     <div className="flex flex-wrap justify-center w-full bg-gradient-to-r from-pink-300 to-purple-500 min-h-screen min-w-screen">
-      <div className="fixed top-0 left-0 p-4">
+      <div className="fixed top-0 left-0 p-4 pb-10">
         <Link
           href="/"
           className="text-blue-900 font-bold text-bold hover:underline text-3xl"
@@ -466,9 +467,47 @@ export default function Home() {
           ← Home
         </Link>
       </div>
-      <div className="w-full p-10 flex flex-wrap p-4 text-center min-h-20 ">
-        <h1 className="w-full text-3xl font-bold "> Compilers Project : </h1>
+      <div
+        className="w-1/3 p-10 flex flex-wrap p-4 text-center min-h-20 fixed top-0 left-w-1/2"
+        onClick={() => setAbout(!about)}
+      >
+        <h1 className="w-full text-3xl font-bold ">
+          {' '}
+          Compilers Project {about ? '▲' : '▼'}{' '}
+        </h1>
+        {about && (
+          <div className="w-full flex flex-col bg-purple-400 text-gray text-lg font-bold text-center justify-center items-center p-10 mt-5">
+            <p className="text-center items-center pb-5">
+              This is a simple in-progress compiler project that parses an
+              algebraic expression and generates a bytecode and a Stack
+              Representative for the Program, and then runs the program on a
+              virtual machine.
+            </p>
+            <p className="pb-4">
+              The stack tab allows you to see the bytecode and operations (The
+              OP_CONST operations are translated from an index to the constants
+              array to the actual value being pushed on to the stack).
+            </p>
+            <p>
+              The AST Allows you to see the running tree representation of the
+              program
+            </p>
+            <p className="pb-4">
+              The Parse Tree uses a Recursive Decent parser to generate a parse
+              tree, which is different than the actual Pratt Parser being used
+              to generate the AST. This is because it allows you to better to
+              see how the grammar rules can be used to parse the input
+              recursively. The Pratt Parser is harder to visualize, but you may
+              see the Parse Tree slightly deviates from the Pratt Parser - as
+              the Pratt Parser doesn&apos;t consume the whole string at a level
+              - but iterates accross the string and changes parse precedence
+              along the way. This Parse Tree is used to visualize how the
+              grammar rules COULD be used in the most clear manner.
+            </p>
+          </div>
+        )}
       </div>
+      <div className="h-20 w-full"></div>
 
       <div className="w-full p-30 text-center flex flex-wrap justify-center">
         {
