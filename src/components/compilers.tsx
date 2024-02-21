@@ -2,21 +2,21 @@ import {
   Lexer,
   VMSteps,
   coinTypesValues,
-} from '@pranosa/makebelieve_parse_precedence';
-import { SourceCode, Token } from '@pranosa/makebelieve_parse_precedence';
-import { Parser, Program, Opcode } from '@pranosa/makebelieve_parse_precedence';
+} from "@pranosa/makebelieve_parse_precedence";
+import { SourceCode, Token } from "@pranosa/makebelieve_parse_precedence";
+import { Parser, Program, Opcode } from "@pranosa/makebelieve_parse_precedence";
 import {
   VM,
   runProgram,
-} from '@pranosa/makebelieve_parse_precedence/dist/esm/vm';
+} from "@pranosa/makebelieve_parse_precedence/dist/esm/vm";
 
 import {
   AST,
   PrecedenceArgument,
   PrecedenceList,
-} from '@pranosa/makebelieve_parse_precedence';
+} from "@pranosa/makebelieve_parse_precedence";
 
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 type AstBranch = {
   operator: string;
@@ -47,10 +47,10 @@ type CompilerTileProps = {
 };
 
 enum DisplayStates {
-  AST = 'AST',
-  Stack = 'Stack',
-  ParseTree = 'ParseTree',
-  None = 'None',
+  AST = "AST",
+  Stack = "Stack",
+  ParseTree = "ParseTree",
+  None = "None",
 }
 
 export { DisplayStates };
@@ -89,22 +89,22 @@ const CompilerTile = (props: CompilerTileProps) => {
     // turn into string like OP_ADD
     switch (operation) {
       case Opcode.OP_ADD:
-        return 'OP_ADD';
+        return "OP_ADD";
       case Opcode.OP_SUB:
-        return 'OP_SUB';
+        return "OP_SUB";
       case Opcode.OP_MUL:
-        return 'OP_MUL';
+        return "OP_MUL";
       case Opcode.OP_DIV:
-        return 'OP_DIV';
+        return "OP_DIV";
       case Opcode.OP_FACTORIAL:
-        return 'OP_FACTORIAL';
+        return "OP_FACTORIAL";
       case Opcode.OP_EOF:
-        return 'OP_EOF';
+        return "OP_EOF";
       case Opcode.OP_CONST:
         //Find What the index of the constant is and return the value
-        return 'OP_CONST';
+        return "OP_CONST";
       default:
-        return 'OP_UNKNOWN';
+        return "OP_UNKNOWN";
     }
   };
 
@@ -112,7 +112,7 @@ const CompilerTile = (props: CompilerTileProps) => {
     const stack = typescriptIsAnnoyingMe()[currentStep]?.stack.map((item) => {
       return String(item);
     });
-    const stackFilled = stack.concat(new Array(10 - stack.length).fill('X'));
+    const stackFilled = stack.concat(new Array(10 - stack.length).fill("X"));
     return stackFilled.reverse();
   };
 
@@ -122,7 +122,7 @@ const CompilerTile = (props: CompilerTileProps) => {
         return String(item);
       }
     );
-    const stackFilled = stack.concat(new Array(10 - stack.length).fill('X'));
+    const stackFilled = stack.concat(new Array(10 - stack.length).fill("X"));
     return stackFilled.reverse();
   };
 
@@ -131,8 +131,8 @@ const CompilerTile = (props: CompilerTileProps) => {
       <div className="w-full flex  items-center justify-center">
         <div className="w-full">
           <h1 className="text-2xl">
-            {' '}
-            NEXT OP CODE : {typescriptIsAnnoyingMe()[currentStep].name}{' '}
+            {" "}
+            NEXT OP CODE : {typescriptIsAnnoyingMe()[currentStep].name}{" "}
           </h1>
         </div>
         <div className="w-1/2 flex flex-col items-center justify-center">
@@ -140,7 +140,7 @@ const CompilerTile = (props: CompilerTileProps) => {
           {stackWithBlanks().map((item, index) => (
             <div key={index}>
               <h2 className="text-xl">
-                {10 - index} : {item}{' '}
+                {10 - index} : {item}{" "}
               </h2>
             </div>
           ))}
@@ -164,10 +164,8 @@ const CompilerTile = (props: CompilerTileProps) => {
           //onClick={() => setIsOpen(!isOpen)}
           onClick={() => setOpenPrecedence()}
         >
-          Configure Precedence {openPrecedence ? '▲' : '▼'}
+          Configure Precedence {openPrecedence ? "▲" : "▼"}
         </button>
-        <div className="w-full pt-20"></div>
-        <div className="w-full pt-20"></div>
         {openPrecedence &&
           // Form To Configure Precedence of Operations
           // @ts-ignore
@@ -180,7 +178,7 @@ const CompilerTile = (props: CompilerTileProps) => {
                 {field}
               </label>
               <select
-                className="shadow appearance-none border rounded text-md w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow border rounded text-md w-1/2 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                 id={field}
                 // @ts-ignore
                 value={precedenceArguments[field]}
@@ -211,15 +209,12 @@ const CompilerTile = (props: CompilerTileProps) => {
         ></textarea>
       </div>
       <div className="w-1/10"></div>
-      <div className="w-full flex flex-wrap h-20 ">
-        <div className="w-1/5 pt-5 items-center overflow-auto flex-none">
-          {DropDownDisplay()}
-        </div>
+      <div className="w-full flex flex-wrap mb-0">
+        <div className="w-1/5 pt-5 items-center">{DropDownDisplay()}</div>
         <div className="w-3/5 flex flex-wrap pt-6 items-top">
           <div className="w-1/5 pt-4 text-xl"> Result : </div>
           <div className="border-4 h-10 border-black text-2xl rounded w-4/5">
-            {' '}
-            {result}{' '}
+            {result}
           </div>
         </div>
         <div className="w-1/5 items-top">
@@ -290,7 +285,7 @@ const CompilerTile = (props: CompilerTileProps) => {
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-4 m-5 p-3"
           onClick={() => setShowStack()}
         >
-          {showStack ? 'Show Stack' : 'Hide Stack'}
+          {showStack ? "Show Stack" : "Hide Stack"}
         </button>
       </div>
       {showStack ? (

@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
 // @ts-nocheck
-import '../styles/globals.css';
+import "../styles/globals.css";
 
 import {
   Parser,
@@ -19,11 +19,11 @@ import {
   ParseTreeBranch,
   PrecedenceLevels,
   coinTypesValues,
-} from '@pranosa/makebelieve_parse_precedence';
-import * as d3 from 'd3';
+} from "@pranosa/makebelieve_parse_precedence";
+import * as d3 from "d3";
 
-import { useEffect, useRef, useState } from 'react';
-import CompilerTile, { DisplayStates } from '@/components/compilers';
+import { useEffect, useRef, useState } from "react";
+import CompilerTile, { DisplayStates } from "@/components/compilers";
 
 export default function Home() {
   //Encoding Mode, (Decimal or Hexadecimal)
@@ -33,25 +33,25 @@ export default function Home() {
     DisplayStates.None
   );
 
-  const [sourceCode, setSourceCode] = useState<string>('');
+  const [sourceCode, setSourceCode] = useState<string>("");
   const [result, setResult] = useState<number>(0);
   const [ast, setAST] = useState<AstBranch>({
-    operator: 'root',
+    operator: "root",
     left: undefined,
     right: undefined,
   });
   const [showStack, setShowStack] = useState<boolean>(false);
   const [vm, setVM] = useState<VM | null>(null);
   const [tree, setTree] = useState<TreeForJs3>({
-    value: 'root',
+    value: "root",
     children: [],
   });
   const [parseTree, setParseTree] = useState<ParseTreeBranch>({
-    operator: 'root',
+    operator: "root",
     children: [],
     current_expression: [],
-    string_representation: '',
-    matching_string: '',
+    string_representation: "",
+    matching_string: "",
     grammar_rule_depth: 0,
   });
   const [grammarRules, setGrammerRules] = useState<string[]>([]);
@@ -67,7 +67,7 @@ export default function Home() {
       return String(item);
     });
     if (!stack) return [];
-    const stackFilled = stack.concat(new Array(10 - stack.length).fill('X'));
+    const stackFilled = stack.concat(new Array(10 - stack.length).fill("X"));
     return stackFilled.reverse();
   };
 
@@ -76,9 +76,9 @@ export default function Home() {
       <div className="w-full flex flex-wrap flex-row item-center justify-center pt-20">
         <div className="w-1/2">
           <h1 className="text-4xl font-bold">
-            {' '}
-            NEXT OP CODE : {vm?.program_states[currentStep].name} {}{' '}
-            {vm?.program_states[currentStep].name === 'END' ? [result] : ''}
+            {" "}
+            NEXT OP CODE : {vm?.program_states[currentStep].name} {}{" "}
+            {vm?.program_states[currentStep].name === "END" ? [result] : ""}
           </h1>
         </div>
         <div className="w-1/2 ">
@@ -86,7 +86,7 @@ export default function Home() {
           {stackWithBlanks().map((item, index) => (
             <div key={index} className="border-3 border-black mx-auto w-1/3 ">
               <h2 className="text-2xl font-bold m-1">
-                {10 - index} : {item}{' '}
+                {10 - index} : {item}{" "}
               </h2>
             </div>
           ))}
@@ -102,10 +102,10 @@ export default function Home() {
     );
   };
 
-  function setHierarchyAttributes(node: D3Node, name = 'default', value = 0) {
+  function setHierarchyAttributes(node: D3Node, name = "default", value = 0) {
     // Set the name and value properties
     node.name = node.value || name;
-    node.value = node.value || value + 'VALUE';
+    node.value = node.value || value + "VALUE";
 
     // Recursively set the properties for each child
     if (Array.isArray(node.children)) {
@@ -135,7 +135,7 @@ export default function Home() {
 
     //How to associate current Step with the node
 
-    node.style = currentStep == value ? 'fill: red' : 'fill: white';
+    node.style = currentStep == value ? "fill: red" : "fill: white";
   }
 
   //setHierarchyAttributes(yourTree); // Replace 'yourTree' with your actual tree
@@ -169,7 +169,7 @@ export default function Home() {
       children: [],
       step: 0,
       calculated_value: 0,
-      style: 'fill: white',
+      style: "fill: white",
       y: 0,
       x: 0,
       // ... additional properties
@@ -185,17 +185,17 @@ export default function Home() {
 
   useEffect(() => {
     if (!(DisplayStates.ParseTree === displayState)) {
-      d3.select(d3RefAST.current).selectAll('*').remove();
+      d3.select(d3RefAST.current).selectAll("*").remove();
       return;
     }
     if (parseTree && d3RefAST.current) {
-      d3.select(d3RefAST.current).selectAll('*').remove();
+      d3.select(d3RefAST.current).selectAll("*").remove();
 
       const svg = d3
         .select(d3RefAST.current)
-        .append('svg')
-        .attr('width', 2200)
-        .attr('height', 800);
+        .append("svg")
+        .attr("width", 2200)
+        .attr("height", 800);
 
       //const modifiedTree = { ...tree };
       const modifiedTree: D3ASTNode = convertToD3ASTNode(parseTree);
@@ -223,73 +223,73 @@ export default function Home() {
       // Render the links
       root.links().forEach((link) => {
         svg
-          .append('line')
-          .attr('x1', linkGenerator.source(link)[0])
-          .attr('y1', linkGenerator.source(link)[1])
-          .attr('x2', linkGenerator.target(link)[0])
-          .attr('y2', linkGenerator.target(link)[1])
-          .style('stroke', 'black');
+          .append("line")
+          .attr("x1", linkGenerator.source(link)[0])
+          .attr("y1", linkGenerator.source(link)[1])
+          .attr("x2", linkGenerator.target(link)[0])
+          .attr("y2", linkGenerator.target(link)[1])
+          .style("stroke", "black");
       });
 
       // Render the nodes
 
       root.descendants().forEach((d, i) => {
         svg
-          .append('circle')
+          .append("circle")
           //@ts-ignore
-          .attr('cx', d.y + 30) // Use d.y for the horizontal position
+          .attr("cx", d.y + 30) // Use d.y for the horizontal position
           //@ts-ignore
-          .attr('cy', d.x + 20) // Use d.x for the vertical position
-          .attr('r', 25) // Set the radius of the circle
+          .attr("cy", d.x + 20) // Use d.x for the vertical position
+          .attr("r", 25) // Set the radius of the circle
           //.style('fill', 'white'); //Find if current step is refferring to this node
-          .style('fill', 'yellow'); //Find if current step is refferring to this node
+          .style("fill", "yellow"); //Find if current step is refferring to this node
 
         const current_step_text = d.data.string_representation;
 
         const offset = d.data.grammar_rule_depth % 2 == 0 ? 20 : 20;
 
         svg
-          .append('text')
+          .append("text")
           //@ts-ignore
-          .attr('x', d.y + 20) // Position the label to the right of the node
+          .attr("x", d.y + 20) // Position the label to the right of the node
           //@ts-ignore
-          .attr('y', d.x + offset) // Position the label slightly below the node
+          .attr("y", d.x + offset) // Position the label slightly below the node
 
           .text(current_step_text) //
-          .style('font-size', '25px')
-          .style('font-weight', 'bold');
+          .style("font-size", "25px")
+          .style("font-weight", "bold");
         svg
-          .append('text')
+          .append("text")
           //@ts-ignore
-          .attr('x', d.y - 60) // Position the label to the right of the node
+          .attr("x", d.y - 60) // Position the label to the right of the node
 
           //Maybe if depth is odd then make it below the node
           //@ts-ignore
-          .attr('y', d.x + 60 - offset) // Position the label slightly below the node
+          .attr("y", d.x + 60 - offset) // Position the label slightly below the node
 
           .text(`[R#${d.data.grammar_rule_depth + 1}]→`) //
-          .style('font-size', '15px')
-          .style('font-weight', 'bold');
+          .style("font-size", "15px")
+          .style("font-weight", "bold");
       });
     }
   }, [parseTree, vm, displayState]);
 
   useEffect(() => {
     if (!(DisplayStates.AST === displayState)) {
-      d3.select(d3Ref.current).selectAll('*').remove();
+      d3.select(d3Ref.current).selectAll("*").remove();
       return;
     }
     if (tree && d3Ref.current) {
       // Clear the previous tree
 
       // Clear the previous tree
-      d3.select(d3Ref.current).selectAll('*').remove();
+      d3.select(d3Ref.current).selectAll("*").remove();
 
       const svg = d3
         .select(d3Ref.current)
-        .append('svg')
-        .attr('width', 1200)
-        .attr('height', 600);
+        .append("svg")
+        .attr("width", 1200)
+        .attr("height", 600);
 
       //const modifiedTree = { ...tree };
 
@@ -318,25 +318,25 @@ export default function Home() {
       // Render the links
       root.links().forEach((link) => {
         svg
-          .append('line')
-          .attr('x1', linkGenerator.source(link)[0])
-          .attr('y1', linkGenerator.source(link)[1])
-          .attr('x2', linkGenerator.target(link)[0])
-          .attr('y2', linkGenerator.target(link)[1])
-          .style('stroke', 'black');
+          .append("line")
+          .attr("x1", linkGenerator.source(link)[0])
+          .attr("y1", linkGenerator.source(link)[1])
+          .attr("x2", linkGenerator.target(link)[0])
+          .attr("y2", linkGenerator.target(link)[1])
+          .style("stroke", "black");
       });
 
       // Render the nodes
       root.descendants().forEach((d, i) => {
         svg
-          .append('circle')
+          .append("circle")
           //@ts-ignore
-          .attr('cx', d.y + 30) // Use d.y for the horizontal position
+          .attr("cx", d.y + 30) // Use d.y for the horizontal position
           //@ts-ignore
-          .attr('cy', d.x + 20) // Use d.x for the vertical position
-          .attr('r', 25) // Set the radius of the circle
+          .attr("cy", d.x + 20) // Use d.x for the vertical position
+          .attr("r", 25) // Set the radius of the circle
           //.style('fill', 'white'); //Find if current step is refferring to this node
-          .style('fill', currentStep == d.data.step ? 'red' : 'yellow'); //Find if current step is refferring to this node
+          .style("fill", currentStep == d.data.step ? "red" : "yellow"); //Find if current step is refferring to this node
 
         const current_step_text =
           currentStep < d.data.step + 1 //d.data.step
@@ -348,11 +348,11 @@ export default function Home() {
             : d.data.calculated_value;
 
         svg
-          .append('text')
+          .append("text")
           //@ts-ignore
-          .attr('x', d.y + 15) // Position the label to the right of the node
+          .attr("x", d.y + 15) // Position the label to the right of the node
           //@ts-ignore
-          .attr('y', d.x + 25) // Position the label slightly below the node
+          .attr("y", d.x + 25) // Position the label slightly below the node
 
           .text(
             current_step_text
@@ -365,8 +365,8 @@ export default function Home() {
               : //@ts-ignore
                 d.data.name*/
           ) //
-          .style('font-size', '35px')
-          .style('font-weight', 'bold');
+          .style("font-size", "35px")
+          .style("font-weight", "bold");
       });
 
       const nodeCount = root.descendants().length;
@@ -379,11 +379,11 @@ export default function Home() {
 
   const [precedenceArguments, setPrecedenceArguments] =
     useState<PrecedenceArgument>({
-      '%_precedence': 3,
-      '*_precedence': 3,
-      '/_precedence': 3,
-      '+_precedence': 2,
-      '-_precedence': 2,
+      "%_precedence": 3,
+      "*_precedence": 3,
+      "/_precedence": 3,
+      "+_precedence": 2,
+      "-_precedence": 2,
       exp_precedence: 4,
     });
 
@@ -404,14 +404,14 @@ export default function Home() {
     setGrammerRules(expressions);
 
     const GraphASTRoot: ParseTreeBranch = {
-      operator: 'root',
+      operator: "root",
       children: [],
       current_expression: tokens,
       string_representation: tokens
         .map((token) => {
           coinTypesValues[token.type];
         })
-        .join(''),
+        .join(""),
       matching_string: expressions[0],
       grammar_rule_depth: 0,
     };
@@ -464,31 +464,34 @@ export default function Home() {
       <div className="w-full p-30 text-center flex flex-wrap justify-center">
         {
           <div className="flex w-full flex-wrap justify-center">
-            {CompilerTile({
-              sourceCode: sourceCode,
-              result: result,
-              precedenceArguments: precedenceArguments,
-              setPrecedenceArguments: handlePrecedenceChanges,
-              runCompiler: runCompiler,
-              setSourceCode: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                setSourceCode(e.target.value),
-              AST: ast,
-              showStack: showStack,
-              setShowStack: () => {
-                if (vm?.program_states == undefined) return;
-                setShowStack(!showStack);
-              },
-              openPrecedence: openPrecedence,
-              setOpenPrecedence: () => {
-                setOpenPrecedence(!openPrecedence);
-              },
-              vm: vm,
-              display_state: displayState,
-              setDisplayState: (state: DisplayStates) => setDisplayState(state),
-              currentStep: currentStep,
-              setCurrentStep: (step: number) =>
-                setCurrentStep(step + currentStep),
-            })}
+            <div className="w-full flex flex-wrap flex-center justify-center">
+              {CompilerTile({
+                sourceCode: sourceCode,
+                result: result,
+                precedenceArguments: precedenceArguments,
+                setPrecedenceArguments: handlePrecedenceChanges,
+                runCompiler: runCompiler,
+                setSourceCode: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  setSourceCode(e.target.value),
+                AST: ast,
+                showStack: showStack,
+                setShowStack: () => {
+                  if (vm?.program_states == undefined) return;
+                  setShowStack(!showStack);
+                },
+                openPrecedence: openPrecedence,
+                setOpenPrecedence: () => {
+                  setOpenPrecedence(!openPrecedence);
+                },
+                vm: vm,
+                display_state: displayState,
+                setDisplayState: (state: DisplayStates) =>
+                  setDisplayState(state),
+                currentStep: currentStep,
+                setCurrentStep: (step: number) =>
+                  setCurrentStep(step + currentStep),
+              })}
+            </div>
             <div className="w-full flex flex-center pt-4 text-center">
               <div className="w-full flex flex-center justify-around text-center h-10">
                 <button
@@ -547,6 +550,7 @@ export default function Home() {
                 ) : null}
               </div>
             </div>
+
             <div className="w-full pt-4 text-center justify-around">
               <div className=" text-center flex flex-wrap">
                 {DisplayStates.AST === displayState ? (
