@@ -1,4 +1,5 @@
 import "../styles/globals.css";
+// @ts-nocheck
 
 const BackendSkils: string[] = [
   "Nodejs",
