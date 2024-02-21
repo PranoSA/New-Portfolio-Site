@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
 // @ts-nocheck
-import { UnicodeCharacterInformation } from '../components/unicode';
-import { UnicodePanel } from '../components/unicode';
-import { CorsPanel } from '../components/cors_panel';
-import './globals.css';
+import { UnicodeCharacterInformation } from "../components/unicode";
+import { UnicodePanel } from "../components/unicode";
+import { CorsPanel } from "../components/cors_panel";
+import "./globals.css";
 
-import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
-import Link from 'next/link';
+import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
+import Link from "next/link";
 
 export default function Home() {
   const [openPanels, setPanels] = useState<boolean[]>([
@@ -30,8 +30,17 @@ export default function Home() {
           <h1 className="w-full text-6xl font-bold"> Portfolio Page </h1>
         </div>
 
+        <div className="w-full  p-4 text-center">
+          <Link href="/about">
+            <button className="p-5 text-center text-3xl rounded transform transition duration-500 ease-in-out hover:scale-110 hover:text-4xl hover:text-white">
+              {" "}
+              About Me{" "}
+            </button>
+          </Link>
+        </div>
+
         <div className="w-full p-4 text-center pb-30 pt-10">
-          <h1 className="w-full text-5xl font-bold "> Projects: </h1>
+          <h1 className="w-full text-5xl font-bold "> Projects</h1>
         </div>
 
         <div
@@ -53,8 +62,8 @@ export default function Home() {
                 <div className="w-full w-flex flex-wrap p-4 text-center">
                   <Link href="/unicode">
                     <button className="p-5 text-center bg-blue-200 rounded">
-                      {' '}
-                      View Unicode Mini-App{' '}
+                      {" "}
+                      View Unicode Mini-App{" "}
                     </button>
                   </Link>
                 </div>
@@ -87,8 +96,8 @@ export default function Home() {
                 <div className="w-full w-flex flex-wrap p-4 text-center">
                   <Link href="/cors">
                     <button className="p-5 text-center bg-blue-200 rounded">
-                      {' '}
-                      View Mini-CORS Tester{' '}
+                      {" "}
+                      View Mini-CORS Tester{" "}
                     </button>
                   </Link>
                 </div>
@@ -121,8 +130,8 @@ export default function Home() {
                 <div className="w-full w-flex flex-wrap p-4 text-center">
                   <Link href="/compilers">
                     <button className="p-5 text-center bg-blue-200 rounded">
-                      {' '}
-                      View Compiler App{' '}
+                      {" "}
+                      View Compiler App{" "}
                     </button>
                   </Link>
                 </div>
@@ -144,7 +153,7 @@ export default function Home() {
         </div>
 
         <div className="w-full w p-4 text-center min-h-20">
-          <h1 className="w-full text-5xl font-bold "> Articles: </h1>
+          <h1 className="w-full text-5xl font-bold "> Articles </h1>
         </div>
 
         <div className="w-full md:w-2/3 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
@@ -157,7 +166,7 @@ export default function Home() {
               ]);
             }}
           >
-            {' '}
+            {" "}
             OpenVPN Networking
           </h1>
           {openAriclePanels[0] ? (
@@ -174,7 +183,7 @@ export default function Home() {
                 href="https://articles.compressibleflowcalculator.com/OpenVPN"
                 className="p-5 text-center bg-blue-200 rounded m-5"
               >
-                Read Article{' '}
+                Read Article{" "}
               </a>
             </div>
           ) : null}
@@ -191,7 +200,7 @@ export default function Home() {
               console.log(openAriclePanels);
             }}
           >
-            {' '}
+            {" "}
             Video Transcoding With FFMEPG
           </h1>
           {openAriclePanels[1] ? (
@@ -213,7 +222,7 @@ export default function Home() {
                 href="https://articles.compressibleflowcalculator.com/MPEG-DASH"
                 className="p-5 text-center bg-blue-200 rounded"
               >
-                Read Article{' '}
+                Read Article{" "}
               </a>
             </div>
           ) : null}
