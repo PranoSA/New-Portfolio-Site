@@ -1,6 +1,6 @@
 'use client';
 
-import '../styles/globals.css'
+import '../styles/globals.css';
 
 import { CorsPanel } from '../../components/cors_panel';
 
@@ -9,7 +9,6 @@ import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 
 export default function Page() {
-
   //Encoding Mode, (Decimal or Hexadecimal)
 
   const [endpoint, setEndpoint] = useState<string>('');
@@ -23,8 +22,6 @@ export default function Page() {
   const [allowedCredentials, setAllowedCredentials] = useState<string>('');
   const [simple, setSimple] = useState<boolean>(false);
   const [allowned, setAllowned] = useState<boolean>(false);
-
-
 
   const handleCorsChange = (
     e: React.ChangeEvent<HTMLInputElement>,
@@ -87,9 +84,16 @@ export default function Page() {
   };
 
   return (
-    <main className="flex w-full min-h-screen justify-center` p-24">
+    <main className="flex w-full min-h-screen justify-center p-24 bg-gradient-to-r from-pink-300 to-purple-500 min-h-screen min-w-screen">
+      <div className="fixed top-0 left-0 p-4">
+        <Link
+          href="/"
+          className="text-blue-900 font-bold text-bold hover:underline text-3xl"
+        >
+          ← Home
+        </Link>
+      </div>
       <div className="flex flex-wrap justify-center w-full">
-        
         <div className="w-full md:w-1/2 p-10 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
           {CorsPanel({
             open: true,
@@ -97,7 +101,7 @@ export default function Page() {
             method: method,
             headers: headers,
             origin: origin,
-            close: () =>{},
+            close: () => {},
             credentials: credentials,
             handleChange: handleCorsChange,
             handleSubmit: fetchCors,
@@ -109,7 +113,6 @@ export default function Page() {
             Allowed: allowned,
           })}
         </div>
-
       </div>
     </main>
   );
