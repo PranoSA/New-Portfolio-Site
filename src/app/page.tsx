@@ -21,6 +21,7 @@ export default function Home() {
   ]);
 
   const [openAriclePanels, setArticlePanels] = useState<boolean[]>([false]);
+  const [loading, setLoading] = useState<boolean>(false);
   //Encoding Mode, (Decimal or Hexadecimal)
 
   return (
@@ -30,12 +31,26 @@ export default function Home() {
           <h1 className="w-full text-6xl font-bold"> Portfolio Page </h1>
         </div>
 
+        <div className="w-full  p-4 text-center">
+          <Link href="/about">
+            <button
+              onClick={() => setLoading(true)}
+              className="p-5 text-center text-3xl rounded transform transition duration-500 ease-in-out hover:scale-110 hover:text-4xl hover:text-white"
+            >
+              {' '}
+              About Me{' '}
+            </button>
+          </Link>
+        </div>
+
         <div className="w-full p-4 text-center pb-30 pt-10">
-          <h1 className="w-full text-5xl font-bold "> Projects: </h1>
+          <h1 className="w-full text-5xl font-bold "> Projects</h1>
         </div>
 
         <div
-          onClick={() => setPanels([!openPanels[0], ...openPanels.slice(1)])}
+          onClick={() =>
+            setPanels([!openPanels[0] || loading, ...openPanels.slice(1)])
+          }
           className="w-full md:w-1/2 p-20 pt-50 rounded flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-300 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out"
         >
           <h1 className="w-full text-3xl font-bold"> Unicode Project </h1>
@@ -52,7 +67,16 @@ export default function Home() {
                 </div>
                 <div className="w-full w-flex flex-wrap p-4 text-center">
                   <Link href="/unicode">
-                    <button className="p-5 text-center bg-blue-200 rounded">
+                    <button
+                      className="p-5 text-center bg-blue-200 rounded"
+                      onClick={() => {
+                        setLoading(true);
+                        setPanels([
+                          !openPanels[0] || loading,
+                          ...openPanels.slice(1),
+                        ]);
+                      }}
+                    >
                       {' '}
                       View Unicode Mini-App{' '}
                     </button>
@@ -86,7 +110,10 @@ export default function Home() {
                 </div>
                 <div className="w-full w-flex flex-wrap p-4 text-center">
                   <Link href="/cors">
-                    <button className="p-5 text-center bg-blue-200 rounded">
+                    <button
+                      className="p-5 text-center bg-blue-200 rounded"
+                      onClick={() => setLoading(true)}
+                    >
                       {' '}
                       View Mini-CORS Tester{' '}
                     </button>
@@ -101,7 +128,7 @@ export default function Home() {
           onClick={() =>
             setPanels([
               ...openPanels.slice(0, 2),
-              !openPanels[2],
+              !openPanels[2] || loading,
               ...openPanels.slice(3),
             ])
           }
@@ -120,7 +147,10 @@ export default function Home() {
                 </div>
                 <div className="w-full w-flex flex-wrap p-4 text-center">
                   <Link href="/compilers">
-                    <button className="p-5 text-center bg-blue-200 rounded">
+                    <button
+                      className="p-5 text-center bg-blue-200 rounded"
+                      onClick={() => setLoading(true)}
+                    >
                       {' '}
                       View Compiler App{' '}
                     </button>
@@ -144,7 +174,7 @@ export default function Home() {
         </div>
 
         <div className="w-full w p-4 text-center min-h-20">
-          <h1 className="w-full text-5xl font-bold "> Articles: </h1>
+          <h1 className="w-full text-5xl font-bold "> Articles </h1>
         </div>
 
         <div className="w-full md:w-2/3 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">

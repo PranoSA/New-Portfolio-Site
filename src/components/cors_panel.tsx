@@ -55,8 +55,6 @@ const CorsPanel = (props: CorsPanelProps) => {
     close,
   } = props;
 
-  if (!open) return null;
-
   return (
     <div className="pt-6 p-1 pt-10  w-full mx-auto bg-white rounded-xl shadow-md flex flex-wrap items-center justify-center space-x-4">
       <div className="w-full max-w-md flex flex-wrap justify-center pt-10">
@@ -146,56 +144,59 @@ const CorsPanel = (props: CorsPanelProps) => {
             />
           </div>
         </form>
-      </div>
-      <div className="flex items-center justify-around w-full">
-        <button
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-1/2"
-          type="button"
-          onClick={handleSubmit}
-        >
-          Submit
-        </button>
-      </div>
-      <div className="w-full flex flex-wrap p-5 justify-center">
-        <div className="w-full">
-          <h2 className="text-2xl font-bold mb-2">CORS Results </h2>
-        </div>
-        <div className="w-full">
-          <p>
-            <strong>Allowed Headers:</strong> {Allowed_Headers}
-          </p>
-        </div>
-        <div className="w-full">
-          <p>
-            <strong>Allowed Methods:</strong> {Allowed_Methods}
-          </p>
-        </div>
-        <div className="w-full">
-          <p>
-            <strong>Allowed Origins:</strong> {Allowed_Origisn}
-          </p>
-        </div>
-        <div className="w-full">
-          <p>
-            <strong>Allowed Credentials:</strong>{' '}
-            {Allowed_Credentials ? 'Yes' : 'No'}
-          </p>
-        </div>
-        <div className="w-full">
-          <p>
-            <strong>Simple:</strong> {Simple ? 'Yes' : 'No'}
-          </p>
-        </div>
-        <div className="w-full">
-          <h1
-            className={`text-2xl font-bold ${
-              Allowed ? 'text-blue-300' : 'text-red-300'
-            }`}
+        <div className="flex justify-center p-10 w-full">
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-1/2"
+            type="button"
+            onClick={handleSubmit}
           >
-            {Allowed ? 'Allowed' : 'Not Allowed'}
-          </h1>
+            Submit
+          </button>
         </div>
       </div>
+
+      {open && (
+        <div className="w-full flex flex-wrap p-5 justify-center">
+          <div className="w-full">
+            <h2 className="text-2xl font-bold mb-2">CORS Results </h2>
+          </div>
+          <div className="w-full">
+            <p>
+              <strong>Allowed Headers:</strong> {Allowed_Headers}
+            </p>
+          </div>
+          <div className="w-full">
+            <p>
+              <strong>Allowed Methods:</strong> {Allowed_Methods}
+            </p>
+          </div>
+          <div className="w-full">
+            <p>
+              <strong>Allowed Origins:</strong> {Allowed_Origisn}
+            </p>
+          </div>
+          <div className="w-full">
+            <p>
+              <strong>Allowed Credentials:</strong>{' '}
+              {Allowed_Credentials ? 'Yes' : 'No'}
+            </p>
+          </div>
+          <div className="w-full">
+            <p>
+              <strong>Simple:</strong> {Simple ? 'Yes' : 'No'}
+            </p>
+          </div>
+          <div className="w-full">
+            <h1
+              className={`text-2xl font-bold ${
+                Allowed ? 'text-blue-300' : 'text-red-300'
+              }`}
+            >
+              {Allowed ? 'Allowed' : 'Not Allowed'}
+            </h1>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

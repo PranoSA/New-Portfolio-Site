@@ -10,23 +10,5 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html lang="en">
-      <body>
-        <div className="fixed top-0 left-0 p-4">
-          <Link
-            href="/"
-            className="text-blue-900 font-bold text-bold hover:underline text-3xl"
-          >
-            ← Home
-          </Link>
-        </div>
-        <div className="h-full">
-          <div className="bg-gradient-to-r from-pink-300 to-purple-500 min-h-screen min-w-screen">
-            {children}
-          </div>
-        </div>
-      </body>
-    </html>
-  );
+  return <> {children} </>;
 }

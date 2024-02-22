@@ -24,6 +24,7 @@ import * as d3 from 'd3';
 
 import { useEffect, useRef, useState } from 'react';
 import CompilerTile, { DisplayStates } from '@/components/compilers';
+import Link from 'next/link';
 
 export default function Home() {
   //Encoding Mode, (Decimal or Hexadecimal)
@@ -32,6 +33,7 @@ export default function Home() {
   const [displayState, setDisplayState] = useState<DisplayStates>(
     DisplayStates.None
   );
+  const [about, setAbout] = useState<boolean>(false);
 
   const [sourceCode, setSourceCode] = useState<string>('');
   const [result, setResult] = useState<number>(0);
@@ -208,7 +210,7 @@ export default function Home() {
       const root = d3.hierarchy(modifiedTree);
 
       // Create a tree layout and assign the size
-      const treeLayout = d3.tree().size([800, 2000]);
+      const treeLayout = d3.tree().size([750, 2000]);
 
       // Assign the computed layout to root
       treeLayout(root as any);
@@ -246,12 +248,14 @@ export default function Home() {
 
         const current_step_text = d.data.string_representation;
 
+        const offset = d.data.grammar_rule_depth % 2 == 0 ? 20 : 20;
+
         svg
           .append('text')
           //@ts-ignore
-          .attr('x', d.y + 0) // Position the label to the right of the node
+          .attr('x', d.y + 20) // Position the label to the right of the node
           //@ts-ignore
-          .attr('y', d.x + 0) // Position the label slightly below the node
+          .attr('y', d.x + offset) // Position the label slightly below the node
 
           .text(current_step_text) //
           .style('font-size', '25px')
@@ -260,8 +264,10 @@ export default function Home() {
           .append('text')
           //@ts-ignore
           .attr('x', d.y - 60) // Position the label to the right of the node
+
+          //Maybe if depth is odd then make it below the node
           //@ts-ignore
-          .attr('y', d.x + 0) // Position the label slightly below the node
+          .attr('y', d.x + 60 - offset) // Position the label slightly below the node
 
           .text(`[R#${d.data.grammar_rule_depth + 1}]→`) //
           .style('font-size', '15px')
@@ -346,9 +352,9 @@ export default function Home() {
         svg
           .append('text')
           //@ts-ignore
-          .attr('x', d.y + 0) // Position the label to the right of the node
+          .attr('x', d.y + 15) // Position the label to the right of the node
           //@ts-ignore
-          .attr('y', d.x + 0) // Position the label slightly below the node
+          .attr('y', d.x + 25) // Position the label slightly below the node
 
           .text(
             current_step_text
@@ -452,39 +458,88 @@ export default function Home() {
   };
 
   return (
-    <div className="flex flex-wrap justify-center w-full">
-      <div className="w-full p-10 flex flex-wrap p-4 text-center min-h-20 ">
-        <h1 className="w-full text-3xl font-bold "> Compilers Project : </h1>
+    <div className="flex flex-wrap justify-center w-full bg-gradient-to-r from-pink-300 to-purple-500 min-h-screen min-w-screen">
+      <div className="fixed top-0 left-0 p-4 pb-10">
+        <Link
+          href="/"
+          className="text-blue-900 font-bold text-bold hover:underline text-3xl"
+        >
+          ← Home
+        </Link>
       </div>
+      <div
+        className="w-1/3 p-10 flex flex-wrap p-4 text-center min-h-20 fixed top-0 left-w-1/2"
+        onClick={() => setAbout(!about)}
+      >
+        <h1 className="w-full text-3xl font-bold ">
+          {' '}
+          Compilers Project {about ? '▲' : '▼'}{' '}
+        </h1>
+        {about && (
+          <div className="w-full flex flex-col bg-purple-400 text-gray text-lg font-bold text-center justify-center items-center p-10 mt-5">
+            <p className="text-center items-center pb-5">
+              This is a simple in-progress compiler project that parses an
+              algebraic expression and generates a bytecode and a Stack
+              Representative for the Program, and then runs the program on a
+              virtual machine.
+            </p>
+            <p className="pb-4">
+              The stack tab allows you to see the bytecode and operations (The
+              OP_CONST operations are translated from an index to the constants
+              array to the actual value being pushed on to the stack).
+            </p>
+            <p>
+              The AST Allows you to see the running tree representation of the
+              program
+            </p>
+            <p className="pb-4">
+              The Parse Tree uses a Recursive Decent parser to generate a parse
+              tree, which is different than the actual Pratt Parser being used
+              to generate the AST. This is because it allows you to better to
+              see how the grammar rules can be used to parse the input
+              recursively. The Pratt Parser is harder to visualize, but you may
+              see the Parse Tree slightly deviates from the Pratt Parser - as
+              the Pratt Parser doesn&apos;t consume the whole string at a level
+              - but iterates accross the string and changes parse precedence
+              along the way. This Parse Tree is used to visualize how the
+              grammar rules COULD be used in the most clear manner.
+            </p>
+          </div>
+        )}
+      </div>
+      <div className="h-20 w-full"></div>
 
       <div className="w-full p-30 text-center flex flex-wrap justify-center">
         {
           <div className="flex w-full flex-wrap justify-center">
-            {CompilerTile({
-              sourceCode: sourceCode,
-              result: result,
-              precedenceArguments: precedenceArguments,
-              setPrecedenceArguments: handlePrecedenceChanges,
-              runCompiler: runCompiler,
-              setSourceCode: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
-                setSourceCode(e.target.value),
-              AST: ast,
-              showStack: showStack,
-              setShowStack: () => {
-                if (vm?.program_states == undefined) return;
-                setShowStack(!showStack);
-              },
-              openPrecedence: openPrecedence,
-              setOpenPrecedence: () => {
-                setOpenPrecedence(!openPrecedence);
-              },
-              vm: vm,
-              display_state: displayState,
-              setDisplayState: (state: DisplayStates) => setDisplayState(state),
-              currentStep: currentStep,
-              setCurrentStep: (step: number) =>
-                setCurrentStep(step + currentStep),
-            })}
+            <div className="w-full flex flex-wrap flex-center justify-center">
+              {CompilerTile({
+                sourceCode: sourceCode,
+                result: result,
+                precedenceArguments: precedenceArguments,
+                setPrecedenceArguments: handlePrecedenceChanges,
+                runCompiler: runCompiler,
+                setSourceCode: (e: React.ChangeEvent<HTMLTextAreaElement>) =>
+                  setSourceCode(e.target.value),
+                AST: ast,
+                showStack: showStack,
+                setShowStack: () => {
+                  if (vm?.program_states == undefined) return;
+                  setShowStack(!showStack);
+                },
+                openPrecedence: openPrecedence,
+                setOpenPrecedence: () => {
+                  setOpenPrecedence(!openPrecedence);
+                },
+                vm: vm,
+                display_state: displayState,
+                setDisplayState: (state: DisplayStates) =>
+                  setDisplayState(state),
+                currentStep: currentStep,
+                setCurrentStep: (step: number) =>
+                  setCurrentStep(step + currentStep),
+              })}
+            </div>
             <div className="w-full flex flex-center pt-4 text-center">
               <div className="w-full flex flex-center justify-around text-center h-10">
                 <button
@@ -543,6 +598,7 @@ export default function Home() {
                 ) : null}
               </div>
             </div>
+
             <div className="w-full pt-4 text-center justify-around">
               <div className=" text-center flex flex-wrap">
                 {DisplayStates.AST === displayState ? (
