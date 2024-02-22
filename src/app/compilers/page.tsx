@@ -260,6 +260,7 @@ export default function Home() {
           .text(current_step_text) //
           .style('font-size', '25px')
           .style('font-weight', 'bold');
+
         svg
           .append('text')
           //@ts-ignore
