@@ -1,8 +1,7 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import { NextResponse } from "next/server";
 import { MongoClient, MongoClientOptions } from "mongodb";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../[...nextauth]/route";
+import { authOptions } from "@/components/AuthOptions";
 import { NextRequest } from "next/server";
 // 
 

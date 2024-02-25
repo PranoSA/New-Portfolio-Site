@@ -1,5 +1,5 @@
-import { NextApiRequest, NextApiResponse} from "next";
-import { NextResponse } from "next/server";
+
+import { NextResponse, NextRequest } from "next/server";
 const { MongoClient } = require("mongodb"); 
 import { ObjectId } from "mongodb";
 // 
@@ -8,7 +8,7 @@ import { ObjectId } from "mongodb";
 
 //  / GET With Particular ID  From MongoDB
 
-export async function GET(req: NextApiRequest, { params }: { params: {id: string } }){
+export async function GET(req: NextRequest, { params }: { params: {id: string } }){
 
     const uri = process.env.MONGODB_URI;
 

@@ -1,20 +1,12 @@
-import { NextApiRequest, NextApiResponse } from "next";
+
+import { NextRequest, NextResponse } from "next/server";
 // 
 
 // Require Auth For Posting
 
 //  / GET 
 
-export function GET(req: NextApiRequest, res:NextApiResponse){
+export function GET(req: NextRequest){
     //return res.status(200).json({ message: "Hello From Elevation" });
-    const { id } = req.query;
-
-    res.status(200).json({ message: `Hello From Elevation ${id}` });
-}
-
-export async function POST(req: NextApiRequest, res:NextApiResponse){
-    //return res.status(200).json({ message: "Hello From Elevation" });
-    const { id } = req.query;
-
-    res.status(200).json({ message: `Hello From Elevation ${id}` });
+    return  NextResponse.json({ message: "Hello From Elevation" });
 }

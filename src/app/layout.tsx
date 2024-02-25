@@ -5,6 +5,7 @@ import { SessionProvider } from 'next-auth/react';
 import { AppProps } from 'next/app';
 import { ReactNode } from 'react';
 import NextAuthProvider from '../components/NextAuthProvider';
+import { Analytics } from '@vercel/analytics/react';
 
 export const metadata = {
   title: 'Next.js',
@@ -49,6 +50,7 @@ export default function RootLayout({
               </div>
             </div>
             {children}
+            <Analytics />
           </div>
         </NextAuthProvider>
       </body>
