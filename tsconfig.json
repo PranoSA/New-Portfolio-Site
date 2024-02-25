@@ -21,6 +21,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts","tailwind.config.js","tailwind.config.ts", "src/app/api/cors/route"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts","tailwind.config.js","tailwind.config.ts", "src/app/api/cors/route", "types/**/*"],
   "exclude": ["node_modules"]
 }

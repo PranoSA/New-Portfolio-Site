@@ -1,5 +1,8 @@
 'use client';
 
+import { SessionProvider } from 'next-auth/react';
+import { AppProps } from 'next/app';
+import { ReactNode } from 'react';
 // @ts-nocheck
 import { UnicodeCharacterInformation } from '../components/unicode';
 import { UnicodePanel } from '../components/unicode';

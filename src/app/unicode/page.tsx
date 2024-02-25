@@ -48,6 +48,7 @@ export default function Home() {
 
   const fetchUnicode = async () => {
     //ENsure that the unicode is a valid string
+    console.log('fetching unicode', unicodeSet);
 
     if (unicodeSet.length < 1) return;
 
@@ -64,6 +65,8 @@ export default function Home() {
       }
     );
     const data = await response.json();
+
+    console.log('data', data);
 
     setUnicodeInfo(data);
   };

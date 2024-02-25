@@ -1,4 +1,10 @@
+'use-client';
+
 import Image from 'next/image';
+import { SessionProvider } from 'next-auth/react';
+import { AppProps } from 'next/app';
+import { ReactNode } from 'react';
+import NextAuthProvider from '../components/NextAuthProvider';
 
 export const metadata = {
   title: 'Next.js',
@@ -13,36 +19,38 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <div className="bg-gradient-to-r from-purple-200 to-pink-200">
-          <div className="fixed top-0 right-0 p-4 flex-col ">
-            <p className="pt-4"> Phillip Adler </p>
-            <p className="pt-4"> pcadler@gmail.com</p>
-            <p className="pt-4"> 818-518-4354 </p>
-            <div className="flex flex-row items-end pt-5">
-              <p className="text-left pr-7"> Github </p>
-              <a href="https://github.com/PranoSA">
-                <Image
-                  src="/github-mark.svg"
-                  alt="Github"
-                  width={30}
-                  height={30}
-                />
-              </a>
+        <NextAuthProvider>
+          <div className="bg-gradient-to-r from-purple-200 to-pink-200">
+            <div className="fixed top-0 right-0 p-4 flex-col ">
+              <p className="pt-4"> Phillip Adler </p>
+              <p className="pt-4"> pcadler@gmail.com</p>
+              <p className="pt-4"> 818-518-4354 </p>
+              <div className="flex flex-row items-end pt-5">
+                <p className="text-left pr-7"> Github </p>
+                <a href="https://github.com/PranoSA">
+                  <Image
+                    src="/github-mark.svg"
+                    alt="Github"
+                    width={30}
+                    height={30}
+                  />
+                </a>
+              </div>
+              <div className="flex flex-row items-end pt-5">
+                <p className="text-left pr-4"> Resume </p>
+                <a href="/Resume.docx">
+                  <Image
+                    src="/download-minimalistic-svgrepo-com.svg"
+                    width={30}
+                    height={30}
+                    alt="Picture of the author"
+                  />
+                </a>
+              </div>
             </div>
-            <div className="flex flex-row items-end pt-5">
-              <p className="text-left pr-4"> Resume </p>
-              <a href="/Resume.docx">
-                <Image
-                  src="/download-minimalistic-svgrepo-com.svg"
-                  width={30}
-                  height={30}
-                  alt="Picture of the author"
-                />
-              </a>
-            </div>
+            {children}
           </div>
-          {children}
-        </div>
+        </NextAuthProvider>
       </body>
     </html>
   );
