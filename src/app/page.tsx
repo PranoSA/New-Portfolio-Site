@@ -173,7 +173,47 @@ export default function Home() {
         </div>
 
         <div className="w-full md:w-1/2 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
-          <h1 className="w-full text-3xl font-bold">Other Project</h1>
+          <h1 className="w-full text-3xl font-bold">Other Projects</h1>
+        </div>
+
+        <div
+          onClick={() =>
+            setPanels([
+              ...openPanels.slice(0, 6),
+              !openPanels[6] || loading,
+              ...openPanels.slice(7),
+            ])
+          }
+          className="w-full md:w-1/2 p-20 pt-50 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out"
+        >
+          <h1 className="w-full text-3xl font-bold">Elevation Project </h1>
+          <div className="w-full p-4 text-center flex-center">
+            {openPanels[6] ? (
+              <div className="w-full flex flex-wrap p-4 text-center justify-center">
+                <div className="w-2/3 p-5 text-center"></div>
+                <div className="w-full flex flex-wrap flex-col p-4 text-center">
+                  <Link href="/elevation/view">
+                    <button
+                      className="p-5 m-5 text-center bg-blue-200 rounded hover:bg-blue-300 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out"
+                      onClick={() => setLoading(true)}
+                    >
+                      {' '}
+                      View Elevation Charts{' '}
+                    </button>
+                  </Link>
+                  <Link href="/elevation">
+                    <button
+                      className="p-5 m-5 text-center bg-blue-200 rounded hover:bg-blue-300 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out"
+                      onClick={() => setLoading(true)}
+                    >
+                      {' '}
+                      Create Elevation Chart{' '}
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            ) : null}
+          </div>
         </div>
 
         <div className="w-full w p-4 text-center min-h-20">

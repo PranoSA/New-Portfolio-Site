@@ -43,7 +43,7 @@ const XGrid: React.FC<GridProps> = ({ scale, tickSize, transform }) => {
       <text
         textAnchor="middle"
         x={scale(tick)}
-        y={tickSize} // Adjust this value to move the label up or down
+        y={tickSize + 50} // Adjust this value to move the label up or down
       >
         {tick}
       </text>
@@ -69,8 +69,8 @@ const YGrid: React.FC<GridProps> = ({ scale, tickSize, transform }) => {
       />
       <text
         textAnchor="end"
-        x={-10} // Adjust this value to move the label left or right
-        y={scale(tick)}
+        x={-40} // Adjust this value to move the label left or right
+        y={scale(tick) - 10}
         dy=".32em" // Vertically center the text
       >
         {tick}
@@ -127,15 +127,18 @@ export default async function Page({
   let max_c_X = 0;
   let min_c_X = 0;
 
+  //acos(sin(lat1)*sin(lat2)+cos(lat1)*cos(lat2)*cos(lon2-lon1))*6371
+  //=ACOS((SIN(RADIANS(Lat1)) * SIN(RADIANS(Lat2))) + (COS(RADIANS(Lat1)) * COS(RADIANS(Lat2))) * (COS(RADIANS(Lon2) - RADIANS(Lon1)))) * 6371
+
   const distanceBetweenPoints = (
     c1: CoordinateWithElevation,
     c2: CoordinateWithElevation
   ): number => {
-    const lat1 = parseFloat(c1.lat);
-    const lat2 = parseFloat(c2.lat);
+    const lat1 = (parseFloat(c1.lat) / 180) * Math.PI;
+    const lat2 = (parseFloat(c2.lat) / 180) * Math.PI;
 
-    const long1 = parseFloat(c1.long);
-    const long2 = parseFloat(c2.long);
+    const long1 = (parseFloat(c1.long) / 180) * Math.PI;
+    const long2 = (parseFloat(c2.long) / 180) * Math.PI;
 
     const sinlat1 = Math.sin(lat1);
     const sinlat2 = Math.sin(lat2);
@@ -145,7 +148,11 @@ export default async function Page({
     const acos = Math.acos(sinlat1 * sinlat2 + coslat1 * coslat2 * coslon2lon1);
 
     const distance = acos * 6371;
-    return distance;
+    console.log('distance', distance);
+    //Distance in KM
+    //Convert to Miles?
+
+    return distance / 1.609;
   };
 
   //@ts-ignore
@@ -214,7 +221,7 @@ export default async function Page({
 
   let yScale2 = d3
     .scaleLinear()
-    .domain([min_c_Y - 100, 1.5 * max_c_Y])
+    .domain([Math.floor((min_c_Y - 100) / 1000) * 1000, 1.5 * max_c_Y])
     .range([height, 0]);
 
   let xScale2 = d3
@@ -243,18 +250,20 @@ export default async function Page({
   }
 
   return (
-    <div className="flex flex-col items-center justify-center">
-      <svg width={width} height={height} className="">
+    <div className="flex flex-col items-center justify-center ">
+      <div className="w-full h-20 items-center"></div>
+      <svg
+        width={width + 200}
+        height={height + 200}
+        viewBox={`-100 -100 ${width + 100} ${height + 300}`}
+        className=""
+      >
         <XGrid
           scale={xScale2}
-          tickSize={height - margin.bottom}
-          transform={`translate(0,${height - margin.bottom})`}
+          tickSize={height}
+          transform={`translate(0,${0})`}
         />
-        <YGrid
-          scale={yScale2}
-          tickSize={width}
-          transform={`translate(${margin.left},0)`}
-        />
+        <YGrid scale={yScale2} tickSize={width} transform={`translate(0,0)`} />
         {/* ...rest of your SVG elements... */}
         <path d={pathData} fill="none" stroke="steelblue" />
         {lineData.map((d, i) => (
@@ -268,6 +277,7 @@ export default async function Page({
         ))}
         {/* Add other SVG elements as needed */}
       </svg>
+      <div className="w-full h-20 items-center"></div>
     </div>
   );
 }

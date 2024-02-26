@@ -461,12 +461,13 @@ export default function Home() {
   return (
     <div className="flex flex-wrap justify-center w-full bg-gradient-to-r from-pink-300 to-purple-500 min-h-screen min-w-screen">
       <div className="fixed top-0 left-0 p-4 pb-10">
-        <Link
+        {/*<Link
           href="/"
           className="text-blue-900 font-bold text-bold hover:underline text-3xl"
         >
           ← Home
         </Link>
+  */}
       </div>
       <div
         className="w-1/3 p-10 flex flex-wrap p-4 text-center min-h-20 fixed top-0 left-w-1/2"

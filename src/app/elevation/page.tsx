@@ -2,6 +2,8 @@
 import '../styles/globals.css';
 
 import { useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
 
 import React, { useState, useRef, useEffect } from 'react';
 import * as d3 from 'd3';
@@ -452,7 +454,7 @@ export default function Page() {
   };
 
   if (status != 'authenticated') {
-    return <a href="/api/auth/signin">Sign in</a>;
+    return <button onClick={() => signIn()}>Sign in</button>;
   }
 
   return (
