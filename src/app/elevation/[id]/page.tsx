@@ -12,8 +12,16 @@ type CoordinateWithElevation = {
 
 type ElevationData = {
   id: string;
+
   path: CoordinateWithElevation[];
 };
+
+type ElevationResponse = {
+  id: string;
+  userid: string;
+  email: string;
+  name: string;
+} & ElevationData;
 
 interface DataPoint {
   x: number;
@@ -98,7 +106,7 @@ async function getData(id: string) {
     }
 
     // parse json
-    const data: ElevationData = await res.json();
+    const data: ElevationResponse = await res.json();
 
     console.log(data);
 
@@ -148,7 +156,6 @@ export default async function Page({
     const acos = Math.acos(sinlat1 * sinlat2 + coslat1 * coslat2 * coslon2lon1);
 
     const distance = acos * 6371;
-    console.log('distance', distance);
     //Distance in KM
     //Convert to Miles?
 
@@ -165,8 +172,6 @@ export default async function Page({
     let previousX = 0;
     let shortest_y = 40000;
     let tallest_y = -40000;
-
-    console.log('coordinatesWithElevation', coordinates);
 
     const newCoordinates: { x: number; y: number }[] = coordinates.map(
       (coordinate, index) => {
@@ -250,34 +255,49 @@ export default async function Page({
   }
 
   return (
-    <div className="flex flex-col items-center justify-center ">
-      <div className="w-full h-20 items-center"></div>
-      <svg
-        width={width + 200}
-        height={height + 200}
-        viewBox={`-100 -100 ${width + 100} ${height + 300}`}
-        className=""
-      >
-        <XGrid
-          scale={xScale2}
-          tickSize={height}
-          transform={`translate(0,${0})`}
-        />
-        <YGrid scale={yScale2} tickSize={width} transform={`translate(0,0)`} />
-        {/* ...rest of your SVG elements... */}
-        <path d={pathData} fill="none" stroke="steelblue" />
-        {lineData.map((d, i) => (
-          <circle
-            key={i}
-            className="dot"
-            cx={xScale2(d.x)}
-            cy={yScale2(d.y)}
-            r={10}
+    <div className="flex flex-wrap items-center justify-center bg-pink-100 min-h-screen">
+      <div className="w-full items-center pt-40">
+        <div className="w-full items-center">
+          <h1 className="text-4xl font-bold text-center">{data.name}</h1>
+        </div>
+        <div className="w-full items-center">
+          <h1 className="text-2xl font-bold text-center">{data.email}</h1>
+        </div>
+      </div>
+      <div className="w-full pt-10 items-center">
+        <h1 className="text-4xl font-bold text-center">Elevation Profile</h1>
+      </div>
+      <div className="w-full items-center justify-center">
+        <svg
+          width={width + 200}
+          height={height + 200}
+          viewBox={`-100 -100 ${width + 100} ${height + 300}`}
+          className=""
+        >
+          <XGrid
+            scale={xScale2}
+            tickSize={height}
+            transform={`translate(0,${0})`}
           />
-        ))}
-        {/* Add other SVG elements as needed */}
-      </svg>
-      <div className="w-full h-20 items-center"></div>
+          <YGrid
+            scale={yScale2}
+            tickSize={width}
+            transform={`translate(0,0)`}
+          />
+          {/* ...rest of your SVG elements... */}
+          <path d={pathData} fill="none" stroke="steelblue" />
+          {lineData.map((d, i) => (
+            <circle
+              key={i}
+              className="dot"
+              cx={xScale2(d.x)}
+              cy={yScale2(d.y)}
+              r={10}
+            />
+          ))}
+          {/* Add other SVG elements as needed */}
+        </svg>
+      </div>
     </div>
   );
 }
