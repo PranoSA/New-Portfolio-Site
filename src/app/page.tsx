@@ -172,8 +172,32 @@ export default function Home() {
           <h1 className="w-full text-3xl font-bold">Media Servers Project</h1>
         </div>
 
-        <div className="w-full md:w-1/2 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
-          <h1 className="w-full text-3xl font-bold">Other Projects</h1>
+        <div
+          onClick={() =>
+            setPanels([
+              ...openPanels.slice(0, 5),
+              !openPanels[5],
+              ...openPanels.slice(6),
+            ])
+          }
+          className="w-full md:w-1/2 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out"
+        >
+          <div className="w-full p-4 text-center">
+            <h1 className="w-full text-3xl font-bold">Other Projects</h1>
+          </div>
+          {openPanels[5] && (
+            <div className="w-full flex flex-wrap p-4 text-center justify-center">
+              <div className="w-full justify-center p-4">
+                Miscellaneous Other Projects that I have worked on.{' '}
+              </div>
+              <Link href="/otherprojects">
+                <button className="p-5 text-center bg-blue-200 rounded">
+                  {' '}
+                  View Other Projects{' '}
+                </button>
+              </Link>
+            </div>
+          )}
         </div>
 
         <div

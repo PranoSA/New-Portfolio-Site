@@ -74,14 +74,6 @@ export default function Home() {
   return (
     <main className="flex w-full items-start justify-center min-h-screen p-24">
       <div className="flex flex-wrap justify-center align-start w-full">
-        <div className="fixed top-0 left-0 p-4">
-          <Link
-            href="/"
-            className="text-black hover:underline text-3xl font-bold"
-          >
-            ← Home
-          </Link>
-        </div>
         <div className="w-full  text-center">
           <h1 className="w-full text-3xl font-bold"> Unicode Page </h1>
         </div>
