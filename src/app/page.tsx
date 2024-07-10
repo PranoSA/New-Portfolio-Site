@@ -321,7 +321,7 @@ export default function Home() {
             onClick={() => {
               setArticlePanels([
                 false,
-                false, 
+                false,
                 !openAriclePanels[2],
                 ...openAriclePanels.slice(3),
               ]);
