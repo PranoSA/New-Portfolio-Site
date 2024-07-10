@@ -328,7 +328,7 @@ export default function Home() {
             }}
           >
             {' '}
-            OpenVPN Networking
+            Digital Maps
           </h1>
           {openAriclePanels[2] ? (
             <div className="m-5">
