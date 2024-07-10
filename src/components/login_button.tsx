@@ -33,7 +33,7 @@ const LoginButton = () => {
     );
   } else {
     return (
-      <div className="fixed top-0  left-0 p-4 flex-col ">
+      <div className="col-span-1 sticky top-0 p-4 flex-col ">
         <div className="flex flex-row items-center">
           {pathname != '/' && (
             <div className="pr-10">

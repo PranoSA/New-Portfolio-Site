@@ -23,11 +23,17 @@ export default function RootLayout({
       <body>
         <NextAuthProvider>
           <div className="bg-gradient-to-r from-purple-200 to-pink-200">
-            <div className="fixed top-0 left-0 p-4 flex-col ">
-              <LoginButton />
+            {/*<div className="fixed top-0 left-0 p-4 flex-col ">*/}
+            <div className="sticky top-0 z-50 flex-col bg-gray-200">
+              <div className="sticky top-0 flex-col">
+                <LoginButton />
+              </div>
+              <div>
+                <ContactDropdown />
+              </div>
             </div>
-            <ContactDropdown />
-            {children}
+            <div className="overflow-auto">{children}</div>
+
             <Analytics />
           </div>
         </NextAuthProvider>

@@ -315,6 +315,46 @@ export default function Home() {
             </div>
           ) : null}
         </div>
+        <div className="w-full md:w-2/3 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+          <h1
+            className="w-full text-3xl font-bold"
+            onClick={() => {
+              setArticlePanels([
+                false,
+                false, 
+                !openAriclePanels[2],
+                ...openAriclePanels.slice(3),
+              ]);
+            }}
+          >
+            {' '}
+            OpenVPN Networking
+          </h1>
+          {openAriclePanels[2] ? (
+            <div className="m-5">
+              <p className="w-full pb-4 ">
+                In this article I introduce the concept of Digital Maps, and how
+                they compare to Image Maps and SVG Maps. Image Maps give visual
+                information to the user and may involve pre-rendered
+                geographical information about a variables, SVG Maps on the web
+                allow native javascript interaction with image, but digital maps
+                offer high degree of variant information handling and display
+                capabilities, allowing the use of various raster data formats,
+                vector data formats, and tiled vector and raster data formats,
+                as well as rich display capabilities (Heat maps, contour maps,
+                clustering, etc.), and interaction with a geoServer to render
+                new layers on a map.
+              </p>
+              <div className="w-full w-flex flex-wrap p-4 text-center h-15"></div>
+              <a
+                href="https://articles.compressibleflowcalculator.com/Digital_Maps"
+                className="p-5 text-center bg-blue-200 rounded m-5"
+              >
+                Read Article{' '}
+              </a>
+            </div>
+          ) : null}
+        </div>
       </div>
     </main>
   );

@@ -19,7 +19,7 @@ export default function Page() {
     'Authorization,Content-Type,Accept'
   );
   const [origin, setOrigin] = useState<string>('http://localhost:5173');
-  const [credentials, setCredentials] = useState<string>('');
+  const [credentials, setCredentials] = useState<boolean>(false);
   const [allowedHeaders, setAllowedHeaders] = useState<string>('');
   const [allowedMethods, setAllowedMethods] = useState<string>('');
   const [allowedOrigin, setAllowedOrigin] = useState<string>('');
@@ -28,27 +28,23 @@ export default function Page() {
   const [allowned, setAllowned] = useState<boolean>(false);
   const [submitted, setSubmitted] = useState<boolean>(false);
 
-  const handleCorsChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    name: string
-  ) => {
+  const changeCredentials = (value: boolean) => setCredentials(value);
+
+  const handleCorsChange = (value: string, name: string) => {
     switch (name) {
       case 'endpoint':
-        setEndpoint(e.target.value);
+        setEndpoint(value);
         break;
       case 'method':
-        setMethod(e.target.value);
+        setMethod(value);
         break;
       case 'headers':
-        setHeaders(e.target.value);
+        setHeaders(value);
         break;
       case 'origin':
-        setOrigin(e.target.value);
+        setOrigin(value);
         break;
 
-      case 'credentials':
-        setCredentials(e.target.value ? 'true' : 'false');
-        break;
       default:
         break;
     }
@@ -64,8 +60,6 @@ export default function Page() {
         origin: origin,
         credentials: credentials,
       };
-
-      console.log(body);
 
       const response = await fetch('/api/cors', {
         method: 'POST',
@@ -94,15 +88,7 @@ export default function Page() {
 
   return (
     <main className="flex w-full min-h-screen justify-center p-24 bg-gradient-to-r from-pink-300 to-purple-500 min-h-screen min-w-screen">
-      <div className="fixed top-0 left-0 p-4">
-        <Link
-          href="/"
-          className="text-blue-900 font-bold text-bold hover:underline text-3xl"
-        >
-          ← Home
-        </Link>
-      </div>
-      <div className="flex flex-wrap justify-center w-full">
+      <div className="flex flex-wrap justify-center w-full pt-20">
         <div className="w-full md:w-1/2 p-10 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
           {CorsPanel({
             open: submitted,
@@ -111,6 +97,7 @@ export default function Page() {
             headers: headers,
             origin: origin,
             close: () => {},
+            setCredentials: changeCredentials,
             credentials: credentials,
             handleChange: handleCorsChange,
             handleSubmit: fetchCors,

@@ -3,11 +3,11 @@ type CorsPanelProps = {
   method: string;
   headers: string;
   origin: string;
-  credentials: string;
+  credentials: boolean;
   close: () => void;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>, name: string) => void;
+  handleChange: (value: string, name: string) => void;
   handleSubmit: () => void;
-
+  setCredentials: (value: boolean) => void;
   open: boolean;
   Allowed_Headers?: string;
   Allowed_Methods?: string;
@@ -66,12 +66,11 @@ const CorsPanel = (props: CorsPanelProps) => {
             >
               Endpoint
             </label>
-            <input
+            <textarea
               className="shadow w-full appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="endpoint"
-              type="text"
               value={endpoint}
-              onChange={(e) => handleChange(e, 'endpoint')}
+              onChange={(e) => handleChange(e.target.value, 'endpoint')}
             />
           </div>
           <div className="mb-4">
@@ -87,7 +86,7 @@ const CorsPanel = (props: CorsPanelProps) => {
               type="text"
               list="http-methods"
               value={method}
-              onChange={(e) => handleChange(e, 'method')}
+              onChange={(e) => handleChange(e.target.value, 'method')}
             />
             <datalist id="http-methods">
               <option value="GET" />
@@ -110,7 +109,7 @@ const CorsPanel = (props: CorsPanelProps) => {
               id="headers"
               type="text"
               value={headers}
-              onChange={(e) => handleChange(e, 'headers')}
+              onChange={(e) => handleChange(e.target.value, 'headers')}
             />
           </div>
           <div className="mb-4">
@@ -124,8 +123,8 @@ const CorsPanel = (props: CorsPanelProps) => {
               className="mt-1 block h-6 w-6 rounded-full border-gray-300 shadow focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm border-gray-300"
               id="credentials"
               type="checkbox"
-              checked={credentials == 'true' ? true : false}
-              onChange={(e) => handleChange(e, 'credentials')}
+              checked={credentials}
+              onChange={(e) => props.setCredentials(e.target.checked)}
             />
           </div>
           <div className="mb-4 w-full">
@@ -140,7 +139,7 @@ const CorsPanel = (props: CorsPanelProps) => {
               id="origins"
               type="text"
               value={origin}
-              onChange={(e) => handleChange(e, 'origin')}
+              onChange={(e) => handleChange(e.target.value, 'origin')}
             />
           </div>
         </form>

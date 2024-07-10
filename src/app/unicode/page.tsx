@@ -93,6 +93,7 @@ export default function Home() {
           </div>
         </div>
         <div
+          id="terraform"
           className="w-full p-4 text-center text-3xl font-bold"
           onClick={() => setOpenTerraformPanel(!openTerraformPanel)}
         >
@@ -116,7 +117,10 @@ export default function Home() {
                 <div className="w-1/2 md:w-1/3 "></div>
               )}
             </div>
-            <div className="w-full md:w-1/3 lg:w-1/2 p-4 text-left justify-start flex align-start flex-col font-bold font-xl">
+            <div
+              className="w-full md:w-1/3 lg:w-1/2 p-4 text-left justify-start flex align-start flex-col font-bold font-xl"
+              id="docker"
+            >
               <div className="w-full p-4 text-center font-bold text-2xl justify-center">
                 Docker Application Example{' '}
               </div>
