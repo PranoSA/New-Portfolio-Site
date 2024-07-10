@@ -15,9 +15,14 @@ type ElevationData = {
 };
 
 const getElevationChartData = async () => {
-  const response = await fetch(`${process.env.DOMAIN}/api/auth/elevation`);
-  const data = await response.json();
-  return data;
+  try {
+    const response = await fetch(`${process.env.DOMAIN}/api/auth/elevation`);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
 };
 
 const ElevationCard = (elevationData: ElevationData) => {
