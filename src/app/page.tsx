@@ -389,7 +389,7 @@ export default function Home() {
               </p>
               <div className="w-full w-flex flex-wrap p-4 text-center h-15"></div>
               <a
-                href="https://articles.compressibleflowcalculator.com/Digital_Maps"
+                href="https://articles.compressibleflowcalculator.com/DNSSEC_PART_1"
                 className="p-5 text-center bg-blue-200 rounded m-5"
               >
                 Read Article{' '}
