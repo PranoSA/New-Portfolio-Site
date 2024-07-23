@@ -355,6 +355,85 @@ export default function Home() {
             </div>
           ) : null}
         </div>
+        <div className="w-full md:w-2/3 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+          <h1
+            className="w-full text-3xl font-bold"
+            onClick={() => {
+              setArticlePanels([
+                false,
+                false,
+                false,
+                !openAriclePanels[3],
+                ...openAriclePanels.slice(4),
+              ]);
+            }}
+          >
+            {' '}
+            DNSSEC and Reverse DNS Part 1
+          </h1>
+          {openAriclePanels[3] ? (
+            <div className="m-5">
+              <p className="w-full pb-4 ">
+                In this first part of the series, we will set up the basic tools
+                with Docker to run a parent and child nameserver as well as a
+                Dig DNS client. We Will also go over reading the output of the
+                Dig Command and concepts such as DNS flags, EDNS, and TShark/
+                Wireshark. We will then talk about inspecting the DNS packets
+                inside of wireshark using tshark to capture the packets on the
+                DNS client interface. We will then inspect the idea of zone
+                files and the records contained inside of them. These articles
+                will not teach about DNS and DNS-SEC basic conepts but Will
+                refer to other articles on the topic, and rather lay groundwork
+                for experimentation with DNS in a easy to use environment.We
+                will also go over features of the dig command
+              </p>
+              <div className="w-full w-flex flex-wrap p-4 text-center h-15"></div>
+              <a
+                href="https://articles.compressibleflowcalculator.com/Digital_Maps"
+                className="p-5 text-center bg-blue-200 rounded m-5"
+              >
+                Read Article{' '}
+              </a>
+            </div>
+          ) : null}
+        </div>
+        <div className="w-full md:w-2/3 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out">
+          <h1
+            className="w-full text-3xl font-bold"
+            onClick={() => {
+              setArticlePanels([
+                false,
+                false,
+                false,
+                false,
+                !openAriclePanels[4],
+                ...openAriclePanels.slice(5),
+              ]);
+            }}
+          >
+            {' '}
+            DNSSEC and Reverse DNS Part 2
+          </h1>
+          {openAriclePanels[4] ? (
+            <div className="m-5">
+              <p className="w-full pb-4 ">
+                In this article, we will build off the 2nd and fix the DNS-SEC
+                implimentation by adding the appropriate DS record to the parent
+                server to properly authenticate the zone transfer. Here, we will
+                be able to use tshark as well as the dig response to see the
+                verification of the DNS in the EDNS flags as well as the DNSSEC
+                flags in the request.
+              </p>
+              <div className="w-full w-flex flex-wrap p-4 text-center h-15"></div>
+              <a
+                href="https://articles.compressibleflowcalculator.com/DNSSEC_PART_2"
+                className="p-5 text-center bg-blue-200 rounded m-5"
+              >
+                Read Article{' '}
+              </a>
+            </div>
+          ) : null}
+        </div>
       </div>
     </main>
   );
