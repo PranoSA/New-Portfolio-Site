@@ -202,7 +202,10 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ setLoading }) => {
                             key={index}
                           >
                             <button
-                              className="p-5 m-5 text-center bg-blue-200 rounded hover:bg-neonpurple hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out"
+                              className="p-5 m-5 text-center bg-blue-200 rounded  hover:shadow-lg transform hover:scale-110 
+                              
+                              hover:font-bold hover:border-4 hover:border-black
+                              transition-all duration-200 ease-in-out"
                               onClick={() => setLoading(true)}
                               //re
                             >

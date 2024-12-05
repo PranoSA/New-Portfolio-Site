@@ -17,7 +17,7 @@ import { articleDescriptions } from '@/data/articles';
 import { Projects } from '../data/projects';
 import ProjectModal from '../data/projects';
 
-import { FaArrowRight } from 'react-icons/fa';
+import { FaArrowDown, FaArrowRight, FaArrowUp } from 'react-icons/fa';
 
 //import Up and down arrow
 
@@ -71,29 +71,37 @@ export default function Home() {
           return (
             <div
               key={index}
-              className="w-full md:w-2/3 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-400 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out hover:text-black hover:font-bold"
+              onClick={() => {
+                setArticlePanels([
+                  ...openAriclePanels.slice(0, index),
+                  !openAriclePanels[index],
+                  ...openAriclePanels.slice(index + 1),
+                ]);
+              }}
+              className="relative w-full md:w-2/3 p-20 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-400 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out hover:text-black hover:font-bold"
             >
-              <h1
-                key={index}
-                className="w-full text-3xl font-bold"
-                onClick={() => {
-                  setArticlePanels([
-                    ...openAriclePanels.slice(0, index),
-                    !openAriclePanels[index],
-                    ...openAriclePanels.slice(index + 1),
-                  ]);
-                }}
-              >
+              {!openAriclePanels[index] && (
+                <FaArrowDown size={25} className="absolute right-0 top-10" />
+              )}
+              {openAriclePanels[index] && (
+                <FaArrowUp size={25} className="absolute right-0 top-10" />
+              )}
+              <h1 key={index} className="w-full text-3xl font-bold">
                 {' '}
                 {article.Title}
               </h1>
               {openAriclePanels[index] ? (
-                <div className="m-5">
+                <div className="relative m-5">
                   <p className="w-full pb-4 ">{article.Description}</p>
                   <div className="w-full w-flex flex-wrap p-4 text-center h-15"></div>
                   <a
                     href={article.URL}
-                    className="p-5 text-center bg-blue-200 rounded m-5"
+                    //make button bigger on hover, make border
+                    className="p-5 text-center bg-blue-200 rounded m-5
+                      
+                    hover:shadow-lg hover:font-bold hover:border-4 hover:border-black 
+                    hover:text-2xl
+                    "
                   >
                     Read Article{' '}
                   </a>
