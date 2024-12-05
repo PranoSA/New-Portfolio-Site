@@ -33,20 +33,20 @@ const LoginButton = () => {
     );
   } else {
     return (
-      <div className="col-span-1 sticky top-0 p-4 flex-col ">
+      <div className="col-span-1 sticky top-0 p-4 flex-col bg-black text-white ">
         <div className="flex flex-row items-center">
           {pathname != '/' && (
             <div className="pr-10">
               <Link
                 href="/"
-                className="text-blue-900 font-bold text-bold hover:underline text-3xl"
+                className="text-white font-bold text-bold hover:underline text-3xl"
               >
                 ← Home
               </Link>
             </div>
           )}
           <button
-            className="p-5 text-1xl"
+            className="p-5 text-1xl text-white"
             onClick={() => {
               console.log('signing in');
               signIn();

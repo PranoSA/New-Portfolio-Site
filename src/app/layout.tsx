@@ -18,11 +18,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  //bg-gradient-to-r from-purple-200 to-pink-200
+
+  //make it a nice dark blue
   return (
     <html lang="en">
       <body>
         <NextAuthProvider>
-          <div className="bg-gradient-to-r from-purple-200 to-pink-200">
+          <div className="bg-default">
             {/*<div className="fixed top-0 left-0 p-4 flex-col ">*/}
             <div className="sticky top-0 z-50 flex-col bg-gray-200">
               <div className="sticky top-0 flex-col">
@@ -32,7 +35,7 @@ export default function RootLayout({
                 <ContactDropdown />
               </div>
             </div>
-            <div className="overflow-auto">{children}</div>
+            <div className="overflow-auto font-default">{children}</div>
 
             <Analytics />
           </div>

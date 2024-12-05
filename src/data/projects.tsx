@@ -4,33 +4,13 @@
     1. Name
     2. Description
     3. A List of Links to Pages with their name
-    Such as :
-                  <div className="w-full flex flex-wrap p-4 text-center justify-center">
-                <div className="w-2/3 p-5 text-center">
-                  Expression Parser and Compiler That Builds a Stack
-                  representation, and Abstract Syntax Tree (AST) and a Parse
-                  Tree using Generated Grammar Rules. This user is allowed to
-                  generate their own grammar rules by specifying the precendence
-                  of operators and the associativity of operators.
-                </div>
-                <div className="w-full w-flex flex-wrap p-4 text-center">
-                  <Link href="/compilers">
-                    <button
-                      className="p-5 text-center bg-blue-200 rounded"
-                      onClick={() => setLoading(true)}
-                    >
-                      {' '}
-                      View Compiler App{' '}
-                    </button>
-                  </Link>
-                </div>
-              </div>
-
-              Where their is one of more links, each with a URL and a Title
 */
 
 import Link from 'next/link';
 import { useState } from 'react';
+
+//fa-icons, down arrow, visit page, up arrow
+import { FaArrowDown, FaArrowUp, FaExternalLinkAlt } from 'react-icons/fa';
 
 type PortfolioProject = {
   Name: string;
@@ -136,36 +116,6 @@ const ImageApp: PortfolioProject = {
   ],
 };
 
-/*
-              <div className="w-full flex flex-wrap p-4 text-center justify-center">
-                <div className="w-2/3 p-5 text-center">
-                  Learn About the Binary Representation of Textual Objects in
-                  Unicode. This project demonstrate the use of Unicode Character
-                  Standards, Unicode Character Information, and Encoding of
-                  Characters using UTF-8, UTF-16, and UTF-32. Also Creates a
-                  Link Based on the Character Form to my Full-Fledged Unicode
-                  Inspection Application.
-                </div>
-                <div className="w-full w-flex flex-wrap p-4 text-center">
-                  <Link href="/unicode">
-                    <button
-                      className="p-5 text-center bg-blue-200 rounded"
-                      onClick={() => {
-                        setLoading(true);
-                        setPanels([
-                          !openPanels[0] || loading,
-                          ...openPanels.slice(1),
-                        ]);
-                      }}
-                    >
-                      {' '}
-                      View Unicode Mini-App{' '}
-                    </button>
-                  </Link>
-                </div>
-              </div>
-              */
-
 const UnicodeProject: PortfolioProject = {
   Name: 'Unicode Mini-App',
   Description: `Learn About the Binary Representation of Textual Objects in
@@ -218,40 +168,53 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ setLoading }) => {
   };
 
   return (
-    <div className="w-full flex-wrap flex ">
+    <div className="w-full flex-wrap flex pt-10 ">
       {Projects.map((project, index) => {
         return (
           <div
+            key={project.Name}
             onClick={() => onClose(index)}
-            className="w-full md:w-1/2 p-20 pt-50 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out"
+            className="w-full md:w-1/2 
+            hover:text-black hover:font-bold
+            pt-50 flex flex-wrap  text-center min-h-20 cursor-pointer hover:bg-blue-300 hover:shadow-lg transform hover:scale-100 transition-all duration-200 ease-in-out"
           >
-            <h1 className="w-full text-3xl font-bold">{project.Name}</h1>
-            <div className="w-full p-4 text-center flex-center">
-              {openPanels[index] ? (
-                <div className="w-full flex flex-wrap p-4 text-center justify-center">
-                  <div className="w-2/3 p-5 text-center">
-                    {project.Description}
-                  </div>
-                  <div className="w-full flex flex-wrap flex-col p-4 text-center">
-                    {project.Links.map((link, index) => {
-                      return (
-                        <Link
-                          href={link.URL}
-                          //make lionk absolute path
-                        >
-                          <button
-                            className="p-5 m-5 text-center bg-blue-200 rounded hover:bg-blue-300 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out"
-                            onClick={() => setLoading(true)}
-                            //re
+            <div className=" relative w-full border-black border-2">
+              <h1 className="w-full text-3xl font-bold">{project.Name}</h1>
+              <div className="absolute right-10 top-10">
+                {openPanels[index] ? (
+                  <FaArrowUp size={20} />
+                ) : (
+                  <FaArrowDown size={20} />
+                )}
+              </div>
+              <div className="w-full p-2 text-center flex-center ">
+                {openPanels[index] ? (
+                  <div className="w-full flex flex-wrap p-2 text-center justify-center">
+                    <div className="p-2  text-center">
+                      {project.Description}
+                    </div>
+                    <div className="w-full flex flex-wrap flex-col p-2 text-center">
+                      {project.Links.map((link, index) => {
+                        return (
+                          <Link
+                            href={link.URL}
+                            //make lionk absolute path
+                            key={index}
                           >
-                            {link.Title}
-                          </button>
-                        </Link>
-                      );
-                    })}
+                            <button
+                              className="p-5 m-5 text-center bg-blue-200 rounded hover:bg-neonpurple hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out"
+                              onClick={() => setLoading(true)}
+                              //re
+                            >
+                              {link.Title}
+                            </button>
+                          </Link>
+                        );
+                      })}
+                    </div>
                   </div>
-                </div>
-              ) : null}
+                ) : null}
+              </div>
             </div>
           </div>
         );
@@ -261,49 +224,3 @@ const ProjectModal: React.FC<ProjectModalProps> = ({ setLoading }) => {
 };
 
 export default ProjectModal;
-
-//shoukld be something like this:
-/*
-
-        <div
-          onClick={() =>
-            setPanels([
-              ...openPanels.slice(0, 6),
-              !openPanels[6] || loading,
-              ...openPanels.slice(7),
-            ])
-          }
-          className="w-full md:w-1/2 p-20 pt-50 flex flex-wrap p-4 text-center min-h-20 cursor-pointer hover:bg-blue-100 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out"
-        >
-          <h1 className="w-full text-3xl font-bold">Elevation Project </h1>
-          <div className="w-full p-4 text-center flex-center">
-            {openPanels[6] ? (
-              <div className="w-full flex flex-wrap p-4 text-center justify-center">
-                <div className="w-2/3 p-5 text-center"></div>
-                <div className="w-full flex flex-wrap flex-col p-4 text-center">
-                  <Link href="/elevation/view">
-                    <button
-                      className="p-5 m-5 text-center bg-blue-200 rounded hover:bg-blue-300 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out"
-                      onClick={() => setLoading(true)}
-                    >
-                      {' '}
-                      View Elevation Charts{' '}
-                    </button>
-                  </Link>
-                  <Link href="/elevation">
-                    <button
-                      className="p-5 m-5 text-center bg-blue-200 rounded hover:bg-blue-300 hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out"
-                      onClick={() => setLoading(true)}
-                    >
-                      {' '}
-                      Create Elevation Chart{' '}
-                    </button>
-                  </Link>
-                </div>
-              </div>
-            ) : null}
-          </div>
-        </div>
-
-        */
-//for each project

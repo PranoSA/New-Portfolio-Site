@@ -4,6 +4,9 @@ import '../styles/globals.css';
 import Link from 'next/link';
 // @ts-nocheck
 
+//import close icon from react-icons/fa
+import { FaArrowUp, FaTimes } from 'react-icons/fa';
+
 const BackendSkils: string[] = [
   'Nodejs',
   'Express',
@@ -260,17 +263,19 @@ export default function Home() {
               className="w-full flex flex-wrap justify-center h-min-24"
               key={i}
             >
-              <div className="w-full flex flex-wrap justify-center">
-                <h1 className="w-1/3 md:w-1/5 text-lg font-bold items-center">
+              <div className="relative w-full flex flex-wrap justify-center">
+                <h1 className="relative w-1/3 md:w-1/5 text-lg font-bold items-center">
                   {' '}
                   {skill.title}{' '}
+                  <FaArrowUp
+                    size={20}
+                    onClick={() => setSelectedDevOpsSkill('')}
+                    className="absolute w-1/3 md:w-1/5 text-lg font-bold 
+                  hover:text-bold hover:text-xl 
+                  hover:text-white
+                  top-0 right-0                  "
+                  />
                 </h1>
-                <button
-                  className="font-bold text-xl"
-                  onClick={() => setSelectedDevOpsSkill('')}
-                >
-                  ➖
-                </button>
               </div>
               <div className="w-1-2 md:w-1/3 ">
                 <p>{skill.description}</p>
@@ -341,7 +346,7 @@ export default function Home() {
       <div className="w-full p-4 text-center">
         <h1 className="w-full text-4xl font-bold "> Interests</h1>
         <div className="w-full flex flex-wrap flex-col justify-center items-center pt-10">
-          <p className="w-1/2 md:w-1/3 text-lg font-bold text-center">
+          <p className="w-full p-4 text-lg font-bold text-center">
             I am interested in how objects are stored, represented, transmitted,
             and secured across networks, databases, and web applications. My
             favorite subject in school was Databases, where we learned about how
@@ -353,7 +358,7 @@ export default function Home() {
             best case use scenarios, tradeoffs, and general manners of how each
             type of database engine deals with certain queries.
           </p>
-          <p className="w-1/2 md:-2-1/3 text-lg font-bold text-center p-10 ">
+          <p className="w-full text-lg font-bold text-center p-10 m-8 ">
             I also found network interesting, and in particular learning about
             BGP was transformative to my idea of what truly makes a network and
             a networking device. I have also ventured into experimentations in
