@@ -23,6 +23,30 @@ type LinkToPage = {
   Title: string;
 };
 
+const SportsPickProject: PortfolioProject = {
+  Name: 'Sports Pick App',
+  Description: `This is a Sports Pick App that allows users to create groups, invite users to groups,
+  and make picks for a weekly set of games based on the group settings for allocated picks and points. Then - it constructs
+  a leaderboard based on the picks made by the users.`,
+  Links: [
+    {
+      URL: 'https://sportspicks.compressibleflowcalculator.com',
+      Title: 'View Sports Pick App',
+    },
+  ],
+};
+
+const TimelinesProject: PortfolioProject = {
+  Name: 'Timelines App',
+  Description: `Created an application enabling users to build custom historical timelines, save them to personal accounts, and optionally publish them to a central catalog. For a cross-topic historical analysis, users can search and compare multiple timelines from published timelines or their custom timelines in a single combined timeline.`,
+  Links: [
+    {
+      URL: 'https://timelines.compressibleflowcalculator.com',
+      Title: 'View Timelines App',
+    },
+  ],
+};
+
 const CompilerProject: PortfolioProject = {
   Name: 'Expression Parser and Compiler',
   Description: `Expression Parser and Compiler That Builds a Stack
@@ -87,7 +111,7 @@ const MediaServer: PortfolioProject = {
                     This is a work in progress.`,
   Links: [
     {
-      URL: 'github.com/PranSA/MediaServer',
+      URL: 'github.com/PranoSA/MediaServer',
       Title: 'View Media Server on Github',
     },
   ],
@@ -137,13 +161,15 @@ const UnicodeProject: PortfolioProject = {
 };
 
 export const Projects: PortfolioProject[] = [
+  ImageApp,
+  TimelinesProject,
+  SportsPickProject,
   CompilerProject,
   CORSProject,
   ElevationProject,
   OtherProjects,
   MediaServer,
   ShoppingListApp,
-  ImageApp,
   UnicodeProject,
 ];
 
