@@ -123,7 +123,7 @@ const MediaServer: PortfolioProject = {
                     This is a work in progress.`,
   Links: [
     {
-      URL: 'github.com/PranoSA/MediaServer',
+      URL: 'https://github.com/PranoSA/ShoppingListMediaServers',
       Title: 'View Media Server on Github',
     },
   ],
