@@ -143,6 +143,7 @@ exports.Projects = [
     ImageApp,
     TimelinesProject,
     SportsPickProject,
+    MapsProject,
     CompilerProject,
     CORSProject,
     ElevationProject,

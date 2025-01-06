@@ -33,7 +33,7 @@ const SambaProject: OtherProject = {
   Share Servers That Mount Shares and Make Them Publically Available`,
   Links: [
     {
-      URL: 'https://github.com?PranoSA/Samba_Project_Backends',
+      URL: 'https://github.com/PranoSA/Samba_Project_Backends',
       Title: 'View on Github',
       Icon: <FaGithub size={30} className="text-white" />,
     },
