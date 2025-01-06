@@ -47,6 +47,18 @@ const TimelinesProject: PortfolioProject = {
   ],
 };
 
+const MapsProject: PortfolioProject = {
+  Name: 'Map Projection and Distortion Viewer',
+  Description:
+    'This Map allows you to show how a circular land mass will distort both laterally and vertically when subjected to different 2-D projections of the Earth, including Web Mercator, Equirectangular, Lambert Equal Area, Azimuthal Equadistant, Azimuthal Equal Area, and more.',
+  Links: [
+    {
+      URL: 'https://maps.compressibleflowcalculator.com',
+      Title: 'View Map Projection and Distortion Viewer',
+    },
+  ],
+};
+
 const CompilerProject: PortfolioProject = {
   Name: 'Expression Parser and Compiler',
   Description: `Expression Parser and Compiler That Builds a Stack
@@ -164,6 +176,7 @@ export const Projects: PortfolioProject[] = [
   ImageApp,
   TimelinesProject,
   SportsPickProject,
+  MapsProject,
   CompilerProject,
   CORSProject,
   ElevationProject,
