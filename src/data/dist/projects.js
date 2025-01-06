@@ -139,7 +139,6 @@ exports.Projects = [
     OtherProjects,
     MediaServer,
     ShoppingListApp,
-    ImageApp,
     UnicodeProject,
 ];
 var ProjectModal = function (_a) {
