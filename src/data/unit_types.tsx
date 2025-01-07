@@ -93,7 +93,7 @@ const Pound = {
 };
 
 const PoundForce = {
-  value: 4.44822,
+  value: 4.44822, //1 lb * 9.81 m/s^2 = 4.44822 N
   Length_Dimension: 1,
   Mass_Dimension: 1,
   Time_Dimension: -2,
@@ -657,6 +657,64 @@ const Acre = {
 };
 
 /**
+ *
+ * Flow Rates
+ */
+
+const CubmicMeter = {
+  value: 1,
+  Length_Dimension: 3,
+  Mass_Dimension: 0,
+  Time_Dimension: 0,
+  Name: 'Cubic Meter',
+  Alternative_Names: ['m^3', 'cubic meter'],
+  Description: `
+        The cubic meter is a unit of volume in the International System of Units (SI).
+        It is defined as the volume of a cube with sides of one meter.
+        `,
+};
+
+const CubicMeterPerSecond = {
+  value: 1,
+  Length_Dimension: 3,
+  Mass_Dimension: 0,
+  Time_Dimension: -1,
+  Name: 'Cubic Meter Per Second',
+  Alternative_Names: ['m^3/s', 'cubic meter per second'],
+  Description: `
+        The cubic meter per second is a unit of flow rate in the International System of Units (SI).
+        It is defined as the volume of fluid that passes a point in one second.
+        `,
+};
+
+//gallons per minute, etc.
+const GallonPerMinute = {
+  value: 0.00378541 / 60, //1 gallon per minute = 1/60 gallon per second
+  Length_Dimension: 3,
+  Mass_Dimension: 0,
+  Time_Dimension: -1,
+  Name: 'Gallon Per Minute',
+  Alternative_Names: ['gpm', 'gallon per minute'],
+  Description: `
+        The gallon per minute is a unit of flow rate in the imperial system of units and
+        United States customary units. It is defined as the volume of fluid that passes a point in one minute.
+        `,
+};
+
+const CubicFootPerSecond = {
+  value: 0.0283168,
+  Length_Dimension: 3,
+  Mass_Dimension: 0,
+  Time_Dimension: -1,
+  Name: 'Cubic Foot Per Second',
+  Alternative_Names: ['ft^3/s', 'cubic foot per second'],
+  Description: `
+            The cubic foot per second is a unit of flow rate in the imperial and US customary systems of measurement.
+            It is defined as the volume of fluid that passes a point in one second.
+            `,
+};
+
+/**
  * This function takes in Unit Dimensions with the following string
  * "LMT" where L is the length dimension, M is the mass dimension, and T is the time dimension
  * so "1,0,0" would be L=1, M=0, T=0
@@ -740,6 +798,14 @@ const getUnitType = (unit: Unit): string => {
     Time_Dimension === 0
   ) {
     return 'Density';
+  }
+  //Flow Rate
+  else if (
+    Length_Dimension === 3 &&
+    Mass_Dimension === 0 &&
+    Time_Dimension === -1
+  ) {
+    return 'Flow Rate';
   } else {
     return 'Other';
   }
@@ -762,6 +828,8 @@ const UnitsOfPower: Unit[] = [Watt, Kilowatt, MegaWatt, GigaWatt];
 const UnitsOfEnergy: Unit[] = [Calorie, ElectronVolt, BritishThermalUnit];
 
 const UnitsOfForce: Unit[] = [Newton, Dyne, PoundForce];
+
+const UnitsOfFlowRate: Unit[] = [CubmicMeter, CubicMeterPerSecond];
 
 const UnitsOfMass: Unit[] = [
   Gram,
@@ -863,6 +931,7 @@ class UnitClass {
   // Method to divide two UnitClass instances
   divide(other: UnitClass | number): UnitClass {
     //if is number, then convert to UnitClass
+    console.log('other', other);
     if (typeof other === 'number') {
       return new UnitClass(
         this.value / other,
@@ -894,6 +963,7 @@ class UnitClass {
       this.Mass_Dimension !== other.Mass_Dimension ||
       this.Time_Dimension !== other.Time_Dimension
     ) {
+      console.log("Units don't have the same dimensions");
       throw new Error('Units are not compatible for addition');
     }
     return new UnitClass(
@@ -1040,6 +1110,24 @@ function evaluateExpression(
 const NewtonUnit = UnitClass.fromUnit(Newton);
 const DyneUnit = UnitClass.fromUnit(Dyne);
 
+const getTypeOfUnitClass = (unit: UnitClass): string => {
+  if (!unit) {
+    console.log('WHYYYYYYYYYY');
+    return '';
+  }
+  const unit_type: Unit = {
+    value: unit.value,
+    Length_Dimension: unit.Length_Dimension,
+    Mass_Dimension: unit.Mass_Dimension,
+    Time_Dimension: unit.Time_Dimension,
+    Name: unit.Name,
+    Alternative_Names: [],
+    Description: '',
+  };
+
+  return getUnitType(unit_type);
+};
+
 const AllUnits: Unit[] = [
   ...UnitsOfVolume,
   ...UnitsOfPower,
@@ -1049,8 +1137,16 @@ const AllUnits: Unit[] = [
   ...UnitsOfLength,
   ...UnitsOfTime,
   ...UnitsOfArea,
+  ...UnitsOfFlowRate,
 ];
 
 const AllUnitClasses = AllUnits.map((unit) => UnitClass.fromUnit(unit));
 
-export { AllUnits, UnitClass, getUnitType, AllUnitClasses, evaluateExpression };
+export {
+  AllUnits,
+  UnitClass,
+  getUnitType,
+  AllUnitClasses,
+  evaluateExpression,
+  getTypeOfUnitClass,
+};

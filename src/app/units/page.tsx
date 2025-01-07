@@ -3,8 +3,7 @@
 import {
   UnitClass,
   AllUnitClasses,
-  AllUnits,
-  evaluateExpression,
+  getTypeOfUnitClass,
 } from '@/data/unit_types';
 import '../styles/globals.css';
 import { useState } from 'react';
@@ -99,7 +98,11 @@ export default function Page() {
 
         switch (op.operation) {
           case 'Add':
+            console.log('Result', result);
+            console.log('Scaled Unit', scaled_unit);
+            console.log('Adding');
             result = result.add(scaled_unit);
+            console.log('Resultant', result);
             break;
           case 'Subtract':
             result = result.subtract(scaled_unit);
@@ -108,7 +111,20 @@ export default function Page() {
             result = result.multiply(scaled_unit);
             break;
           case 'Divide':
+            console.log('Result', result);
+            console.log('Scaled Unit', scaled_unit);
+            console.log('Dividing');
+
+            //check if type of result is UnitClass
+            //if not, convert to UnitClass
+            if (result.constructor.name !== 'UnitClass') {
+              //result = new UnitClass(result);
+              console.log('WHYYYY???');
+              console.log('RESULT IS', result);
+            }
+
             result = result.divide(scaled_unit);
+            console.log('Resultant', result);
             break;
           default:
             break;
@@ -120,6 +136,8 @@ export default function Page() {
       // Convert result to the desired unit
       const conversionFactor = result.value / expr.resultUnit.value;
       new_result_units.push(result);
+      console.log('Conversion Factor', conversionFactor);
+      console.log('Result Unit value', expr.resultUnit.value);
       return conversionFactor;
     });
 
@@ -191,7 +209,7 @@ export default function Page() {
               className="mr-2 p-2 border rounded"
             >
               <option value="">Select Initial Unit</option>
-              {Object.values(AllUnits).map((unit) => (
+              {Object.values(AllUnitClasses).map((unit) => (
                 <option key={unit.Name} value={unit.Name}>
                   {unit.Name}
                 </option>
@@ -254,7 +272,7 @@ export default function Page() {
                 className="mr-2 p-2 border rounded"
               >
                 <option value="">Select Unit</option>
-                {Object.values(AllUnits).map((unit) => (
+                {Object.values(AllUnitClasses).map((unit) => (
                   <option key={unit.Name} value={unit.Name}>
                     {unit.Name}
                   </option>
@@ -288,6 +306,7 @@ export default function Page() {
             Add Operation
           </button>
           <div className="flex items-center mt-2">
+            <span>Result: {results[exprIndex]?.toExponential(4) || ''}</span>
             <select
               value={expr.resultUnit?.Name || ''}
               onChange={(e) => {
@@ -296,6 +315,8 @@ export default function Page() {
                 const resulant_unit = AllUnitClasses.find(
                   (unit) => unit.Name === unit_string
                 );
+
+                console.log('FOUND UNIT', resulant_unit);
 
                 const this_expr = expr;
 
@@ -315,32 +336,33 @@ export default function Page() {
               className="mr-2 p-2 border rounded"
             >
               <option value="">Select Result Unit</option>
-              {Object.values(AllUnits).map((unit) => (
+              {Object.values(AllUnitClasses).map((unit) => (
                 <option key={unit.Name} value={unit.Name}>
                   {unit.Name}
                 </option>
               ))}
             </select>
-            <span>Result: {results[exprIndex]}</span>
+
             {/* Now iNformation of the result units does not have the same index as the results */}
-
-            {/* Show Dimensions of Length, Mass, Time */}
-            <div className="flex flex-col">
-              <div>Length: {result_units[exprIndex]?.Length_Dimension}</div>
-              <div>Mass: {result_units[exprIndex]?.Mass_Dimension}</div>
-              <div>Time: {result_units[exprIndex]?.Time_Dimension}</div>
-            </div>
-
-            {/* Show an Error if they do not match with the result unit */}
-            {/* Has absolutely nothing to do with the name, only matching dimensions */}
-            {result_units[exprIndex] &&
-              !result_units[exprIndex].hasSameDimensions(expr.resultUnit) && (
-                <div className="text-red-500">
-                  Dimensions do not match, Missing Dimensions :{' '}
-                  {result_units[exprIndex].missingDimensions(expr.resultUnit)}
-                </div>
-              )}
           </div>
+          {/* Show Dimensions of Length, Mass, Time */}
+          <div className="flex flex-col">
+            <div>Length: {result_units[exprIndex]?.Length_Dimension}</div>
+            <div>Mass: {result_units[exprIndex]?.Mass_Dimension}</div>
+            <div>Time: {result_units[exprIndex]?.Time_Dimension}</div>
+          </div>
+          {/* Show Type of the result unit */}
+          <div>Type: {getTypeOfUnitClass(result_units[exprIndex])}</div>
+
+          {/* Show an Error if they do not match with the result unit */}
+          {/* Has absolutely nothing to do with the name, only matching dimensions */}
+          {result_units[exprIndex]?.hasSameDimensions &&
+            !result_units[exprIndex].hasSameDimensions(expr.resultUnit) && (
+              <div className="text-red-500">
+                Dimensions do not match, Missing Dimensions :{' '}
+                {result_units[exprIndex].missingDimensions(expr.resultUnit)}
+              </div>
+            )}
         </div>
       ))}
       <button
@@ -349,11 +371,6 @@ export default function Page() {
       >
         Evaluate Expressions
       </button>
-      {results.map((result, index) => (
-        <div key={index} className="mb-2">
-          Result {index + 1}: {result}
-        </div>
-      ))}
     </div>
   );
 }
